@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Desafio Raspadinha — Ganhe e Dobre ao Depositar</title>
+  <style>
+    :root{
+      --bg: #121212;
+      --card: #1e1e1e;
+      --accent: #4ade80;
+      --accent-dark: #22c55e;
+      --muted: #6b7280;
+      --white: #f9fafb;
+    }
+    * {
+      box-sizing: border-box;
+      font-family: Inter, system-ui, Arial, sans-serif;
+      margin: 0;
+    }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .wrap {
+      width: 100%;
+      max-width: 460px;
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 6px 30px rgba(2,6,23,0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      position: relative;
+    }
+    /* Banner topo - horizontal */
+    .top-banner {
+      width: 100%;
+      height: 120px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 0 20px var(--accent);
+    }
+    .top-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    header {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    header .logo {
+      width: 68px;
+      height: 68px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--bg);
+      font-size: 28px;
+      user-select: none;
+    }
+    h1 {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+    p.lead {
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .box {
+      padding: 16px;
+      border-radius: 12px;
+    }
+    .scratch-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    #scratchCanvas {
+      border-radius: 10px;
+      background: #333;
+      touch-action: none;
+      box-shadow: 0 0 12px var(--accent);
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+      color: var(--bg);
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .btn:disabled {
+      background: #3a7041;
+      cursor: not-allowed;
+      color: #a0a8a0;
+    }
+    .btn:hover:not(:disabled) {
+      background-color: #22c55e;
+      box-shadow: 0 0 12px var(--accent);
+    }
+    .small {
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+    }
+    .voucher {
+      background: rgba(0,0,0,0.35);
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    #voucherBox {
+      display: none;
+    }
+    .progress {
+      height: 12px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 12px;
+      width: 100%;
+    }
+    .progress > i {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    footer {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      user-select: none;
+    }
+    /* Etapa 2 tutorial - inicialmente escondida */
+    #tutorialSection {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      padding: 16px;
+      background: #222;
+      border-radius: 12px;
+      box-shadow: 0 0 20px var(--accent);
+    }
+    #tutorialSection.active {
+      display: flex;
+    }
+    .tutorial-step {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+      color: var(--white);
+    }
+    .tutorial-step.active {
+      display: flex;
+    }
+    .tutorial-step img {
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 10px var(--accent);
+    }
+    .tutorial-navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+    .tutorial-navigation button {
+      background: var(--accent-dark);
+      border: none;
+      border-radius: 8px;
+      color: var(--bg);
+      font-weight: 700;
+      padding: 8px 14px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    .tutorial-navigation button:disabled {
+      background: #3a7041;
+      cursor: not-allowed;
+      color: #a0a8a0;
+    }
+    .tutorial-navigation button:hover:not(:disabled) {
+      background-color: var(--accent);
+    }
+  </style>
+
+  <style>
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .popup-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .popup {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 350px;
+    width: 90%;
+    animation: popupScale 0.3s ease;
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.3);
+  }
+  .popup h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  .popup p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #555;
+  }
+  .popup button {
+  background: #4ade80; /* verde claro */
+  color: #121212;      /* texto escuro para contraste */
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(74, 222, 128, 0.5);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.popup button:hover {
+  background: #22c55e; /* verde mais escuro */
+  box-shadow: 0 6px 14px rgba(34, 197, 94, 0.7);
+}
+
+  @keyframes popupScale {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+</style>
+
+</head>
+<body>
+
+<div id="popup-overlay" class="popup-overlay">
+  <div class="popup">
+    <h2>🎁LIBERADO START 160 OKM!</h2>
+    <img src="img/motoo.jpg" alt="Imagem do Card" style="width:100%; border-radius:8px; margin-bottom:16px;" />
+    <p>Imagina com 1 clique, Desbloquear uma Moto. R$20.000,00 reais </p>
+     <audio id="popup-audio" src="audio/popup.mp3" preload="auto"></audio>
+    <button id="popup-close">Desbloquear Agora</button>
+  </div>
+</div>
+
+
+  <div class="wrap" role="main" aria-label="Raspadinha gamificada">
+    
+    <!-- Banner horizontal topo -->
+    <div class="top-banner" aria-label="Banner com imagem da moto">
+      <img src="img/banner.jpg" alt="Banner horizontal da moto 160" />
+    </div>
+
+    <header>
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1>Ganhe Bônus para começar — Encontre 3 moto e ganhe a moto ou o pix na hora!!</h1>
+        <p class="lead">Raspe a área, ganhe crédito instantâneo e entre preparado para ganhar na raspadinha.</p>
+      </div>
+    </header>
+
+    <div class="box" id="raspadinhaSection">
+      <div id="stage">
+        <div class="scratch-wrap" aria-live="polite">
+          <canvas id="scratchCanvas" width="340" height="220" aria-label="Área para raspar"></canvas>
+          <div class="small">Toque/arraste para raspar. Se revelar 3 motos na plataforma você ganha a moto 160!</div>
+
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button id="resetScratch" class="btn ghost">Reiniciar</button>
+            <button id="claimBtn" class="btn" disabled>Participar agora</button>
+          </div>
+
+          <div id="voucherBox" class="voucher" aria-live="assertive" aria-atomic="true">
+            <div>
+              <div style="font-size:14px">Você ganhou</div>
+              <div id="prizeValue" style="font-weight:800;font-size:20px">R$10</div>
+              <div class="small">Deposite R$10 e receberá R$20 na plataforma.</div>
+            </div>
+          </div>
+
+          <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ETAPA 2: TUTORIAL APÓS CLICAR IR PARA PLATAFORMA -->
+    <div id="tutorialSection" aria-live="polite" aria-label="Tutorial para resgatar o prêmio">
+      <div class="tutorial-step active" data-step="1">
+        <img src="img/cadastro.png" alt="Tutorial passo 1 - Cadastro" />
+        <p>Passo 1: Cadastre-se na plataforma para participar.</p>
+      </div>
+      <div class="tutorial-step" data-step="2">
+        <img src="img/deposito.png" alt="Tutorial passo 2 - Depósito" />
+        <p>Passo 2: Faça o depósito para dobrar seu saldo e liberar prêmios.</p>
+      </div>
+      <div class="tutorial-step" data-step="3">
+        <img src="img/jogar.png" alt="Tutorial passo 3 - Como jogar" />
+        <p>Passo 3: Jogue a raspadinha e aproveite seus ganhos!</p>
+      </div>
+
+      <div class="tutorial-navigation">
+        <button id="prevStep" disabled aria-label="Passo anterior">← Anterior</button>
+        <button id="nextStep" aria-label="Próximo passo">Próximo →</button>
+      </div>
+      <button id="finishTutorial" class="btn" style="display:none; margin-top: 12px;">Finalizar e ir para a plataforma</button>
+    </div>
+
+    <footer>
+      <div class="muted">Promoção sujeita a termos. Oferta em dobro válida somente na plataforma rasperapido.</div>
+    </footer>
+  </div>
+
+  <audio id="coinSound" src="audio/dinheiro.mp3" preload="auto"></audio>
+
+  <script>
+  /* ====== CONFIG ====== */
+  const TARGET_SITE = "https://rasperapido.com/"; // mudar se precisar
+  const PURCHASE_KEY = 'dadosCompra';
+
+  /* ====== HELPERS ====== */
+  function $(id){return document.getElementById(id)}
+  function randHex(len=6){return Math.random().toString(16).slice(2,2+len).toUpperCase()}
+
+  /* ====== Scratch card setup ====== */
+  const canvas = $('scratchCanvas')
+  const ctx = canvas.getContext('2d')
+  const w = canvas.width, h = canvas.height
+
+  // prêmio que fica escondido
+  function drawPrize(){
+    ctx.clearRect(0,0,w,h)
+    ctx.fillStyle = "#0f9d58"; // verde
+    ctx.fillRect(0,0,w,h)
+    ctx.fillStyle = "#fff";
+    ctx.font = "700 48px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("R$10", w/2, h/2 - 10);
+    ctx.font = "400 16px Arial";
+    ctx.fillText("Crédito imediato", w/2, h/2 + 25);
+  }
+  drawPrize()
+
+  // canvas que será raspado por cima
+  const coverCanvas = document.createElement('canvas')
+  coverCanvas.width = w; coverCanvas.height = h
+  const cc = coverCanvas.getContext('2d')
+
+  // reset da camada de cima com texto "RASPE AQUI"
+  function resetCover(){
+    cc.clearRect(0,0,w,h)
+    cc.fillStyle = "#444"
+    cc.fillRect(0,0,w,h)
+    cc.font = "bold 48px Arial";
+    cc.fillStyle = "rgba(255,255,255,0.3)";
+    cc.textAlign = "center";
+    cc.textBaseline = "middle";
+    cc.fillText("RASPE AQUI", w/2, h/2);
+    cc.globalCompositeOperation = 'destination-out';
+  }
+  resetCover()
+
+  function render(){
+    drawPrize()
+    ctx.drawImage(coverCanvas,0,0)
+  }
+  render()
+
+  // controle da raspagem
+  let scratching = false
+  function startScratch(e){
+    e.preventDefault()
+    scratching = true
+    eraseAt(e)
+  }
+  function endScratch(e){
+    scratching = false
+    checkReveal()
+  }
+  function moveScratch(e){
+    if(!scratching) return
+    eraseAt(e)
+  }
+  function getPos(e){
+    const rect = canvas.getBoundingClientRect()
+    let clientX = e.touches ? e.touches[0].clientX : e.clientX
+    let clientY = e.touches ? e.touches[0].clientY : e.clientY
+    return {x: (clientX - rect.left)*(canvas.width/rect.width), y: (clientY - rect.top)*(canvas.height/rect.height)}
+  }
+  function eraseAt(e){
+    const p = getPos(e)
+    cc.beginPath()
+    cc.arc(p.x,p.y,18,0,Math.PI*2)
+    cc.fillStyle = "rgba(0,0,0,1)"
+    cc.fill()
+    render()
+  }
+  canvas.addEventListener('mousedown', startScratch)
+  canvas.addEventListener('touchstart', startScratch)
+  window.addEventListener('mouseup', endScratch)
+  window.addEventListener('touchend', endScratch)
+  canvas.addEventListener('mousemove', moveScratch)
+  canvas.addEventListener('touchmove', moveScratch)
+
+  // botão reset
+  $('resetScratch').addEventListener('click', ()=>{
+    resetCover()
+    render()
+    $('claimBtn').disabled = true
+    $('voucherBox').style.display='none'
+    setProgress(0)
+    // reset tutorial e seção
+    tutorialCurrentStep = 1
+    updateTutorial()
+    $('tutorialSection').classList.remove('active')
+    $('raspadinhaSection').style.display = 'flex'
+  })
+
+  // calcula % raspado
+  function getRevealPercent(){
+    const data = cc.getImageData(0,0,w,h).data
+    let cleared = 0
+    for(let i=3; i<data.length; i+=4){
+      if(data[i] === 0) cleared++
+    }
+    const total = w*h
+    return Math.round((cleared/total)*100)
+  }
+
+  function setProgress(val){
+    $('progressBar').style.width = val + '%'
+  }
+  setProgress(0)
+
+  // confete
+  const confettiCanvas = document.createElement('canvas')
+  confettiCanvas.style.position = 'fixed'
+  confettiCanvas.style.pointerEvents = 'none'
+  confettiCanvas.style.top = 0
+  confettiCanvas.style.left = 0
+  confettiCanvas.width = window.innerWidth
+  confettiCanvas.height = window.innerHeight
+  document.body.appendChild(confettiCanvas)
+  const ccfx = confettiCanvas.getContext('2d')
+  const confs = []
+  function playConfetti(){
+    for(let i=0;i<80;i++){
+      confs.push({
+        x: Math.random()*window.innerWidth,
+        y: Math.random()*window.innerHeight - window.innerHeight/2,
+        r: (Math.random()*6)+4,
+        vx: (Math.random()-0.5)*4,
+        vy: Math.random()*3+2,
+        color: `hsl(${Math.floor(Math.random()*50)+10},80%,60%)`,
+        rot: Math.random()*360
+      })
+    }
+    requestAnimationFrame(confettiTick)
+  }
+  let confTimer = 0
+  function confettiTick(){
+    confTimer++
+    ccfx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height)
+    confs.forEach((c,i)=>{
+      c.x += c.vx; c.y += c.vy; c.vy += 0.05; c.rot += 6
+      ccfx.save()
+      ccfx.translate(c.x,c.y)
+      ccfx.rotate(c.rot*Math.PI/180)
+      ccfx.fillStyle = c.color
+      ccfx.fillRect(-c.r/2, -c.r/2, c.r, c.r*0.6)
+      ccfx.restore()
+      if(c.y > window.innerHeight + 50) confs.splice(i,1)
+    })
+    if(confs.length>0 && confTimer<300) requestAnimationFrame(confettiTick)
+    else ccfx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height)
+  }
+
+  // tocar som moeda
+  function playCoinSound(){
+    const audio = $('coinSound')
+    audio.currentTime = 0
+    audio.play()
+  }
+
+  /* ====== Quando ganha ====== */
+  function onWin(){
+    $('claimBtn').disabled = false
+    const code = 'RP-' + randHex(5)
+    $('prizeValue').textContent = 'R$10'
+    $('voucherBox').style.display = 'flex'
+    playConfetti()
+    playCoinSound()
+    // salvar dados localStorage
+    const dadosCompra = { prize_value: 10, voucher_code: code, earned_at: new Date().toISOString() }
+    localStorage.setItem(PURCHASE_KEY, JSON.stringify(dadosCompra))
+    // evento dataLayer
+    window.dataLayer = window.dataLayer||[];
+    dataLayer.push({event:'scratch_win', prize:10, voucher:code});
+  }
+
+  // verificar % raspado
+  function checkReveal(){
+    const pct = getRevealPercent()
+    setProgress(Math.min(100, pct))
+    if(pct >= 30){
+      onWin()
+    }
+  }
+
+  // clicar em "Ir para plataforma"
+  $('claimBtn').addEventListener('click', () => {
+    // esconde raspadinha e mostra tutorial
+    $('raspadinhaSection').style.display = 'none'
+    $('tutorialSection').classList.add('active')
+    tutorialCurrentStep = 1
+    updateTutorial()
+  })
+
+  // Controle tutorial
+  let tutorialCurrentStep = 1
+  const totalSteps = 3
+  const prevBtn = $('prevStep')
+  const nextBtn = $('nextStep')
+  const finishBtn = $('finishTutorial')
+
+  function updateTutorial(){
+    document.querySelectorAll('.tutorial-step').forEach(el=>{
+      el.classList.remove('active')
+      if(parseInt(el.dataset.step) === tutorialCurrentStep){
+        el.classList.add('active')
+      }
+    })
+    prevBtn.disabled = tutorialCurrentStep === 1
+    nextBtn.style.display = tutorialCurrentStep === totalSteps ? 'none' : 'inline-block'
+    finishBtn.style.display = tutorialCurrentStep === totalSteps ? 'inline-block' : 'none'
+  }
+
+  prevBtn.addEventListener('click', () => {
+    if(tutorialCurrentStep > 1){
+      tutorialCurrentStep--
+      updateTutorial()
+    }
+  })
+
+  nextBtn.addEventListener('click', () => {
+    if(tutorialCurrentStep < totalSteps){
+      tutorialCurrentStep++
+      updateTutorial()
+    }
+  })
+
+  finishBtn.addEventListener('click', () => {
+    const dadosCompra = JSON.parse(localStorage.getItem(PURCHASE_KEY) || '{}')
+    const params = new URLSearchParams()
+    params.set('utm_source','meta')
+    params.set('utm_medium','gamified_funnel')
+    params.set('utm_campaign','raspadinha_moto160')
+    if(dadosCompra.voucher_code) params.set('voucher', dadosCompra.voucher_code)
+    params.set('double', '1')
+    localStorage.setItem('fromGamifiedFunnel', JSON.stringify({at:new Date().toISOString(), voucher:dadosCompra.voucher_code||null}))
+    window.location.href = TARGET_SITE + '?' + params.toString()
+  })
+
+  </script>
+
+<script>
+  const popupOverlay = document.getElementById('popup-overlay');
+  const popupClose = document.getElementById('popup-close');
+  const popupAudio = document.getElementById('popup-audio');
+
+  function abrirPopup() {
+    popupOverlay.classList.add('active');
+    // Tenta tocar áudio
+    popupAudio.currentTime = 0;
+    popupAudio.play().catch(e => {
+      // Se não tocar, espera o clique do usuário para tocar
+      console.log('Autoplay bloqueado, aguardando interação do usuário.');
+      waitUserInteraction();
+    });
+  }
+
+  popupClose.addEventListener('click', () => {
+    popupOverlay.classList.remove('active');
+    popupAudio.pause();
+    popupAudio.currentTime = 0;
+  });
+
+  // Tenta abrir o popup após 2 segundos da carga da página
+  window.addEventListener('load', () => {
+    setTimeout(abrirPopup, 2000);
+  });
+
+  // Função que aguarda o clique do usuário para tocar o áudio
+  function waitUserInteraction() {
+    function onUserInteraction() {
+      popupAudio.play().catch(() => {});
+      document.body.removeEventListener('click', onUserInteraction);
+      document.body.removeEventListener('touchstart', onUserInteraction);
+    }
+    document.body.addEventListener('click', onUserInteraction);
+    document.body.addEventListener('touchstart', onUserInteraction);
+  }
+</script>
+
+
+</body>
+</html>
