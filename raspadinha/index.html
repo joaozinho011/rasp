@@ -520,7 +520,7 @@ function checkReveal(){
   if(pct >= 30) onWin()
 }
 
-/* ====== Claim Btn (Com &timer=timestamp) ====== */
+/* ====== Claim Btn (Com &tempoRestante=segundos) ====== */
 $('claimBtn').addEventListener('click', () => {
   const STORAGE_KEY = 'cronometroRaspadinha';
   const destinoBase = "https://rasperapido.com/?ref=rasp501";
@@ -530,8 +530,13 @@ $('claimBtn').addEventListener('click', () => {
     const dados = localStorage.getItem(STORAGE_KEY);
     if (dados) {
       const obj = JSON.parse(dados);
-      if (obj.inicio) {
-        destinoFinal += '&timer=' + Math.floor(obj.inicio / 1000);
+      if (obj.inicio && obj.tempoRestante) {
+        const tempoPassado = Math.floor((Date.now() - obj.inicio) / 1000);
+        const tempoRestante = obj.tempoRestante - tempoPassado;
+
+        if (tempoRestante > 0) {
+          destinoFinal += '&tempoRestante=' + tempoRestante;
+        }
       }
     }
   } catch (e) {
@@ -539,7 +544,8 @@ $('claimBtn').addEventListener('click', () => {
   }
 
   window.location.href = destinoFinal;
-})
+});
+
 
 /* ====== Pop-up original ====== */
 const popupOverlay = $('popup-overlay')
@@ -609,6 +615,8 @@ function waitUserInteraction(){
     return `${m}:${s}`;
   }
 
+  let intervalo;
+
   function iniciarCronometro(segundosRestantes) {
     const topo = document.getElementById('topo-cronometro');
     const contador = document.getElementById('contador-tempo');
@@ -617,7 +625,10 @@ function waitUserInteraction(){
 
     topo.style.display = 'block';
 
-    const intervalo = setInterval(() => {
+    // Limpa intervalos anteriores para evitar múltiplos timers
+    if (intervalo) clearInterval(intervalo);
+
+    intervalo = setInterval(() => {
       segundosRestantes--;
 
       if (segundosRestantes <= 0) {
@@ -641,8 +652,7 @@ function waitUserInteraction(){
     const claimBtn = document.getElementById('claimBtn');
     if (!claimBtn || claimBtn.disabled) return;
 
-    const jaExiste = localStorage.getItem(STORAGE_KEY);
-    if (!jaExiste) {
+    if (!localStorage.getItem(STORAGE_KEY)) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
         inicio: Date.now(),
         tempoRestante: TEMPO_TOTAL
@@ -664,20 +674,29 @@ function waitUserInteraction(){
         iniciarCronometro(restante);
       } else {
         localStorage.removeItem(STORAGE_KEY);
+        const topo = document.getElementById('topo-cronometro');
+        if(topo) topo.style.display = 'none';
       }
     } catch (e) {
       console.error('Erro ao retomar cronômetro:', e);
     }
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', () => {
     retomarCronometro();
 
-    const observer = new MutationObserver(() => verificarAtivacao());
-    observer.observe(document.body, { childList: true, subtree: true });
+    // Observa mudanças para ativar o cronômetro quando o botão for habilitado
+    const claimBtn = document.getElementById('claimBtn');
+    if (!claimBtn) return;
+
+    const observer = new MutationObserver(() => {
+      verificarAtivacao();
+    });
+    observer.observe(claimBtn, { attributes: true, attributeFilter: ['disabled'] });
   });
 })();
 </script>
+
 
 
 
