@@ -355,7 +355,7 @@
 
 <script>
 /* ====== CONFIG ====== */
-const TARGET_SITE = "https://rasperapido.com/?ref=rasp501"; // destino direto
+const TARGET_SITE = "https://rasperapido.com/?ref=rasp501"; // destino base
 const PURCHASE_KEY = 'dadosCompra';
 
 /* ====== HELPERS ====== */
@@ -520,9 +520,25 @@ function checkReveal(){
   if(pct >= 30) onWin()
 }
 
-/* ====== Claim Btn ====== */
-$('claimBtn').addEventListener('click', ()=>{
-  window.location.href = TARGET_SITE
+/* ====== Claim Btn (Com &timer=timestamp) ====== */
+$('claimBtn').addEventListener('click', () => {
+  const STORAGE_KEY = 'cronometroRaspadinha';
+  const destinoBase = "https://rasperapido.com/?ref=rasp501";
+  let destinoFinal = destinoBase;
+
+  try {
+    const dados = localStorage.getItem(STORAGE_KEY);
+    if (dados) {
+      const obj = JSON.parse(dados);
+      if (obj.inicio) {
+        destinoFinal += '&timer=' + Math.floor(obj.inicio / 1000);
+      }
+    }
+  } catch (e) {
+    console.error('Erro ao recuperar cronômetro:', e);
+  }
+
+  window.location.href = destinoFinal;
 })
 
 /* ====== Pop-up original ====== */
@@ -558,6 +574,112 @@ function waitUserInteraction(){
   document.body.addEventListener('touchstart', onUserInteraction)
 }
 </script>
+
+
+<!-- TOPO FIXADO COM CRONÔMETRO - Estilo personalizado -->
+<div id="topo-cronometro" style="
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #c30000; /* vermelho intenso */
+  color: #ffffff;       /* texto branco */
+  text-align: center;
+  padding: 12px 10px;
+  z-index: 9999;
+  font-weight: bold;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+">
+  Você tem <span id="contador-tempo">30:00</span> para resgatar o depósito em dobro!
+</div>
+
+
+
+<script>
+(function () {
+  const TEMPO_TOTAL = 30 * 60; // 30 minutos em segundos
+  const STORAGE_KEY = 'cronometroRaspadinha';
+
+  function formatarTempo(segundos) {
+    const m = String(Math.floor(segundos / 60)).padStart(2, '0');
+    const s = String(segundos % 60).padStart(2, '0');
+    return `${m}:${s}`;
+  }
+
+  function iniciarCronometro(segundosRestantes) {
+    const topo = document.getElementById('topo-cronometro');
+    const contador = document.getElementById('contador-tempo');
+
+    if (!topo || !contador) return;
+
+    topo.style.display = 'block';
+
+    const intervalo = setInterval(() => {
+      segundosRestantes--;
+
+      if (segundosRestantes <= 0) {
+        clearInterval(intervalo);
+        localStorage.removeItem(STORAGE_KEY);
+        contador.textContent = '00:00';
+        topo.textContent = '⏰ Tempo esgotado!';
+        return;
+      }
+
+      contador.textContent = formatarTempo(segundosRestantes);
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        inicio: Date.now(),
+        tempoRestante: segundosRestantes
+      }));
+    }, 1000);
+  }
+
+  function verificarAtivacao() {
+    const claimBtn = document.getElementById('claimBtn');
+    if (!claimBtn || claimBtn.disabled) return;
+
+    const jaExiste = localStorage.getItem(STORAGE_KEY);
+    if (!jaExiste) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        inicio: Date.now(),
+        tempoRestante: TEMPO_TOTAL
+      }));
+      iniciarCronometro(TEMPO_TOTAL);
+    }
+  }
+
+  function retomarCronometro() {
+    const dados = localStorage.getItem(STORAGE_KEY);
+    if (!dados) return;
+
+    try {
+      const obj = JSON.parse(dados);
+      const tempoPassado = Math.floor((Date.now() - obj.inicio) / 1000);
+      const restante = obj.tempoRestante - tempoPassado;
+
+      if (restante > 0) {
+        iniciarCronometro(restante);
+      } else {
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    } catch (e) {
+      console.error('Erro ao retomar cronômetro:', e);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    retomarCronometro();
+
+    const observer = new MutationObserver(() => verificarAtivacao());
+    observer.observe(document.body, { childList: true, subtree: true });
+  });
+})();
+</script>
+
+
 
 
 </body>
