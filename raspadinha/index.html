@@ -351,322 +351,212 @@
       </div>
     </div>
 
-    <!-- ETAPA 2: TUTORIAL APÓS CLICAR IR PARA PLATAFORMA -->
-    <div id="tutorialSection" aria-live="polite" aria-label="Tutorial para resgatar o prêmio">
-      <div class="tutorial-step active" data-step="1">
-        <img src="img/cadastro.png" alt="Tutorial passo 1 - Cadastro" />
-        <p>Passo 1: Cadastre-se na plataforma para participar.</p>
-      </div>
-      <div class="tutorial-step" data-step="2">
-        <img src="img/deposito.png" alt="Tutorial passo 2 - Depósito" />
-        <p>Passo 2: Faça o depósito para dobrar seu saldo e liberar prêmios.</p>
-      </div>
-      <div class="tutorial-step" data-step="3">
-        <img src="img/jogar.png" alt="Tutorial passo 3 - Como jogar" />
-        <p>Passo 3: Jogue a raspadinha e aproveite seus ganhos!</p>
-      </div>
-
-      <div class="tutorial-navigation">
-        <button id="prevStep" disabled aria-label="Passo anterior">← Anterior</button>
-        <button id="nextStep" aria-label="Próximo passo">Próximo →</button>
-      </div>
-      <button id="finishTutorial" class="btn" style="display:none; margin-top: 12px;">Finalizar e ir para a plataforma</button>
-    </div>
-
-    <footer>
-      <div class="muted">Promoção sujeita a termos. Oferta em dobro válida somente na plataforma rasperapido.</div>
-    </footer>
-  </div>
-
   <audio id="coinSound" src="audio/dinheiro.mp3" preload="auto"></audio>
 
-  <script>
-  /* ====== CONFIG ====== */
-  const TARGET_SITE = "https://rasperapido.com/?ref=rasp501&utm_source=meta&utm_medium=gamified_funnel&utm_campaign=raspadinha_moto160&voucher=RP-9DD39&double=1"; // mudar se precisar
-  const PURCHASE_KEY = 'dadosCompra';
-
-  /* ====== HELPERS ====== */
-  function $(id){return document.getElementById(id)}
-  function randHex(len=6){return Math.random().toString(16).slice(2,2+len).toUpperCase()}
-
-  /* ====== Scratch card setup ====== */
-  const canvas = $('scratchCanvas')
-  const ctx = canvas.getContext('2d')
-  const w = canvas.width, h = canvas.height
-
-  // prêmio que fica escondido
-  function drawPrize(){
-    ctx.clearRect(0,0,w,h)
-    ctx.fillStyle = "#0f9d58"; // verde
-    ctx.fillRect(0,0,w,h)
-    ctx.fillStyle = "#fff";
-    ctx.font = "700 48px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("R$10", w/2, h/2 - 10);
-    ctx.font = "400 16px Arial";
-    ctx.fillText("Crédito imediato", w/2, h/2 + 25);
-  }
-  drawPrize()
-
-  // canvas que será raspado por cima
-  const coverCanvas = document.createElement('canvas')
-  coverCanvas.width = w; coverCanvas.height = h
-  const cc = coverCanvas.getContext('2d')
-
-  // reset da camada de cima com texto "RASPE AQUI"
-  function resetCover(){
-    cc.clearRect(0,0,w,h)
-    cc.fillStyle = "#444"
-    cc.fillRect(0,0,w,h)
-    cc.font = "bold 48px Arial";
-    cc.fillStyle = "rgba(255,255,255,0.3)";
-    cc.textAlign = "center";
-    cc.textBaseline = "middle";
-    cc.fillText("RASPE AQUI", w/2, h/2);
-    cc.globalCompositeOperation = 'destination-out';
-  }
-  resetCover()
-
-  function render(){
-    drawPrize()
-    ctx.drawImage(coverCanvas,0,0)
-  }
-  render()
-
-  // controle da raspagem
-  let scratching = false
-  function startScratch(e){
-    e.preventDefault()
-    scratching = true
-    eraseAt(e)
-  }
-  function endScratch(e){
-    scratching = false
-    checkReveal()
-  }
-  function moveScratch(e){
-    if(!scratching) return
-    eraseAt(e)
-  }
-  function getPos(e){
-    const rect = canvas.getBoundingClientRect()
-    let clientX = e.touches ? e.touches[0].clientX : e.clientX
-    let clientY = e.touches ? e.touches[0].clientY : e.clientY
-    return {x: (clientX - rect.left)*(canvas.width/rect.width), y: (clientY - rect.top)*(canvas.height/rect.height)}
-  }
-  function eraseAt(e){
-    const p = getPos(e)
-    cc.beginPath()
-    cc.arc(p.x,p.y,18,0,Math.PI*2)
-    cc.fillStyle = "rgba(0,0,0,1)"
-    cc.fill()
-    render()
-  }
-  canvas.addEventListener('mousedown', startScratch)
-  canvas.addEventListener('touchstart', startScratch)
-  window.addEventListener('mouseup', endScratch)
-  window.addEventListener('touchend', endScratch)
-  canvas.addEventListener('mousemove', moveScratch)
-  canvas.addEventListener('touchmove', moveScratch)
-
-  // botão reset
-  $('resetScratch').addEventListener('click', ()=>{
-    resetCover()
-    render()
-    $('claimBtn').disabled = true
-    $('voucherBox').style.display='none'
-    setProgress(0)
-    // reset tutorial e seção
-    tutorialCurrentStep = 1
-    updateTutorial()
-    $('tutorialSection').classList.remove('active')
-    $('raspadinhaSection').style.display = 'flex'
-  })
-
-  // calcula % raspado
-  function getRevealPercent(){
-    const data = cc.getImageData(0,0,w,h).data
-    let cleared = 0
-    for(let i=3; i<data.length; i+=4){
-      if(data[i] === 0) cleared++
-    }
-    const total = w*h
-    return Math.round((cleared/total)*100)
-  }
-
-  function setProgress(val){
-    $('progressBar').style.width = val + '%'
-  }
-  setProgress(0)
-
-  // confete
-  const confettiCanvas = document.createElement('canvas')
-  confettiCanvas.style.position = 'fixed'
-  confettiCanvas.style.pointerEvents = 'none'
-  confettiCanvas.style.top = 0
-  confettiCanvas.style.left = 0
-  confettiCanvas.width = window.innerWidth
-  confettiCanvas.height = window.innerHeight
-  document.body.appendChild(confettiCanvas)
-  const ccfx = confettiCanvas.getContext('2d')
-  const confs = []
-  function playConfetti(){
-    for(let i=0;i<80;i++){
-      confs.push({
-        x: Math.random()*window.innerWidth,
-        y: Math.random()*window.innerHeight - window.innerHeight/2,
-        r: (Math.random()*6)+4,
-        vx: (Math.random()-0.5)*4,
-        vy: Math.random()*3+2,
-        color: `hsl(${Math.floor(Math.random()*50)+10},80%,60%)`,
-        rot: Math.random()*360
-      })
-    }
-    requestAnimationFrame(confettiTick)
-  }
-  let confTimer = 0
-  function confettiTick(){
-    confTimer++
-    ccfx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height)
-    confs.forEach((c,i)=>{
-      c.x += c.vx; c.y += c.vy; c.vy += 0.05; c.rot += 6
-      ccfx.save()
-      ccfx.translate(c.x,c.y)
-      ccfx.rotate(c.rot*Math.PI/180)
-      ccfx.fillStyle = c.color
-      ccfx.fillRect(-c.r/2, -c.r/2, c.r, c.r*0.6)
-      ccfx.restore()
-      if(c.y > window.innerHeight + 50) confs.splice(i,1)
-    })
-    if(confs.length>0 && confTimer<300) requestAnimationFrame(confettiTick)
-    else ccfx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height)
-  }
-
-  // tocar som moeda
-  function playCoinSound(){
-    const audio = $('coinSound')
-    audio.currentTime = 0
-    audio.play()
-  }
-
-  /* ====== Quando ganha ====== */
-  function onWin(){
-    $('claimBtn').disabled = false
-    const code = 'RP-' + randHex(5)
-    $('prizeValue').textContent = 'R$10'
-    $('voucherBox').style.display = 'flex'
-    playConfetti()
-    playCoinSound()
-    // salvar dados localStorage
-    const dadosCompra = { prize_value: 10, voucher_code: code, earned_at: new Date().toISOString() }
-    localStorage.setItem(PURCHASE_KEY, JSON.stringify(dadosCompra))
-    // evento dataLayer
-    window.dataLayer = window.dataLayer||[];
-    dataLayer.push({event:'scratch_win', prize:10, voucher:code});
-  }
-
-  // verificar % raspado
-  function checkReveal(){
-    const pct = getRevealPercent()
-    setProgress(Math.min(100, pct))
-    if(pct >= 30){
-      onWin()
-    }
-  }
-
-  // clicar em "Ir para plataforma"
-  $('claimBtn').addEventListener('click', () => {
-    // esconde raspadinha e mostra tutorial
-    $('raspadinhaSection').style.display = 'none'
-    $('tutorialSection').classList.add('active')
-    tutorialCurrentStep = 1
-    updateTutorial()
-  })
-
-  // Controle tutorial
-  let tutorialCurrentStep = 1
-  const totalSteps = 3
-  const prevBtn = $('prevStep')
-  const nextBtn = $('nextStep')
-  const finishBtn = $('finishTutorial')
-
-  function updateTutorial(){
-    document.querySelectorAll('.tutorial-step').forEach(el=>{
-      el.classList.remove('active')
-      if(parseInt(el.dataset.step) === tutorialCurrentStep){
-        el.classList.add('active')
-      }
-    })
-    prevBtn.disabled = tutorialCurrentStep === 1
-    nextBtn.style.display = tutorialCurrentStep === totalSteps ? 'none' : 'inline-block'
-    finishBtn.style.display = tutorialCurrentStep === totalSteps ? 'inline-block' : 'none'
-  }
-
-  prevBtn.addEventListener('click', () => {
-    if(tutorialCurrentStep > 1){
-      tutorialCurrentStep--
-      updateTutorial()
-    }
-  })
-
-  nextBtn.addEventListener('click', () => {
-    if(tutorialCurrentStep < totalSteps){
-      tutorialCurrentStep++
-      updateTutorial()
-    }
-  })
-
-  finishBtn.addEventListener('click', () => {
-    const dadosCompra = JSON.parse(localStorage.getItem(PURCHASE_KEY) || '{}')
-    const params = new URLSearchParams()
-    params.set('utm_source','meta')
-    params.set('utm_medium','gamified_funnel')
-    params.set('utm_campaign','raspadinha_moto160')
-    if(dadosCompra.voucher_code) params.set('voucher', dadosCompra.voucher_code)
-    params.set('double', '1')
-    localStorage.setItem('fromGamifiedFunnel', JSON.stringify({at:new Date().toISOString(), voucher:dadosCompra.voucher_code||null}))
-    window.location.href = TARGET_SITE + '?' + params.toString()
-  })
-
-  </script>
-
 <script>
-  const popupOverlay = document.getElementById('popup-overlay');
-  const popupClose = document.getElementById('popup-close');
-  const popupAudio = document.getElementById('popup-audio');
+/* ====== CONFIG ====== */
+const TARGET_SITE = "https://rasperapido.com/?ref=rasp501"; // destino direto
+const PURCHASE_KEY = 'dadosCompra';
 
-  function abrirPopup() {
-    popupOverlay.classList.add('active');
-    // Tenta tocar áudio
-    popupAudio.currentTime = 0;
-    popupAudio.play().catch(e => {
-      // Se não tocar, espera o clique do usuário para tocar
-      console.log('Autoplay bloqueado, aguardando interação do usuário.');
-      waitUserInteraction();
-    });
+/* ====== HELPERS ====== */
+function $(id){return document.getElementById(id)}
+function randHex(len=6){return Math.random().toString(16).slice(2,2+len).toUpperCase()}
+
+/* ====== Scratch card setup ====== */
+const canvas = $('scratchCanvas')
+const ctx = canvas.getContext('2d')
+const w = canvas.width, h = canvas.height
+
+function drawPrize(){
+  ctx.clearRect(0,0,w,h)
+  ctx.fillStyle = "#0f9d58";
+  ctx.fillRect(0,0,w,h)
+  ctx.fillStyle = "#fff";
+  ctx.font = "700 48px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText("R$10", w/2, h/2 - 10);
+  ctx.font = "400 16px Arial";
+  ctx.fillText("Crédito imediato", w/2, h/2 + 25);
+}
+drawPrize()
+
+const coverCanvas = document.createElement('canvas')
+coverCanvas.width = w; coverCanvas.height = h
+const cc = coverCanvas.getContext('2d')
+
+function resetCover(){
+  cc.clearRect(0,0,w,h)
+  cc.fillStyle = "#444"
+  cc.fillRect(0,0,w,h)
+  cc.font = "bold 48px Arial";
+  cc.fillStyle = "rgba(255,255,255,0.3)";
+  cc.textAlign = "center";
+  cc.textBaseline = "middle";
+  cc.fillText("RASPE AQUI", w/2, h/2);
+  cc.globalCompositeOperation = 'destination-out';
+}
+resetCover()
+
+function render(){
+  drawPrize()
+  ctx.drawImage(coverCanvas,0,0)
+}
+render()
+
+let scratching = false
+function startScratch(e){ e.preventDefault(); scratching = true; eraseAt(e) }
+function endScratch(e){ scratching = false; checkReveal() }
+function moveScratch(e){ if(!scratching) return; eraseAt(e) }
+
+function getPos(e){
+  const rect = canvas.getBoundingClientRect()
+  let clientX = e.touches ? e.touches[0].clientX : e.clientX
+  let clientY = e.touches ? e.touches[0].clientY : e.clientY
+  return {x: (clientX - rect.left)*(canvas.width/rect.width), y: (clientY - rect.top)*(canvas.height/rect.height)}
+}
+function eraseAt(e){
+  const p = getPos(e)
+  cc.beginPath()
+  cc.arc(p.x,p.y,18,0,Math.PI*2)
+  cc.fillStyle = "rgba(0,0,0,1)"
+  cc.fill()
+  render()
+}
+
+canvas.addEventListener('mousedown', startScratch)
+canvas.addEventListener('touchstart', startScratch)
+window.addEventListener('mouseup', endScratch)
+window.addEventListener('touchend', endScratch)
+canvas.addEventListener('mousemove', moveScratch)
+canvas.addEventListener('touchmove', moveScratch)
+
+/* ====== Botão reset ====== */
+$('resetScratch').addEventListener('click', ()=>{
+  resetCover()
+  render()
+  $('claimBtn').disabled = true
+  $('voucherBox').style.display='none'
+  setProgress(0)
+})
+
+/* ====== % raspado ====== */
+function getRevealPercent(){
+  const data = cc.getImageData(0,0,w,h).data
+  let cleared = 0
+  for(let i=3; i<data.length; i+=4){ if(data[i] === 0) cleared++ }
+  return Math.round((cleared/(w*h))*100)
+}
+function setProgress(val){ $('progressBar').style.width = val + '%' }
+setProgress(0)
+
+/* ====== Confete ====== */
+const confettiCanvas = document.createElement('canvas')
+confettiCanvas.style.position = 'fixed'
+confettiCanvas.style.pointerEvents = 'none'
+confettiCanvas.style.top = 0
+confettiCanvas.style.left = 0
+confettiCanvas.width = window.innerWidth
+confettiCanvas.height = window.innerHeight
+document.body.appendChild(confettiCanvas)
+const ccfx = confettiCanvas.getContext('2d')
+const confs = []
+
+function playConfetti(){
+  for(let i=0;i<80;i++){
+    confs.push({
+      x: Math.random()*window.innerWidth,
+      y: Math.random()*window.innerHeight - window.innerHeight/2,
+      r: (Math.random()*6)+4,
+      vx: (Math.random()-0.5)*4,
+      vy: Math.random()*3+2,
+      color: `hsl(${Math.floor(Math.random()*50)+10},80%,60%)`,
+      rot: Math.random()*360
+    })
   }
+  requestAnimationFrame(confettiTick)
+}
 
-  popupClose.addEventListener('click', () => {
-    popupOverlay.classList.remove('active');
-    popupAudio.pause();
-    popupAudio.currentTime = 0;
-  });
+let confTimer = 0
+function confettiTick(){
+  confTimer++
+  ccfx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height)
+  confs.forEach((c,i)=>{
+    c.x += c.vx; c.y += c.vy; c.vy += 0.05; c.rot += 6
+    ccfx.save()
+    ccfx.translate(c.x,c.y)
+    ccfx.rotate(c.rot*Math.PI/180)
+    ccfx.fillStyle = c.color
+    ccfx.fillRect(-c.r/2, -c.r/2, c.r, c.r*0.6)
+    ccfx.restore()
+    if(c.y > window.innerHeight + 50) confs.splice(i,1)
+  })
+  if(confs.length>0 && confTimer<300) requestAnimationFrame(confettiTick)
+  else ccfx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height)
+}
 
-  // Tenta abrir o popup após 2 segundos da carga da página
-  window.addEventListener('load', () => {
-    setTimeout(abrirPopup, 2000);
-  });
+/* ====== Som moeda ====== */
+function playCoinSound(){
+  const audio = $('coinSound')
+  audio.currentTime = 0
+  audio.play()
+}
 
-  // Função que aguarda o clique do usuário para tocar o áudio
-  function waitUserInteraction() {
-    function onUserInteraction() {
-      popupAudio.play().catch(() => {});
-      document.body.removeEventListener('click', onUserInteraction);
-      document.body.removeEventListener('touchstart', onUserInteraction);
-    }
-    document.body.addEventListener('click', onUserInteraction);
-    document.body.addEventListener('touchstart', onUserInteraction);
+/* ====== Quando ganha ====== */
+function onWin(){
+  $('claimBtn').disabled = false
+  const code = 'RP-' + randHex(5)
+  $('prizeValue').textContent = 'R$10'
+  $('voucherBox').style.display = 'flex'
+  playConfetti()
+  playCoinSound()
+  const dadosCompra = { prize_value: 10, voucher_code: code, earned_at: new Date().toISOString() }
+  localStorage.setItem(PURCHASE_KEY, JSON.stringify(dadosCompra))
+}
+
+/* ====== Verifica raspagem ====== */
+function checkReveal(){
+  const pct = getRevealPercent()
+  setProgress(Math.min(100, pct))
+  if(pct >= 30) onWin()
+}
+
+/* ====== Claim Btn ====== */
+$('claimBtn').addEventListener('click', ()=>{
+  window.location.href = TARGET_SITE
+})
+
+/* ====== Pop-up original ====== */
+const popupOverlay = $('popup-overlay')
+const popupClose = $('popup-close')
+const popupAudio = $('popup-audio')
+
+function abrirPopup(){
+  popupOverlay.classList.add('active')
+  popupAudio.currentTime = 0
+  popupAudio.play().catch(()=>{
+    waitUserInteraction()
+  })
+}
+
+popupClose.addEventListener('click', ()=>{
+  popupOverlay.classList.remove('active')
+  popupAudio.pause()
+  popupAudio.currentTime = 0
+})
+
+window.addEventListener('load', ()=>{
+  setTimeout(abrirPopup, 2000)
+})
+
+function waitUserInteraction(){
+  function onUserInteraction(){
+    popupAudio.play().catch(()=>{})
+    document.body.removeEventListener('click', onUserInteraction)
+    document.body.removeEventListener('touchstart', onUserInteraction)
   }
+  document.body.addEventListener('click', onUserInteraction)
+  document.body.addEventListener('touchstart', onUserInteraction)
+}
 </script>
 
 
