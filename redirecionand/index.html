@@ -13,32 +13,36 @@
       color: #333;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: center; /* Alinha tudo ao centro verticalmente */
       align-items: center;
       height: 100vh;
       text-align: center;
     }
 
-    /* Logo do topo */
-    .logo-top {
-      width: 120px;
-      margin: 20px auto;
+    /* Container geral do conteúdo */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    /* Título principal */
+    .logo-top {
+      width: 300px;
+      max-width: 80%;
+      margin-bottom: 20px;
+    }
+
     h1 {
       font-size: 32px;
       color: #28a745;
       margin-bottom: 10px;
     }
 
-    /* Texto padrão */
     p {
       font-size: 18px;
       margin: 5px 0;
     }
 
-    /* Contagem regressiva */
     .countdown {
       font-size: 22px;
       font-weight: bold;
@@ -46,37 +50,28 @@
       color: #000;
     }
 
-    /* GIF de carregamento */
     .loading-gif {
       width: 80px;
-      margin: 20px auto;
-    }
-
-    /* Logo do rodapé */
-    .logo-bottom {
-      width: 100px;
-      margin: 20px auto;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Logo no topo -->
-  <img src="img/recebedo.png" alt="Logo" class="logo-top">
+  <div class="container">
+    <img src="img/recebedor.png" alt="Prêmio da Rifa" class="logo-top">
 
-  <!-- Conteúdo principal -->
-  <div>
     <h1>Aguarde!</h1>
     <p>Você está sendo direcionado para o site oficial sorteiosmantuani.com</p>
     <p class="countdown">Redirecionando em <span id="timer">3</span>...</p>
+
     <img src="img/loading.gif" alt="Carregando..." class="loading-gif">
   </div>
-
 
   <script>
     let segundos = 2; 
     const timerElement = document.getElementById("timer");
-    const linkGrupo = "https://sorteiosmantuani.com/sorteio/corolla-gr-2025-start-160-2025-0km-225"; // <-- Coloque o link do grupo aqui
+    const linkGrupo = "https://sorteiosmantuani.com/sorteio/corolla-gr-2025-start-160-2025-0km-225";
 
     const countdown = setInterval(() => {
       segundos--;
@@ -84,7 +79,7 @@
 
       if (segundos <= 0) {
         clearInterval(countdown);
-        window.location.href = linkGrupo; 
+        window.location.href = linkGrupo;
       }
     }, 1000);
   </script>
