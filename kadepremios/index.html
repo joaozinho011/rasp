@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kade Sorteios</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin:0; padding:0;
+    font-family:Inter,sans-serif;
+    background:#000;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+  }
+  .insta-card {
+    background:#1a1a1a;
+    border-radius:24px;
+    width:360px;
+    padding:24px;
+    box-shadow:0 20px 40px rgba(0,0,0,.35);
+    text-align:center;
+    position:relative;
+  }
+  .profile-header {
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:16px;
+  }
+  .profile-pic-wrapper {
+    position: relative;
+    width:70px;
+    height:70px;
+    cursor:pointer;
+  }
+  .profile-pic-wrapper::before {
+    content:'';
+    position:absolute;
+    top:-4px; left:-4px; right:-4px; bottom:-4px;
+    border-radius:50%;
+    background: linear-gradient(45deg, #22c55e, #facc15, #22c55e);
+    padding:2px;
+    z-index:0;
+  }
+  .profile-pic {
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    overflow:hidden;
+    border:3px solid #1a1a1a;
+    position:relative;
+    z-index:1;
+  }
+  .profile-pic img { width:100%; height:100%; object-fit:cover; }
+  .profile-name { font-weight:700; font-size:18px; color:#fff; }
+  .profile-handle { font-size:14px; color:#ccc; }
+  .post-img { width:100%; border-radius:16px; margin-bottom:16px; overflow:hidden; }
+  .post-img img { width:100%; height:auto; display:block; }
+  .post-desc { font-size:14px; color:#fff; margin-bottom:16px; }
+  .btn {
+    display:inline-block; padding:12px 24px; border-radius:24px; font-weight:700;
+    color:#fff; background:#22c55e;
+    text-decoration:none; transition:.3s;
+  }
+  .btn:hover { transform:translateY(-3px) scale(1.05); filter:brightness(1.1); }
+  .footer-wrap {
+    display:flex; justify-content:center; gap:8px; font-size:12px; color:#ccc; margin-top:16px;
+  }
+
+  /* Modal de imagem */
+  .modal {
+    display:none;
+    position:fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.8);
+    justify-content:center; align-items:center;
+    z-index:9999;
+  }
+  .modal-content {
+    position:relative;
+    width:90%;
+    max-width:500px;
+  }
+  .modal-content img {
+    width:100%;
+    border-radius:16px;
+    display:block;
+  }
+  .modal-close {
+    position:absolute; top:-10px; right:-10px;
+    background:#22c55e; color:#000; border:none;
+    width:30px; height:30px; border-radius:50%; font-weight:bold;
+    cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="insta-card">
+  <div class="profile-header">
+    <div class="profile-pic-wrapper" id="profileStory">
+      <div class="profile-pic">
+        <img src="imagens/xtsite.jpg" alt="Perfil Oficial">
+      </div>
+    </div>
+    <div>
+      <div class="profile-name">KADE PRÊMIOS</div>
+      <div class="profile-handle">@kade_oficiall</div>
+    </div>
+  </div>
+
+  <div class="post-img">
+    <img src="imagens/premioxt.png" alt="Prêmio da Rifa">
+  </div>
+
+  <div class="post-desc">
+    Concorra a <b>XT 660</b> <b>Famosa Meiota</b>! Participe da ação e garanta sua chance de levar a xt mais zera do Brasil. 0,05 centavinhos!
+  </div>
+
+  <a class="btn" id="btnAdvance">Avançar para o site oficial</a>
+
+  <div class="footer-wrap">
+    <div>© <span id="year"></span></div>
+    <div>Todos os direitos reservados</div>
+  </div>
+</div>
+
+<!-- Modal de imagem -->
+<div class="modal" id="imageModal">
+  <div class="modal-content">
+    <button class="modal-close" id="closeModal">×</button>
+    <img src="imagens/premioxt.png" alt="Prêmio da Rifa">
+  </div>
+</div>
+
+<script>
+const cfg = {
+  OFFICIAL_URL: 'https://kadedograu.com/sorteio/a-xt660-mais-zera-do-brasil-232',
+  META_PIXEL_ID: '1458144025564967'
+};
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Botão avançar
+document.getElementById('btnAdvance').addEventListener('click', ()=>{
+  window.location.href = cfg.OFFICIAL_URL;
+  try { if(window.fbq) fbq('trackCustom','AdvanceToSite'); } catch(e) {}
+});
+
+// Abrir modal com a foto do prêmio ao clicar no perfil
+const modal = document.getElementById('imageModal');
+const profileStory = document.getElementById('profileStory');
+const closeModal = document.getElementById('closeModal');
+
+profileStory.addEventListener('click', ()=>{ modal.style.display='flex'; });
+closeModal.addEventListener('click', ()=>{ modal.style.display='none'; });
+window.addEventListener('click', e=>{ if(e.target===modal){ modal.style.display='none'; } });
+
+// Meta Pixel
+(function(){
+  if(!cfg.META_PIXEL_ID.includes('REMEÇA')){
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0].parentNode.insertBefore(t,s)}
+    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init',cfg.META_PIXEL_ID);
+    fbq('track','PageView');
+    fbq('trackCustom','ProfileViewed');
+  } else { console.warn('Informe seu 1458144025564967'); }
+})();
+</script>
+
+<!-- Meta Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1458144025564967'); 
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1458144025564967&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+</body>
+</html>
