@@ -1,0 +1,30 @@
+[
+  {
+    "id": "001",
+    "title": "Vestido Floral",
+    "price": 149.9,
+    "oldPrice": 199.9,
+    "images": ["images/vestido1.jpg", "images/vestido1-2.jpg"],
+    "colors": [{"name":"Rosa","hex":"#FFC0CB"},{"name":"Azul","hex":"#87CEEB"}],
+    "sizes": ["P","M","G"],
+    "category": "Vestidos",
+    "description": "Vestido floral verão 2025",
+    "stock": 20,
+    "tags": ["novo","promo"],
+    "promo": {"endsAt":"2025-12-31T23:59:59"}
+  },
+  {
+    "id": "002",
+    "title": "Conjunto Casual",
+    "price": 99.9,
+    "oldPrice": 129.9,
+    "images": ["images/conjunto1.jpg"],
+    "colors": [{"name":"Preto","hex":"#000000"},{"name":"Cinza","hex":"#808080"}],
+    "sizes": ["M","G"],
+    "category": "Conjuntos",
+    "description": "Conjunto casual confortável",
+    "stock": 15,
+    "tags": ["novo"],
+    "promo": null
+  }
+]

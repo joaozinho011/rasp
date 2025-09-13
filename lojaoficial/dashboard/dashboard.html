@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ====== STYLE.CSS ====== */
+  body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    background: #f5f6fa;
+    color: #333;
+  }
+  header {
+    background: #1e1e2f;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+  }
+  header h1 { font-size: 1.5rem; }
+  nav button {
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
+    background: #4e54c8;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  nav button:hover { background: #6c63ff; }
+
+  main {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 1rem;
+    padding: 1rem 2rem;
+  }
+  aside {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    height: fit-content;
+  }
+  section {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+  }
+  h2 { margin-top: 0; }
+  input, select { padding: 0.5rem; margin-bottom: 0.5rem; width: 100%; border-radius: 6px; border: 1px solid #ccc; }
+  button.add-btn { background: #28a745; color: #fff; margin-top: 0.5rem; }
+  button.edit-btn { background: #ffc107; color: #fff; margin-top: 0.5rem; }
+  button.delete-btn { background: #dc3545; color: #fff; margin-top: 0.5rem; }
+  table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+  th, td { padding: 0.5rem; border: 1px solid #ddd; text-align: left; }
+  canvas { max-width: 100%; margin-top: 1rem; }
+
+  /* Scroll */
+  aside, section { max-height: 80vh; overflow-y: auto; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Dashboard Admin</h1>
+  <nav>
+    <button onclick="showSection('products')">Produtos</button>
+    <button onclick="showSection('promotions')">Promoções</button>
+    <button onclick="showSection('coupons')">Cupons</button>
+    <button onclick="showSection('scripts')">Pixels / Scripts</button>
+    <button onclick="showSection('payments')">Pagamentos</button>
+    <button onclick="showSection('config')">Configurações</button>
+    <button onclick="showSection('analytics')">Analytics</button>
+  </nav>
+</header>
+
+<main>
+  <aside id="sidebar">
+    <h2>Resumo</h2>
+    <p>Total Produtos: <span id="totalProducts">0</span></p>
+    <p>Total Vendas Hoje: R$ <span id="salesToday">0</span></p>
+    <p>Total Cupons: <span id="totalCoupons">0</span></p>
+  </aside>
+
+  <section id="content">
+    <!-- Conteúdo dinâmico carregado pelo JS -->
+    <h2>Bem-vindo ao Dashboard!</h2>
+    <p>Use os botões acima para gerenciar produtos, promoções, cupons, scripts, pagamentos e configurações.</p>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+/* ====== SCRIPT.JS ====== */
+let currentSection = 'home';
+
+function showSection(section) {
+  currentSection = section;
+  const content = document.getElementById('content');
+  switch(section) {
+    case 'products':
+      loadProducts();
+      break;
+    case 'promotions':
+      loadPromotions();
+      break;
+    case 'coupons':
+      loadCoupons();
+      break;
+    case 'scripts':
+      loadScripts();
+      break;
+    case 'payments':
+      loadPayments();
+      break;
+    case 'config':
+      loadConfig();
+      break;
+    case 'analytics':
+      loadAnalytics();
+      break;
+    default:
+      content.innerHTML = "<h2>Bem-vindo ao Dashboard!</h2><p>Use os botões acima para gerenciar tudo.</p>";
+  }
+}
+
+/* === Products === */
+async function loadProducts() {
+  const content = document.getElementById('content');
+  let products = await fetch('products.json').then(res=>res.json());
+  document.getElementById('totalProducts').innerText = products.length;
+  let html = '<h2>Produtos</h2><table><tr><th>ID</th><th>Nome</th><th>Preço</th><th>Ações</th></tr>';
+  products.forEach(p=>{
+    html += `<tr>
+      <td>${p.id}</td>
+      <td>${p.title}</td>
+      <td>R$ ${p.price}</td>
+      <td>
+        <button class="edit-btn" onclick="editProduct(${p.id})">Editar</button>
+        <button class="delete-btn" onclick="deleteProduct(${p.id})">Excluir</button>
+      </td>
+    </tr>`;
+  });
+  html += '</table><button class="add-btn" onclick="addProduct()">Adicionar Produto</button>';
+  content.innerHTML = html;
+}
+
+function addProduct() { alert('Função adicionar produto'); }
+function editProduct(id) { alert('Função editar produto ' + id); }
+function deleteProduct(id) { alert('Função deletar produto ' + id); }
+
+/* === Promotions === */
+async function loadPromotions() { alert('Carregar promoções'); }
+/* === Coupons === */
+async function loadCoupons() { alert('Carregar cupons'); }
+/* === Scripts === */
+async function loadScripts() { alert('Carregar pixels e scripts'); }
+/* === Payments === */
+async function loadPayments() { alert('Carregar configuração de pagamentos'); }
+/* === Config === */
+async function loadConfig() { alert('Carregar configurações gerais'); }
+/* === Analytics === */
+async function loadAnalytics() {
+  const content = document.getElementById('content');
+  let html = '<h2>Analytics de Vendas</h2><canvas id="salesChart"></canvas>';
+  content.innerHTML = html;
+
+  const ctx = document.getElementById('salesChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['01', '02', '03', '04', '05', '06','07'],
+      datasets: [{
+        label: 'Vendas do Mês (R$)',
+        data: [1200, 1900, 3000, 2500, 3200, 2800, 3500],
+        borderColor: '#4e54c8',
+        fill: false,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: true } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+}
+</script>
+
+</body>
+</html>
