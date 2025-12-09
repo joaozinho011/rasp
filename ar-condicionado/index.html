@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refrigeração Varginha</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Roboto para leitura fácil -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            padding-bottom: 80px; /* Espaço para barra mobile */
+        }
+        
+        @media (min-width: 768px) {
+            body { padding-bottom: 0; }
+        }
+
+        .hero-bg {
+            background-image: linear-gradient(to right, rgba(0, 30, 60, 0.95) 0%, rgba(0, 30, 60, 0.75) 50%, rgba(0, 30, 60, 0.3) 100%), 
+            url('img/varginha.jpg');
+            
+            background-size: cover;
+            background-position: center top;
+            background-attachment: scroll;
+        }
+        
+        @media (min-width: 768px) {
+            .hero-bg {
+                background-attachment: fixed;
+            }
+        }
+
+        .pulse-btn {
+            animation: pulse-shadow 2s infinite;
+        }
+
+        @keyframes pulse-shadow {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        .service-card:hover .card-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+    </style>
+
+    <!-- Google tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17764321306"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-17764321306');
+    </script>
+
+    <!-- Snippet de conversão -->
+    <script>
+    function gtag_report_conversion(url) {
+      var callback = function () {
+        if (typeof(url) != 'undefined') {
+          window.location = url;
+        }
+      };
+      gtag('event', 'conversion', {
+          'send_to': 'AW-17764321306/jnuMCNPH-MobEJqQ2JZC',
+          'event_callback': callback
+      });
+      return false;
+    }
+    </script>
+
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Faixa de Confiança -->
+    <div class="bg-blue-900 text-white py-2 text-center text-xs font-bold uppercase tracking-wider px-2">
+        <i class="fa-solid fa-shield-halved text-green-400 mr-1"></i> Garantia nos serviços • Atendemos Varginha-MG
+    </div>
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg sticky top-0 z-40 h-20 flex items-center">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-700 rounded-lg flex items-center justify-center text-white shadow-blue-500/50 shadow-md">
+                    <i class="fa-solid fa-snowflake text-xl"></i>
+                </div>
+                <div class="leading-tight">
+                    <h1 class="text-xl font-black text-slate-800 tracking-tight">MUNDIAL<span class="text-blue-600">REFRIGERAÇÃO</span></h1>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase">Assistência Técnica</p>
+                </div>
+            </div>
+
+            <div class="hidden md:flex items-center gap-6">
+                <div class="text-right">
+                    <p class="text-xs text-slate-500 font-semibold uppercase">Plantão Técnico</p>
+                    <a href="tel:5535984135674" onclick="gtag_report_conversion('tel:5535984135674')" class="text-lg font-bold text-blue-900 hover:text-blue-600">(35) 98413-5674</a>
+                </div>
+
+                <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Orçamento..." 
+                   onclick="gtag_report_conversion(this.href)" 
+                   class="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-2.5 px-6 rounded-full shadow-lg transition flex items-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-xl"></i>
+                    Agendar Visita
+                </a>
+            </div>
+
+            <!-- Mobile -->
+            <a href="tel:5535984135674" 
+               onclick="gtag_report_conversion('tel:5535984135674')" 
+               class="md:hidden w-10 h-10 border border-slate-200 rounded-full flex items-center justify-center text-blue-700 bg-slate-50 active:bg-blue-100">
+               <i class="fa-solid fa-phone"></i>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero-bg text-white relative py-20 lg:py-32 flex items-center min-h-[500px]">
+        <div class="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+            
+            <div>
+                <div class="inline-flex items-center gap-2 bg-blue-600/80 px-3 py-1 rounded-full text-xs font-bold mb-6">
+                    <i class="fa-solid fa-location-dot"></i> Orçamento sem Compromisso em VARGINHA
+                </div>
+
+                <h2 class="text-4xl md:text-6xl font-black mb-6 leading-tight">
+                    Instalação e Manutenção de Ar Condicionado?<br>
+                    <span class="text-blue-300">Fale conosco.</span>
+                </h2>
+                
+                <p class="text-lg text-slate-200 mb-8 max-w-lg font-medium">
+                    Técnicos especialistas em <strong>Instalação e Manutenção de Ar Condicionado</strong>. Atendimento imediato em Varginha.
+                </p>
+
+                <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Orçamento..." 
+                   onclick="gtag_report_conversion(this.href)"
+                   class="bg-[#25D366] hover:bg-[#20ba5a] text-white text-lg font-bold py-4 px-8 rounded-lg shadow-xl pulse-btn flex items-center gap-3">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i>
+                    CHAMAR TÉCNICO
+                </a>
+            </div>
+
+            <div class="hidden md:block">
+                <div class="bg-white/95 p-8 rounded-2xl shadow-2xl max-w-sm ml-auto border-t-8 border-blue-600">
+                    <h3 class="font-bold text-xl mb-2">Por que confiar?</h3>
+                    <ul class="space-y-4 mt-4 text-slate-700">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-600"></i> Mais de 20 anos em Varginha</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-600"></i> Peças originais com garantia</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-600"></i> Preço justo e transparente</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-slate-50 to-transparent"></div>
+    </header>
+
+    <!-- Marcas -->
+    <section class="py-8 border-b border-slate-200 bg-white">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">Trabalhamos com:</p>
+            <div class="flex flex-wrap justify-center gap-8 md:gap-16 grayscale opacity-60">
+                <span class="text-xl md:text-2xl font-black text-slate-700">LG</span>
+                <span class="text-xl md:text-2xl font-black text-slate-700">PHILCO</span>
+                <span class="text-xl md:text-2xl font-black text-slate-700">SAMSUNG</span>
+                <span class="text-xl md:text-2xl font-black text-slate-700">ELECTROLUX</span>
+                <span class="text-xl md:text-2xl font-black text-slate-700">CONSUL</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Serviços -->
+    <section class="py-16 md:py-24 px-4 container mx-auto" id="servicos">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-black text-slate-800 mb-4">Nossos Serviços</h2>
+            <p class="text-slate-600 max-w-2xl mx-auto">Manutenção completa para sua casa ou comércio.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+
+            <!-- Card 1 -->
+            <div class="service-card bg-white rounded-xl shadow-lg border p-8 hover:shadow-xl transition">
+                <div class="card-icon w-14 h-14 bg-blue-600 text-white rounded-lg flex items-center justify-center text-2xl mb-6 shadow-md">
+                    <i class="fa-solid fa-temperature-arrow-down"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-3">Geladeiras</h3>
+                <p class="text-slate-500 text-sm mb-6">Não gela? Barulho estranho? Borracha solta? Resolvemos tudo.</p>
+
+                <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Orçamento..." 
+                   onclick="gtag_report_conversion(this.href)"
+                   class="text-blue-600 font-bold text-sm uppercase tracking-wide">Pedir Orçamento</a>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="service-card bg-white rounded-xl shadow-lg border p-8 hover:shadow-xl transition">
+                <div class="card-icon w-14 h-14 bg-blue-600 text-white rounded-lg flex items-center justify-center text-2xl mb-6 shadow-md">
+                    <i class="fa-solid fa-shirt"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-3">Máquinas de Lavar</h3>
+                <p class="text-slate-500 text-sm mb-6">Não centrifuga, vazamento ou painel queimado. Conserto rápido.</p>
+
+                <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Orçamento..." 
+                   onclick="gtag_report_conversion(this.href)"
+                   class="text-blue-600 font-bold text-sm uppercase tracking-wide">Pedir Orçamento</a>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="service-card bg-white rounded-xl shadow-lg border p-8 hover:shadow-xl transition">
+                <div class="card-icon w-14 h-14 bg-blue-600 text-white rounded-lg flex items-center justify-center text-2xl mb-6 shadow-md">
+                    <i class="fa-solid fa-snowflake"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-3">Ar Condicionado</h3>
+                <p class="text-slate-500 text-sm mb-6">Manutenção e Instalação de Ar Condicionado.</p>
+
+                <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Orçamento..." 
+                   onclick="gtag_report_conversion(this.href)"
+                   class="text-blue-600 font-bold text-sm uppercase tracking-wide">Pedir Orçamento</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Localização -->
+    <section class="bg-slate-900 py-16 text-white">
+        <div class="container mx-auto px-4">
+
+            <div class="flex flex-col md:flex-row gap-12">
+
+                <div class="md:w-1/3">
+                    <div class="inline-block bg-blue-600 text-xs font-bold px-2 py-1 rounded mb-4">LOCALIZAÇÃO</div>
+                    <h2 class="text-3xl font-bold mb-6">Atendemos Varginha de ponta a ponta</h2>
+                    <p class="text-slate-400 mb-6">Atendimento rápido nos principais bairros da cidade.</p>
+
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-map-location-dot text-blue-400"></i>Sion, Centro, Bom Pastor</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-map-location-dot text-blue-400"></i>Santa Maria, Santana, Vila Paiva</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-phone text-green-400"></i>
+                            <span class="font-bold text-lg">(35) 98413-5674</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="md:w-2/3 h-[300px] bg-slate-800 rounded-xl overflow-hidden border border-slate-700 relative">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59370.45703730791!2d-45.52240485136717!3d-21.56039739999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ca935fe480be91%3A0x72e76f1f58c4a4f8!2sMundial%20Refrigeração!5e0!3m2!1spt-BR!2sbr!4v1764729870998!5m2!1spt-BR!2sbr"
+                            width="600" height="450" style="border:0;" allowfullscreen loading="lazy"></iframe>
+
+                    <div class="absolute bottom-4 left-4 bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-lg">
+                        Base Operacional Varginha
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-10 text-center">
+        <div class="container mx-auto px-4">
+            <h3 class="font-black text-slate-800 text-lg mb-2">MUNDIAL<span class="text-blue-600">REFRIGERAÇÃO</span></h3>
+            <p class="text-slate-500 text-sm mb-6">Qualidade e confiança há mais de 20 anos.</p>
+            <p class="text-xs text-slate-400">&copy; 2025 Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Barra fixa mobile -->
+    <div class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 shadow-lg flex h-[70px] z-50">
+
+        <a href="tel:5535984135674"
+           onclick="gtag_report_conversion('tel:5535984135674')"
+           class="flex-1 flex flex-col items-center justify-center border-r border-slate-100 active:bg-slate-50 transition text-slate-700">
+            <i class="fa-solid fa-phone text-xl mb-1"></i>
+            <span class="text-[10px] font-bold uppercase">Ligar Agora</span>
+        </a>
+
+        <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Orçamento..."
+           onclick="gtag_report_conversion(this.href)"
+           class="flex-1 flex flex-col items-center justify-center bg-[#25D366] text-white active:bg-[#1eab52] transition">
+            <i class="fa-brands fa-whatsapp text-2xl mb-1"></i>
+            <span class="text-[10px] font-bold uppercase">WhatsApp</span>
+        </a>
+
+    </div>
+
+    <!-- Botão flutuante desktop -->
+    <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Orçamento..."
+       onclick="gtag_report_conversion(this.href)"
+       class="hidden md:flex fixed bottom-8 right-8 w-16 h-16 bg-[#25D366] text-white rounded-full items-center justify-center shadow-xl hover:scale-110 hover:bg-[#1eab52] transition z-50 pulse-btn">
+        <i class="fa-brands fa-whatsapp text-3xl"></i>
+    </a>
+
+</body>
+</html>
