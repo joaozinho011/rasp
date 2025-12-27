@@ -37,7 +37,7 @@
         </header>
 
         <!-- Stats Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div id="statsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl">
                 <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-6 flex items-center gap-2">
                     <i class="fa-solid fa-eye text-slate-300"></i> Total Visitas
@@ -56,6 +56,12 @@
                 </p>
                 <h3 id="totalLigar" class="text-5xl font-black tracking-tighter italic text-blue-600">0</h3>
             </div>
+        </div>
+
+        <!-- Alerta de Sem Dados -->
+        <div id="noDataAlert" class="hidden bg-amber-50 border border-amber-200 p-6 rounded-3xl mb-8 text-center">
+            <p class="text-amber-700 font-bold text-sm uppercase tracking-widest">Aguardando dados da Landing Page...</p>
+            <p class="text-amber-600 text-xs mt-1">Certifique-se de que a Landing Page foi acedida e botões foram clicados.</p>
         </div>
 
         <!-- Tabela -->
@@ -84,13 +90,16 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, query } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
+        // CONFIGURAÇÃO CRÍTICA PARA GITHUB
         const firebaseConfig = JSON.parse(window.__firebase_config || '{}');
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        
+        // Garante que o appId seja o mesmo entre as duas páginas no GitHub
         const appId = window.__app_id || 'default-app-id';
 
         let rawData = [];
@@ -101,19 +110,43 @@
         document.getElementById('dateEnd').value = now.toISOString().split('T')[0];
         document.getElementById('dateStart').value = sevenDaysAgo.toISOString().split('T')[0];
 
+        // Autenticação com prioridade para token customizado
+        async function initAuth() {
+            try {
+                if (window.__initial_auth_token) {
+                    await signInWithCustomToken(auth, window.__initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.error("Erro na autenticação:", err);
+            }
+        }
+
         onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                signInAnonymously(auth);
-            } else {
+            if (user) {
                 listenToData();
+            } else {
+                initAuth();
             }
         });
 
         function listenToData() {
+            // CAMINHO OBRIGATÓRIO: /artifacts/{appId}/public/data/{collectionName}
             const metricsRef = collection(db, 'artifacts', appId, 'public', 'data', 'metrics');
+            
             onSnapshot(metricsRef, (snapshot) => {
+                if (snapshot.empty) {
+                    document.getElementById('noDataAlert').classList.remove('hidden');
+                } else {
+                    document.getElementById('noDataAlert').classList.add('hidden');
+                }
+                
                 rawData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 render();
+            }, (error) => {
+                console.error("Erro ao ler dados do Firestore:", error);
+                // Se der erro de permissão no GitHub, o erro aparecerá no console do navegador (F12)
             });
         }
 
@@ -121,6 +154,7 @@
             const start = document.getElementById('dateStart').value;
             const end = document.getElementById('dateEnd').value;
 
+            // Filtragem e ordenação em memória
             const filtered = rawData
                 .filter(item => item.id >= start && item.id <= end)
                 .sort((a, b) => b.id.localeCompare(a.id));
