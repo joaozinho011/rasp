@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProFind - Refrigeração Varginha</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .loader { border-top-color: #2563eb; animation: spinner 0.6s linear infinite; }
+        @keyframes spinner { to { transform: rotate(3600deg); } }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] text-slate-900 overflow-x-hidden">
+
+    <!-- Navbar -->
+    <nav class="bg-white border-b sticky top-0 z-50 px-4 md:px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="bg-blue-600 p-1.5 rounded-lg text-white">
+                    <i class="fa-solid fa-snowflake"></i>
+                </div>
+                <h1 class="text-xl md:text-2xl font-black tracking-tighter uppercase italic">PRO<span class="text-blue-600">FIND</span></h1>
+            </div>
+            <div class="flex items-center gap-1 text-slate-500 font-bold text-xs md:text-sm">
+                <i class="fa-solid fa-location-dot text-red-500"></i> Varginha, MG
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="bg-white pt-10 md:pt-16 pb-20 md:pb-24 px-4 md:px-6 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-6xl font-black mb-6 tracking-tighter leading-tight uppercase italic">
+                Encontre o melhor em <br class="hidden md:block"> <span class="text-blue-600">Varginha</span>
+            </h2>
+            <p class="text-slate-500 text-sm md:text-lg font-medium mb-8 md:mb-12 px-4">
+                Especialistas qualificados para o seu serviço de refrigeração.
+            </p>
+            
+            <div class="bg-white p-2 rounded-2xl md:rounded-full shadow-xl md:shadow-2xl border border-slate-100 flex flex-col md:flex-row gap-2 max-w-3xl mx-auto">
+                <div class="flex-1 flex items-center px-4 md:px-6 gap-3 py-3">
+                    <i class="fa-solid fa-magnifying-glass text-blue-400"></i>
+                    <input id="searchInput" type="text" placeholder="Ex: Digite o que você procura..." 
+                        class="w-full outline-none font-medium text-slate-700 placeholder:text-slate-300 text-sm md:text-base">
+                </div>
+                <button onclick="handleSearch()" class="bg-blue-600 text-white w-full md:w-auto px-10 py-4 rounded-xl md:rounded-full font-black uppercase tracking-widest text-xs transition-all hover:bg-blue-700 active:scale-95 shadow-lg shadow-blue-100 flex items-center justify-center gap-2">
+                    <span id="btnText">Buscar</span>
+                    <div id="btnLoader" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Resultados -->
+    <section class="max-w-4xl mx-auto px-4 md:px-6 -mt-10 md:-mt-16 pb-20">
+        <div id="loadingState" class="hidden flex flex-col items-center justify-center py-20 animate-pulse">
+            <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+            <p class="text-slate-400 font-bold uppercase text-[10px] tracking-widest text-center">Buscando profissionais...</p>
+        </div>
+
+        <div id="resultCard" class="bg-white rounded-[2rem] md:rounded-[2.5rem] border border-slate-100 shadow-2xl overflow-hidden flex flex-col md:flex-row transition-opacity duration-500">
+            <div class="md:w-2/5 relative h-60 md:h-auto shrink-0">
+                <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover" alt="Técnico">
+                <div class="absolute top-4 left-4 bg-white/95 backdrop-blur px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm border border-slate-100">
+                    <i class="fa-solid fa-shield-halved text-blue-600"></i>
+                    <span class="text-[10px] font-black uppercase tracking-tighter">Verificado</span>
+                </div>
+            </div>
+            
+            <div class="md:w-3/5 p-6 md:p-8 flex flex-col justify-between">
+                <div>
+                    <div class="flex flex-col md:flex-row justify-between items-start mb-4 gap-2">
+                        <div>
+                            <p class="text-[9px] md:text-[10px] font-black text-blue-600 uppercase tracking-widest mb-1">Especialista em Refrigeração</p>
+                            <h3 class="text-xl md:text-2xl font-black tracking-tight">Central da Refrigeração Varginha</h3>
+                        </div>
+                        <div class="flex flex-row md:flex-col items-center md:items-end gap-2 md:gap-0">
+                            <div class="flex items-center gap-1">
+                                <span class="font-bold text-sm">5.0</span>
+                                <div class="flex text-yellow-400">
+                                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                                </div>
+                            </div>
+                            <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Varginha</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-500 text-sm md:text-base font-medium leading-relaxed mb-6 md:mb-8">
+                        Especialista em instalação, manutenção e limpeza de ar-condicionado e geladeiras em Varginha.
+                    </p>
+                </div>
+
+                <div class="flex flex-col gap-3">
+                    <button onclick="trackAction('whats')" class="w-full bg-green-600 text-white py-4 px-4 rounded-xl md:rounded-2xl font-black text-[11px] md:text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-green-700 transition active:scale-95 shadow-md shadow-green-50">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> Orçamento WhatsApp
+                    </button>
+                    <button onclick="trackAction('ligar')" class="w-full bg-slate-900 text-white py-4 px-4 rounded-xl md:rounded-2xl font-black text-[11px] md:text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-black transition active:scale-95 shadow-md shadow-slate-100">
+                        <i class="fa-solid fa-phone"></i> Ligar Agora
+                    </button>
+                </div>
+                <p class="text-center text-[9px] font-bold text-slate-300 uppercase tracking-[0.2em] mt-5 italic px-4">
+                    Encontramos os melhores profissionais para você
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-10 px-6 text-center border-t bg-white">
+        <p class="text-slate-400 font-bold text-[9px] md:text-[10px] uppercase tracking-[0.3em]">© 2025 ProFind Varginha</p>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+        // Configuração injetada
+        const firebaseConfig = JSON.parse(window.__firebase_config || '{}');
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = window.__app_id || 'default-app-id';
+
+        let currentUser = null;
+
+        // Auth
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                signInAnonymously(auth);
+            } else {
+                currentUser = user;
+                registerVisit();
+            }
+        });
+
+        async function registerVisit() {
+            const dateKey = new Date().toISOString().split('T')[0];
+            const statsRef = doc(db, 'artifacts', appId, 'public', 'data', 'metrics', dateKey);
+            await setDoc(statsRef, { visits: increment(1) }, { merge: true });
+        }
+
+        window.trackAction = async (tipo) => {
+            if (!currentUser) return;
+            const dateKey = new Date().toISOString().split('T')[0];
+            const statsRef = doc(db, 'artifacts', appId, 'public', 'data', 'metrics', dateKey);
+            await updateDoc(statsRef, { [tipo]: increment(1) });
+
+            if (tipo === 'whats') {
+                window.open(`https://wa.me/5535999999999?text=Olá! Vi seu anúncio e gostaria de um orçamento.`, '_blank');
+            } else {
+                window.location.href = `tel:35999999999`;
+            }
+        };
+
+        window.handleSearch = () => {
+            const card = document.getElementById('resultCard');
+            const loader = document.getElementById('loadingState');
+            const btnText = document.getElementById('btnText');
+            const btnLoader = document.getElementById('btnLoader');
+
+            card.classList.add('opacity-0');
+            loader.classList.remove('hidden');
+            btnText.classList.add('hidden');
+            btnLoader.classList.remove('hidden');
+
+            setTimeout(() => {
+                card.classList.remove('opacity-0');
+                loader.classList.add('hidden');
+                btnText.classList.remove('hidden');
+                btnLoader.classList.add('hidden');
+            }, 800);
+        };
+    </script>
+</body>
+</html>
