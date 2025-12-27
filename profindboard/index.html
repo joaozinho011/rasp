@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard ProFind</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen p-6 md:p-12">
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+            <div>
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="bg-blue-600 p-2 rounded-xl text-white shadow-lg shadow-blue-200">
+                        <i class="fa-solid fa-chart-line text-xl"></i>
+                    </div>
+                    <h1 class="text-3xl font-black italic uppercase tracking-tighter">Métricas de Conversão</h1>
+                </div>
+                <p class="text-slate-400 font-bold text-xs uppercase tracking-widest">Controle de anúncios - Varginha</p>
+            </div>
+
+            <div class="flex items-center gap-3 bg-white p-4 rounded-3xl border border-slate-100 shadow-sm w-full md:w-auto">
+                <i class="fa-solid fa-calendar-day text-blue-600"></i>
+                <div class="flex items-center gap-2 font-bold text-xs">
+                    <input type="date" id="dateStart" class="bg-transparent outline-none">
+                    <span class="text-slate-300">até</span>
+                    <input type="date" id="dateEnd" class="bg-transparent outline-none">
+                </div>
+            </div>
+        </header>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl">
+                <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-eye text-slate-300"></i> Total Visitas
+                </p>
+                <h3 id="totalVisits" class="text-5xl font-black tracking-tighter italic">0</h3>
+            </div>
+            <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl">
+                <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-6 flex items-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-green-400"></i> Cliques Whats
+                </p>
+                <h3 id="totalWhats" class="text-5xl font-black tracking-tighter italic text-green-600">0</h3>
+            </div>
+            <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl">
+                <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-phone text-blue-400"></i> Cliques Ligar
+                </p>
+                <h3 id="totalLigar" class="text-5xl font-black tracking-tighter italic text-blue-600">0</h3>
+            </div>
+        </div>
+
+        <!-- Tabela -->
+        <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl overflow-hidden">
+            <div class="p-8 border-b">
+                <h4 class="font-black text-xs uppercase tracking-widest text-slate-400">Detalhamento por Dia</h4>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="bg-slate-50/50 border-b">
+                            <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Data</th>
+                            <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400 text-center">Visitas</th>
+                            <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400 text-center">Whats</th>
+                            <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400 text-center">Ligações</th>
+                            <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Taxa Conv.</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Linhas injetadas via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+        const firebaseConfig = JSON.parse(window.__firebase_config || '{}');
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = window.__app_id || 'default-app-id';
+
+        let rawData = [];
+        
+        // Datas iniciais (últimos 7 dias)
+        const now = new Date();
+        const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+        document.getElementById('dateEnd').value = now.toISOString().split('T')[0];
+        document.getElementById('dateStart').value = sevenDaysAgo.toISOString().split('T')[0];
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                signInAnonymously(auth);
+            } else {
+                listenToData();
+            }
+        });
+
+        function listenToData() {
+            const metricsRef = collection(db, 'artifacts', appId, 'public', 'data', 'metrics');
+            onSnapshot(metricsRef, (snapshot) => {
+                rawData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                render();
+            });
+        }
+
+        function render() {
+            const start = document.getElementById('dateStart').value;
+            const end = document.getElementById('dateEnd').value;
+
+            const filtered = rawData
+                .filter(item => item.id >= start && item.id <= end)
+                .sort((a, b) => b.id.localeCompare(a.id));
+
+            let tVisits = 0, tWhats = 0, tLigar = 0;
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
+            filtered.forEach(day => {
+                const visits = day.visits || 0;
+                const whats = day.whats || 0;
+                const ligar = day.ligar || 0;
+                tVisits += visits; tWhats += whats; tLigar += ligar;
+
+                const conv = visits ? (((whats + ligar) / visits) * 100).toFixed(1) : 0;
+                const dateBr = day.id.split('-').reverse().join('/');
+
+                tableBody.innerHTML += `
+                    <tr class="border-b hover:bg-slate-50 transition">
+                        <td class="px-8 py-5 font-bold text-sm text-slate-600">${dateBr}</td>
+                        <td class="px-8 py-5 text-center font-black">${visits}</td>
+                        <td class="px-8 py-5 text-center font-black text-green-600">${whats}</td>
+                        <td class="px-8 py-5 text-center font-black text-blue-600">${ligar}</td>
+                        <td class="px-8 py-5 text-right font-black">
+                            <span class="bg-slate-100 px-3 py-1 rounded-full text-[10px]">${conv}%</span>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('totalVisits').innerText = tVisits;
+            document.getElementById('totalWhats').innerText = tWhats;
+            document.getElementById('totalLigar').innerText = tLigar;
+        }
+
+        document.getElementById('dateStart').addEventListener('change', render);
+        document.getElementById('dateEnd').addEventListener('change', render);
+    </script>
+</body>
+</html>
