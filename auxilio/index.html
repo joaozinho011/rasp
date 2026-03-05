@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Especialista em Benefícios do INSS | Consultoria</title>
     
-    <!-- Tailwind CSS (Framework de Estilos Moderno) -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- FontAwesome (Ícones) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
@@ -36,8 +33,7 @@
         }
     </style>
 
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17990823186"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17990823186"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -49,54 +45,59 @@
 </head>
 <body class="text-slate-800 antialiased relative">
 
-    <!-- Configuração do Link do WhatsApp (Centralizado para facilitar a alteração) -->
     <script>
         // COLOQUE SEU NÚMERO AQUI (Código do país 55 + DDD + Número)
         // Exemplo de Varginha: 5535999999999
-        const numeroWhatsApp = "5535999999999"; 
+        const numeroWhatsApp = "5535987053223"; 
         const mensagemPadrao = "Olá! Vim pelo site e gostaria de ajuda com meu benefício...";
         const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagemPadrao)}`;
 
-        // Função para aplicar o link em todos os botões
+        // Função para aplicar o link e o evento de conversão em todos os botões
         window.onload = function() {
             const botoes = document.querySelectorAll('.link-wpp');
             botoes.forEach(botao => {
                 botao.href = linkWhatsApp;
+                botao.target = "_blank"; // Garante que abra em nova aba para não cortar o rastreamento do Google
+                
+                // EVENTO DE CONVERSÃO DO GOOGLE ADS
+                botao.addEventListener('click', function() {
+                    gtag('event', 'conversion', {
+                        'send_to': 'AW-17990823186/-CjJCIaa_oIcEJLa2IJD',
+                        'value': 1.0,
+                        'currency': 'BRL'
+                    });
+                });
             });
         };
     </script>
 
-    <!-- TOPO DE AVISO -->
     <div class="bg-blue-600 text-white text-center py-2 text-sm font-semibold px-4">
         <i class="fa-solid fa-location-dot mr-2"></i> Atendimento especializado em Varginha e Região
     </div>
 
-    <!-- SEÇÃO HERO (Principal - Foco Total) -->
     <section class="hero-bg text-white pt-12 pb-16 px-4">
         <div class="max-w-4xl mx-auto text-center">
             
-            <!-- Etiqueta de Confiança -->
             <div class="inline-block bg-blue-800/50 border border-blue-400/30 text-blue-100 rounded-full px-4 py-1 text-sm font-semibold mb-6">
                 <i class="fa-solid fa-shield-halved mr-1"></i> Consultoria Administrativa Previdenciária
             </div>
 
-            <!-- Título Forte Focado na Dor -->
             <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-6">
                 Auxílio <span class="text-yellow-400">Acidente?</span><br> 
-                Não desista dos seus Direitos!
+                
+            </h1>
+            <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-6">
+                Auxílio <span class="text-yellow-400">Maternidade?</span><br> 
+            
             </h1>
             
             <p class="text-lg md:text-xl text-blue-100 mb-8 max-w-2xl mx-auto font-light">
                 Agilizamos seu <strong>Auxílio Acidente</strong>, <strong>Auxílio Maternidade</strong> e outros benefícios retidos ou negados. Análise rápida e sem burocracia.
             </p>
 
-            <!-- FOTO CENTRAL DE VARGINHA -->
             <div class="relative max-w-2xl mx-auto mb-10 group">
-                <!-- Efeito de brilho atrás da imagem -->
                 <div class="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
                 
-                <!-- Imagem -->
-                <!-- O atributo onerror garante que se a foto não for encontrada, uma imagem temporária apareça para você ver o design -->
                 <img 
                     src="imagens/varginha.png" 
                     alt="Cidade de Varginha" 
@@ -108,7 +109,6 @@
                 </div>
             </div>
 
-            <!-- BOTÃO DE CHAMADA (CTA) PRINCIPAL -->
             <a href="#" class="link-wpp inline-flex items-center justify-center bg-[#25D366] hover:bg-[#20bd5a] text-white text-lg md:text-xl font-bold py-4 px-8 rounded-full shadow-lg transform transition hover:scale-105 w-full md:w-auto">
                 <i class="fa-brands fa-whatsapp text-2xl mr-3"></i>
                 Falar com um Especialista Agora
@@ -117,7 +117,6 @@
         </div>
     </section>
 
-    <!-- SEÇÃO DE SERVIÇOS -->
     <section class="py-16 px-4 bg-white">
         <div class="max-w-5xl mx-auto">
             <div class="text-center mb-12">
@@ -126,7 +125,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Serviço 1 -->
                 <div class="bg-slate-50 border border-slate-100 p-8 rounded-2xl shadow-sm hover:shadow-md transition">
                     <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl mb-6">
                         <i class="fa-solid fa-crutch"></i>
@@ -138,7 +136,6 @@
                     </a>
                 </div>
 
-                <!-- Serviço 2 -->
                 <div class="bg-slate-50 border border-slate-100 p-8 rounded-2xl shadow-sm hover:shadow-md transition">
                     <div class="w-14 h-14 bg-pink-100 text-pink-600 rounded-xl flex items-center justify-center text-2xl mb-6">
                         <i class="fa-solid fa-person-breastfeeding"></i>
@@ -150,7 +147,6 @@
                     </a>
                 </div>
 
-                <!-- Serviço 3 -->
                 <div class="bg-slate-50 border border-slate-100 p-8 rounded-2xl shadow-sm hover:shadow-md transition">
                     <div class="w-14 h-14 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-2xl mb-6">
                         <i class="fa-solid fa-file-signature"></i>
@@ -165,7 +161,6 @@
         </div>
     </section>
 
-    <!-- SEÇÃO COMO FUNCIONA (Quebra de objeções) -->
     <section class="py-16 px-4 bg-slate-100">
         <div class="max-w-4xl mx-auto">
             <div class="bg-white rounded-3xl p-8 md:p-12 shadow-xl flex flex-col md:flex-row items-center gap-8">
@@ -195,19 +190,17 @@
         </div>
     </section>
 
-    <!-- RODAPÉ -->
     <footer class="bg-slate-900 text-slate-400 py-10 px-4 text-center">
         <div class="max-w-4xl mx-auto">
             <h4 class="text-white text-lg font-bold mb-4">Consultoria Previdenciária Administrativa</h4>
             <p class="mb-4 text-sm"></p>
             <p class="text-sm">Varginha - MG | Atendimento online para todo o Brasil.</p>
             <div class="mt-8 pt-8 border-t border-slate-800 text-xs">
-                &copy; 2024 Todos os direitos reservados. | Desenvolvido para focar no seu direito.
+                &copy; 2026 Todos os direitos reservados. | Desenvolvido para focar no seu direito.
             </div>
         </div>
     </footer>
 
-    <!-- BOTÃO FLUTUANTE DO WHATSAPP (MUITO IMPORTANTE PARA GOOGLE ADS) -->
     <a href="#" class="link-wpp fixed bottom-6 right-6 z-50 bg-[#25D366] text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-2xl btn-whatsapp-float hover:scale-110 transition-transform" aria-label="Falar no WhatsApp">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
