@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Mapa da Prática - Direito sem OAB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --law-blue: #0a192f;
+            --law-gold: #c5a059;
+            --law-gold-light: #e2c275;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--law-blue);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        h1, h2, .law-font {
+            font-family: 'Cinzel', serif;
+        }
+
+        .step-content {
+            display: none;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, var(--law-gold) 0%, var(--law-gold-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-justice {
+            background: linear-gradient(135deg, var(--law-gold) 0%, #a67c37 100%);
+            color: white;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.2);
+        }
+
+        .btn-justice:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(197, 160, 89, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .law-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            backdrop-filter: blur(10px);
+            transition: border 0.3s ease;
+        }
+
+        .law-card:hover {
+            border-color: var(--law-gold);
+        }
+
+        .progress-bar {
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--law-gold);
+            width: 0%;
+            transition: width 0.6s ease;
+        }
+
+        .bg-columns {
+            background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+            opacity: 0.05;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative">
+    <div class="absolute inset-0 bg-columns pointer-events-none"></div>
+
+    <!-- Navigation Authority -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-6 bg-[#0a192f]/80 backdrop-blur-md">
+        <div class="max-w-5xl mx-auto flex flex-col gap-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-balance-scale text-amber-500 text-2xl"></i>
+                    <span class="law-font font-bold tracking-widest text-lg text-white">Juris Prática</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span id="step-label" class="text-[10px] uppercase tracking-[3px] text-amber-500/60 font-bold">Protocolo de Acesso 01/12</span>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center px-6 pt-32 pb-20">
+        <div class="max-w-4xl w-full">
+            
+            <!-- ETAPA 1: O HOOK (Sentença) -->
+            <section id="step-1" class="step-content active text-center">
+                <h2 class="text-amber-500 font-bold uppercase tracking-[4px] text-xs mb-6">Parecer Inicial</h2>
+                <h1 class="text-4xl md:text-6xl font-bold mb-8 leading-tight text-white">
+                    A Faculdade de Direito <br>
+                    <span class="gold-gradient">Sonega a Prática de Você.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+                    Você foi condenado a 5 anos de teoria densa e estágios de subsistência. Está na hora de recorrer dessa sentença e tomar posse da sua carreira.
+                </p>
+                <button onclick="nextStep(2)" class="btn-justice px-12 py-5 rounded-sm font-bold text-sm">
+                    Romper o Silêncio Acadêmico <i class="fas fa-gavel ml-3"></i>
+                </button>
+            </section>
+
+            <!-- ETAPA 2: IDENTIFICAÇÃO (Fatos) -->
+            <section id="step-2" class="step-content text-center">
+                <h2 class="law-font text-2xl md:text-3xl mb-12 text-slate-200">Reconhece estes Fatos?</h2>
+                <div class="grid md:grid-cols-2 gap-8 text-left mb-12">
+                    <div class="law-card p-8 rounded-sm">
+                        <div class="w-12 h-12 border border-amber-500/30 flex items-center justify-center mb-6">
+                            <i class="fas fa-clock text-amber-500"></i>
+                        </div>
+                        <h4 class="law-font text-lg mb-4 text-white">O Limbo do Bacharel</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed font-light">Formado, mas impedido de advogar. O diploma na parede não paga os boletos no final do mês.</p>
+                    </div>
+                    <div class="law-card p-8 rounded-sm">
+                        <div class="w-12 h-12 border border-amber-500/30 flex items-center justify-center mb-6">
+                            <i class="fas fa-hand-holding-usd text-amber-500"></i>
+                        </div>
+                        <h4 class="law-font text-lg mb-4 text-white">Sub-Remuneração</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed font-light">Trabalhar como "assistente" por valores que insultam a sua inteligência e seu esforço.</p>
+                    </div>
+                </div>
+                <button onclick="nextStep(3)" class="btn-justice px-12 py-5 rounded-sm font-bold text-sm">
+                    Apresentar Contestação
+                </button>
+            </section>
+
+            <!-- ETAPA 3: A GRANDE MENTIRA (O Engano) -->
+            <section id="step-3" class="step-content text-center">
+                <div class="mb-8 flex justify-center">
+                    <div class="w-20 h-1 bg-amber-500/50"></div>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold mb-10 text-white leading-tight">
+                    O Mito da "Reserva de Mercado"
+                </h2>
+                <div class="max-w-2xl mx-auto space-y-6 text-slate-400 text-lg text-left">
+                    <p>Fizeram você acreditar que sem o <strong>número da ordem</strong>, você é invisível para o mercado jurídico.</p>
+                    <p class="border-l-2 border-amber-500 pl-6 italic">Isso é um equívoco jurídico e estratégico. Existe um território onde o seu conhecimento vale ouro, independente da carteira vermelha.</p>
+                </div>
+                <button onclick="nextStep(4)" class="btn-justice mt-12 px-12 py-5 rounded-sm font-bold text-sm">
+                    Ver a Tese Vencedora
+                </button>
+            </section>
+
+            <!-- ETAPA 4: OCEANO AZUL (A Oportunidade) -->
+            <section id="step-4" class="step-content">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="text-left">
+                        <h2 class="law-font text-3xl mb-6 text-white uppercase tracking-tighter">O Juízo Administrativo</h2>
+                        <p class="text-slate-300 mb-6 leading-relaxed">
+                            No INSS, o processo é administrativo. A lei é clara: você pode atuar como <strong>Consultor e Especialista</strong>, garantindo direitos sem pisar em um tribunal.
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4 group">
+                                <div class="w-8 h-8 rounded-full border border-amber-500/50 flex items-center justify-center text-xs group-hover:bg-amber-500 group-hover:text-black transition-all">01</div>
+                                <span class="text-sm font-semibold text-slate-200">Auxílio Maternidade</span>
+                            </div>
+                            <div class="flex items-center gap-4 group">
+                                <div class="w-8 h-8 rounded-full border border-amber-500/50 flex items-center justify-center text-xs group-hover:bg-amber-500 group-hover:text-black transition-all">02</div>
+                                <span class="text-sm font-semibold text-slate-200">Auxílio Doença / Acidente</span>
+                            </div>
+                            <div class="flex items-center gap-4 group">
+                                <div class="w-8 h-8 rounded-full border border-amber-500/50 flex items-center justify-center text-xs group-hover:bg-amber-500 group-hover:text-black transition-all">03</div>
+                                <span class="text-sm font-semibold text-slate-200">Aposentadorias Administrativas</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative group">
+                        <div class="absolute -inset-2 bg-amber-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-all"></div>
+                        <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=800" alt="Livro de Direito" class="relative grayscale hover:grayscale-0 transition-all duration-700 rounded-sm border border-white/10 shadow-2xl">
+                    </div>
+                </div>
+                <div class="text-center mt-12">
+                    <button onclick="nextStep(5)" class="btn-justice px-12 py-5 rounded-sm font-bold text-sm">
+                        Assumir Minha Primeira Causa
+                    </button>
+                </div>
+            </section>
+
+            <!-- ETAPA 5: ESTRUTURA (O Mapa) -->
+            <section id="step-5" class="step-content">
+                <div class="text-center mb-16">
+                    <h2 class="law-font text-3xl text-white mb-4">Plano de Atuação</h2>
+                    <p class="text-amber-500/60 uppercase tracking-widest text-[10px] font-bold">Da teoria à monetização em 6 etapas</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    <div class="law-card p-6 border-b-2 border-b-amber-500/50">
+                        <h5 class="law-font text-amber-500 mb-2">01. Fundamentos</h5>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light">A base sólida do direito previdenciário prático.</p>
+                    </div>
+                    <div class="law-card p-6 border-b-2 border-b-amber-500/50">
+                        <h5 class="law-font text-amber-500 mb-2">02. Os Benefícios</h5>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light">Anatomia completa de cada direito do segurado.</p>
+                    </div>
+                    <div class="law-card p-6 border-b-2 border-b-amber-500/50">
+                        <h5 class="law-font text-amber-500 mb-2">03. O Processo</h5>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light">Protocolos e manobras administrativas eficazes.</p>
+                    </div>
+                    <div class="law-card p-6 border-b-2 border-b-amber-500/50">
+                        <h5 class="law-font text-amber-500 mb-2">04. Prospecção</h5>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light">Marketing jurídico ético e captação real.</p>
+                    </div>
+                    <div class="law-card p-6 border-b-2 border-b-amber-500/50">
+                        <h5 class="law-font text-amber-500 mb-2">05. O Atendimento</h5>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light">Triagem e fechamento de contratos de consultoria.</p>
+                    </div>
+                    <div class="law-card p-6 border-b-2 border-b-amber-500/50">
+                        <h5 class="law-font text-amber-500 mb-2">06. Carreira</h5>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light">Escalabilidade e autoridade no mercado.</p>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button onclick="nextStep(6)" class="btn-justice px-12 py-5 rounded-sm font-bold text-sm">
+                        Examinar Bônus de Elite
+                    </button>
+                </div>
+            </section>
+
+            <!-- ETAPA 6: ACERVO (Bônus) -->
+            <section id="step-6" class="step-content text-center">
+                <h2 class="law-font text-4xl mb-12 text-white">Seu Arsenal Jurídico</h2>
+                <div class="grid md:grid-cols-2 gap-8 mb-12 text-left">
+                    <div class="p-8 border-l border-amber-500/30 bg-white/5">
+                        <span class="text-[10px] text-amber-500 font-bold uppercase tracking-widest block mb-4">Volume I</span>
+                        <h4 class="law-font text-lg mb-2">Biblioteca de Requerimentos</h4>
+                        <p class="text-slate-400 text-sm font-light leading-relaxed">Petições testadas e aprovadas para protocolos imediatos.</p>
+                    </div>
+                    <div class="p-8 border-l border-amber-500/30 bg-white/5">
+                        <span class="text-[10px] text-amber-500 font-bold uppercase tracking-widest block mb-4">Volume II</span>
+                        <h4 class="law-font text-lg mb-2">Guia de Triagem Profissional</h4>
+                        <p class="text-slate-400 text-sm font-light leading-relaxed">Roteiro para identificar casos ganhos em minutos.</p>
+                    </div>
+                </div>
+                <button onclick="nextStep(7)" class="btn-justice px-12 py-5 rounded-sm font-bold text-sm">
+                    Reivindicar Meu Acervo
+                </button>
+            </section>
+
+            <!-- ETAPA 7: EMBARGOS (Objeções) -->
+            <section id="step-7" class="step-content">
+                <h2 class="law-font text-3xl mb-12 text-center text-white">Análise de Admissibilidade</h2>
+                <div class="space-y-6 max-w-2xl mx-auto">
+                    <div class="law-card p-6 rounded-sm">
+                        <h4 class="font-bold text-amber-500 mb-3 flex items-center gap-3">
+                            <i class="fas fa-question-circle"></i> "Sou estudante, posso?"
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">A esfera administrativa do INSS é pública. Atuar como consultor é um direito seu e uma forma legal de construir patrimônio intelectual e financeiro.</p>
+                    </div>
+                    <div class="law-card p-6 rounded-sm">
+                        <h4 class="font-bold text-amber-500 mb-3 flex items-center gap-3">
+                            <i class="fas fa-question-circle"></i> "E se eu não passar na OAB?"
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">Sua carreira não morre com um exame. Você terá uma profissão rentável e paralela, que muitos advogados com OAB não sabem operar.</p>
+                    </div>
+                </div>
+                <div class="text-center mt-12">
+                    <button onclick="nextStep(8)" class="btn-justice px-12 py-5 rounded-sm font-bold text-sm">
+                        Deferir Minha Inscrição
+                    </button>
+                </div>
+            </section>
+
+            <!-- ETAPA 8: OFERTA (Veredito) -->
+            <section id="step-8" class="step-content text-center">
+                <div class="mb-6 flex justify-center">
+                    <i class="fas fa-certificate text-amber-500 text-5xl"></i>
+                </div>
+                <h1 class="law-font text-4xl md:text-5xl font-bold mb-12 text-white leading-tight">
+                    O Mapa da <br> Prática Previdenciária
+                </h1>
+                
+                <div class="max-w-lg mx-auto p-12 bg-[#0d1f3d] border border-amber-500/40 relative shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-amber-500"></div>
+                    
+                    <div class="mb-8">
+                        <span class="text-slate-500 line-through text-lg uppercase tracking-widest">Valor de Tabela: R$ 1.997</span>
+                        <div class="mt-4">
+                            <p class="text-[10px] text-amber-500 font-bold uppercase tracking-[4px] mb-2 italic">Investimento em sua Carreira</p>
+                            <h3 class="text-6xl font-bold law-font text-white mb-2">12x <span class="text-amber-500">R$ 97</span></h3>
+                            <p class="text-slate-400 text-sm font-light">ou R$ 997,00 em cota única</p>
+                        </div>
+                    </div>
+
+                    <a href="#" class="btn-justice w-full block py-6 text-lg font-bold mb-8">
+                        Assinar Termo de Adesão
+                    </a>
+
+                    <div class="grid grid-cols-2 gap-4 text-[10px] text-slate-500 font-bold uppercase tracking-widest">
+                        <div class="flex flex-col items-center gap-2">
+                            <i class="fas fa-shield-alt text-lg text-amber-500"></i>
+                            Garantia de 7 Dias
+                        </div>
+                        <div class="flex flex-col items-center gap-2">
+                            <i class="fas fa-user-graduate text-lg text-amber-500"></i>
+                            Acesso Vitalício
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-16 opacity-30 flex justify-center gap-10">
+                    <i class="fab fa-cc-visa text-3xl"></i>
+                    <i class="fab fa-cc-mastercard text-3xl"></i>
+                    <i class="fab fa-pix text-3xl"></i>
+                    <i class="fas fa-barcode text-3xl"></i>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Juris Footer -->
+    <footer class="py-12 px-6 border-t border-white/5 bg-[#081223]">
+        <div class="max-w-4xl mx-auto text-center space-y-4">
+            <div class="flex justify-center gap-4 text-amber-500/40 text-sm">
+                <a href="#" class="hover:text-amber-500 transition-colors">Políticas de Privacidade</a>
+                <span>|</span>
+                <a href="#" class="hover:text-amber-500 transition-colors">Termos de Uso</a>
+            </div>
+            <p class="text-slate-600 text-[10px] uppercase tracking-widest leading-relaxed">
+                Aviso Legal: Juris Prática é um programa de treinamento profissional. Resultados dependem da aplicação individual e das normas vigentes do INSS. Este site não é afiliado a entidades governamentais.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 8;
+
+        function nextStep(step) {
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            document.getElementById(`step-${step}`).classList.add('active');
+            currentStep = step;
+            
+            const fill = document.getElementById('progress-fill');
+            const label = document.getElementById('step-label');
+            
+            const percentage = (currentStep / totalSteps) * 100;
+            fill.style.width = `${percentage}%`;
+            label.innerText = `Protocolo de Acesso ${String(currentStep).padStart(2, '0')}/${totalSteps}`;
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.onload = () => {
+            const fill = document.getElementById('progress-fill');
+            fill.style.width = `${(1/totalSteps) * 100}%`;
+        };
+    </script>
+</body>
+</html>
