@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentoria: MDP Prática Previdenciária</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --law-blue: #020617;
+            --law-gold: #c5a059;
+            --law-gold-light: #e2c275;
+            --law-accent: #1e293b;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--law-blue);
+            color: #f8fafc;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, .law-font {
+            font-family: 'Cinzel', serif;
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, var(--law-gold) 0%, var(--law-gold-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-cta {
+            background: linear-gradient(135deg, var(--law-gold) 0%, #a67c37 100%);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(197, 160, 89, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .btn-cta:active {
+            transform: scale(0.95);
+        }
+
+        .vsl-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            border-radius: 4px;
+        }
+
+        .vsl-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .card-module {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(197, 160, 89, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shimmer::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(30deg);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) rotate(30deg); }
+        }
+
+        /* Melhoria para Mobile: Evitar quebras de linha estranhas em títulos */
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 1.875rem !important; /* text-3xl */
+                line-height: 1.2 !important;
+            }
+        }
+    </style>
+</head>
+<body class="selection:bg-amber-500/30">
+
+    <!-- Top Bar / Brand -->
+    <nav class="w-full py-4 px-4 md:px-8 flex justify-between items-center border-b border-white/5 bg-slate-950/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border border-amber-500/50 overflow-hidden flex-shrink-0">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200" alt="Dra. Ana Juris" class="object-cover w-full h-full">
+            </div>
+            <div>
+                <p class="text-[8px] md:text-[10px] uppercase tracking-[2px] md:tracking-[3px] text-amber-500 font-bold">Especialista</p>
+                <h4 class="law-font font-bold text-white text-sm md:text-base leading-tight">Laiana Vilela</h4>
+            </div>
+        </div>
+        <div>
+            <a href="#oferta" class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-amber-500 border border-amber-500/30 px-3 py-1.5 md:px-4 md:py-2 rounded-sm hover:bg-amber-500 hover:text-black transition-all">
+                Incrições abertas
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section / VSL Area -->
+    <header class="pt-12 md:pt-20 pb-16 md:pb-24 px-4 md:px-6 bg-gradient-to-b from-[#0a192f] to-[#020617] relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5 pointer-events-none">
+            <i class="fas fa-balance-scale absolute -top-10 -left-10 text-[15rem] md:text-[30rem]"></i>
+        </div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <span class="inline-block py-1 px-4 md:py-2 md:px-6 rounded-full border border-amber-500/30 bg-amber-500/5 text-amber-500 text-[8px] md:text-[10px] font-bold uppercase tracking-[3px] md:tracking-[4px] mb-6 md:mb-8">
+                O Veredito que a Faculdade não te deu
+            </span>
+            
+            <h1 class="hero-title text-3xl md:text-7xl font-bold mb-6 md:mb-8 leading-tight text-white px-2">
+                Construa sua <span class="gold-gradient">Carreira Jurídica</span> sem depender da OAB.
+            </h1>
+            
+            <p class="text-base md:text-2xl text-slate-400 mb-8 md:mb-12 max-w-3xl mx-auto font-light leading-relaxed">
+                Descubra o "Oceano Azul" da prática administrativa previdenciária e gere renda real antes mesmo de se formar.
+            </p>
+
+            <!-- VSL CONTAINER -->
+            <div class="max-w-4xl mx-auto mb-10 md:mb-16">
+                <div class="vsl-container">
+                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=0&rel=0&modestbranding=1" title="VSL O Mapa da Prática" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="mt-4 flex items-center justify-center gap-2 text-amber-500/80">
+                    <i class="fas fa-volume-up animate-pulse text-xs"></i>
+                    <span class="text-[9px] md:text-xs font-bold uppercase tracking-widest">Confirme se o som está ligado.</span>
+                </div>
+            </div>
+
+            <a href="#oferta" class="btn-cta shimmer w-full md:w-auto px-10 md:px-16 py-5 md:py-6 rounded-sm text-lg md:text-xl font-black text-white">
+                QUERO COMEÇAR AGORA <i class="fas fa-arrow-right ml-3 text-sm"></i>
+            </a>
+            
+            <div class="mt-8 grid grid-cols-1 sm:flex sm:justify-center gap-4 sm:gap-8 text-slate-500 text-[9px] md:text-[10px] uppercase font-bold tracking-widest">
+                <span class="flex items-center justify-center gap-2"><i class="fas fa-check text-green-500"></i> Método 100% Prático</span>
+                <span class="flex items-center justify-center gap-2"><i class="fas fa-check text-green-500"></i> Acesso Imediato</span>
+                <span class="flex items-center justify-center gap-2"><i class="fas fa-check text-green-500"></i> +500 Alunos</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Social Proof / Authority Numbers -->
+    <section class="py-10 bg-white/5 border-y border-white/5">
+        <div class="max-w-6xl mx-auto px-4 md:px-6">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 text-center">
+                <div class="p-2">
+                    <h3 class="text-2xl md:text-3xl font-bold text-white">12 Mi+</h3>
+                    <p class="text-[8px] md:text-xs text-slate-500 uppercase tracking-widest mt-1">Processos INSS/Ano</p>
+                </div>
+                <div class="p-2">
+                    <h3 class="text-2xl md:text-3xl font-bold text-white">85%</h3>
+                    <p class="text-[8px] md:text-xs text-slate-500 uppercase tracking-widest mt-1">Sem Especialistas</p>
+                </div>
+                <div class="p-2">
+                    <h3 class="text-2xl md:text-3xl font-bold text-white">R$ 5k+</h3>
+                    <p class="text-[8px] md:text-xs text-slate-500 uppercase tracking-widest mt-1">Média p/ Contrato</p>
+                </div>
+                <div class="p-2">
+                    <h3 class="text-2xl md:text-3xl font-bold text-white">Zero</h3>
+                    <p class="text-[8px] md:text-xs text-slate-500 uppercase tracking-widest mt-1">Precisa de OAB</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Problem (A Dor) -->
+    <section class="py-16 md:py-24 px-4 md:px-6 relative">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="law-font text-2xl md:text-5xl text-center mb-12 md:mb-16 leading-tight">Por que você sente que está <br> <span class="text-red-500">travado no tempo?</span></h2>
+            
+            <div class="space-y-6 md:space-y-12">
+                <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-start md:items-center bg-slate-900/50 p-6 md:p-8 border-l-4 border-red-500 rounded-r-sm">
+                    <div class="text-red-500 text-3xl md:text-4xl shrink-0"><i class="fas fa-university"></i></div>
+                    <div>
+                        <h4 class="text-lg md:text-xl font-bold mb-2">A Bolha da Faculdade</h4>
+                        <p class="text-slate-400 text-sm md:text-base font-light leading-relaxed">Você aprendeu a história de estágio para aprender, mas ninguém te ensinou a trabalhar de forma administrativa gerando renda real e se preparando de verdade.</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-start md:items-center bg-slate-900/50 p-6 md:p-8 border-l-4 border-red-500 rounded-r-sm">
+                    <div class="text-red-500 text-3xl md:text-4xl shrink-0"><i class="fas fa-id-card-alt"></i></div>
+                    <div>
+                        <h4 class="text-lg md:text-xl font-bold mb-2">A Ditadura da OAB</h4>
+                        <p class="text-slate-400 text-sm md:text-base font-light leading-relaxed">Venderam a ideia de que você é um "nada" jurídico sem a OAB. Enquanto você estuda para uma prova, o mercado está faminto por consultores técnicos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Solution (Oceano Azul) -->
+    <section class="py-16 md:py-24 px-4 md:px-6 bg-slate-950">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col lg:grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <div class="relative w-full order-2 lg:order-1">
+                    <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=800" alt="Consultoria" class="rounded-sm border border-amber-500/20 grayscale hover:grayscale-0 transition-all duration-1000 w-full shadow-2xl">
+                    <div class="absolute -bottom-4 -right-4 bg-amber-500 p-4 md:p-8 text-black law-font font-bold text-base md:text-xl hidden sm:block">
+                        A PRÁTICA SUPERA <br> A TEORIA.
+                    </div>
+                </div>
+                <div class="order-1 lg:order-2 text-center lg:text-left">
+                    <h2 class="law-font text-3xl md:text-4xl mb-6 md:mb-8 leading-tight">O Poder da Atuação <br> <span class="gold-gradient">Administrativa</span></h2>
+                    <p class="text-slate-400 text-sm md:text-lg mb-8 leading-relaxed">
+                        Enquanto os tribunais levam anos, a esfera administrativa do INSS resolve vidas em meses. E o melhor: **A lei permite que você atue aqui hoje mesmo.**
+                    </p>
+                    <ul class="space-y-4 inline-block lg:block text-left">
+                        <li class="flex items-center gap-4 text-slate-200 text-sm md:text-base">
+                            <i class="fas fa-check-circle text-amber-500"></i> Honorários rápidos (Fluxo de Caixa)
+                        </li>
+                        <li class="flex items-center gap-4 text-slate-200 text-sm md:text-base">
+                            <i class="fas fa-check-circle text-amber-500"></i> Sem custas judiciais para o cliente
+                        </li>
+                        <li class="flex items-center gap-4 text-slate-200 text-sm md:text-base">
+                            <i class="fas fa-check-circle text-amber-500"></i> Baixa concorrência qualificada
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Módulos -->
+    <section class="py-16 md:py-24 px-4 md:px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12 md:mb-20 px-4">
+                <h2 class="law-font text-3xl md:text-4xl mb-4 text-white">O Mapa Estratégico</h2>
+                <p class="text-amber-500 uppercase tracking-widest text-[9px] md:text-xs font-bold">O caminho passo a passo para o seu sucesso profissional</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                <!-- Mod 1 -->
+                <div class="card-module p-6 md:p-8 rounded-sm">
+                    <span class="text-amber-500 law-font font-bold text-xl md:text-2xl mb-2 block">1 SEMANA</span>
+                    <h4 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white">Introdução ao Direito Previdenciário na prática</h4>
+                    <p class="text-slate-500 text-xs md:text-sm leading-relaxed">Onde você vai entender como funciona todo o sistema previdenciário.</p>
+                </div>
+                <!-- Mod 2 -->
+                <div class="card-module p-6 md:p-8 rounded-sm">
+                    <span class="text-amber-500 law-font font-bold text-xl md:text-2xl mb-2 block">2 SEMANA</span>
+                    <h4 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white">você vai aprender sobre os benefícios mais comuns</h4>
+                    <p class="text-slate-500 text-xs md:text-sm leading-relaxed">Auxílio maternidade,
+Auxílio doença,
+Auxílio acidente...
+
+Entendendo exatamente quando cada benefício pode ser solicitado.</p>
+                </div>
+                <!-- Mod 3 -->
+                <div class="card-module p-6 md:p-8 rounded-sm">
+                    <span class="text-amber-500 law-font font-bold text-xl md:text-2xl mb-2 block">3 SEMANA</span>
+                    <h4 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white">você aprende como funciona a estrutura do processo administrativo</h4>
+                    <p class="text-slate-500 text-xs md:text-sm leading-relaxed">Desde a análise inicial…
+
+Até a organização do requerimento.</p>
+                </div>
+                <!-- Mod 4 -->
+                <div class="card-module p-6 md:p-8 rounded-sm">
+                    <span class="text-amber-500 law-font font-bold text-xl md:text-2xl mb-2 block">4 SEMANA</span>
+                    <h4 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white">Máquina de Clientes</h4>
+                    <p class="text-slate-500 text-xs md:text-sm leading-relaxed">Estratégias para atrair pessoas que precisam do seu serviço agora.</p>
+                </div>
+
+                <!-- Mod 5 -->
+                <div class="card-module p-6 md:p-8 rounded-sm">
+                    <span class="text-amber-500 law-font font-bold text-xl md:text-2xl mb-2 block">5 SEMANA</span>
+                    <h4 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white">você aprende como fazer o atendimento e triagem</h4>
+                    <p class="text-slate-500 text-xs md:text-sm leading-relaxed">Como conversar com pessoas e entender se o caso realmente tem direito ao benefício.</p>
+                </div>
+
+                <!-- Mod 6 -->
+                <div class="card-module p-6 md:p-8 rounded-sm">
+                    <span class="text-amber-500 law-font font-bold text-xl md:text-2xl mb-2 block">6 SEMANA</span>
+                    <h4 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white">você aprende a estruturar toda a atuação administrativa</h4>
+                    <p class="text-slate-500 text-xs md:text-sm leading-relaxed">Estratégias na pratica.</p>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <a href="#oferta" class="text-amber-500 font-bold uppercase tracking-widest text-xs hover:underline underline-offset-8">Ver todos os módulos no vídeo acima</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Stack (Bônus) -->
+    <section class="py-16 md:py-24 px-4 md:px-6 bg-slate-900/30">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="law-font text-2xl md:text-3xl mb-12 md:mb-16">Acervo de Bônus de Elite</h2>
+            <div class="space-y-3 md:space-y-4">
+                <div class="flex flex-col sm:flex-row items-center justify-between p-5 md:p-6 bg-white/5 border border-white/10 rounded-sm gap-4">
+                    <div class="flex items-center gap-4 text-center sm:text-left">
+                        <i class="fas fa-gift text-amber-500 text-xl hidden sm:block"></i>
+                        <div>
+                            <h5 class="font-bold text-sm md:text-base">Checklist completo</h5>
+                            <p class="text-[10px] md:text-xs text-slate-500">Checklist completo de documentos para cada benefício.</p>
+                        </div>
+                    </div>
+                    <span class="text-amber-500 font-bold text-sm md:text-base">INCLUÍDO</span>
+                </div>
+                <div class="flex flex-col sm:flex-row items-center justify-between p-5 md:p-6 bg-white/5 border border-white/10 rounded-sm gap-4">
+                    <div class="flex items-center gap-4 text-center sm:text-left">
+                        <i class="fas fa-users text-amber-500 text-xl hidden sm:block"></i>
+                        <div>
+                            <h5 class="font-bold text-sm md:text-base">Comunidade de Alunos</h5>
+                            <p class="text-[10px] md:text-xs text-slate-500">Tire dúvidas com quem já está no campo.</p>
+                        </div>
+                    </div>
+                    <span class="text-amber-500 font-bold text-sm md:text-base">INCLUÍDO</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Offer -->
+    <section id="oferta" class="py-20 md:py-32 px-4 md:px-6 relative bg-[#020617]">
+        <div class="max-w-3xl mx-auto text-center relative z-10">
+            <h2 class="law-font text-3xl md:text-6xl mb-10 md:mb-12 text-white leading-tight">Sua Hora de <br> <span class="gold-gradient">Mudar de Nível</span></h2>
+            
+            <div class="bg-[#0a192f] border-2 border-amber-500/50 p-6 md:p-12 rounded-sm shadow-2xl relative">
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-500 px-4 md:px-6 py-1 md:py-2 text-black font-black text-[9px] md:text-xs uppercase tracking-widest whitespace-nowrap">
+                    Oferta de Lançamento
+                </div>
+
+                <ul class="text-left space-y-3 md:space-y-4 mb-8 md:mb-12 text-slate-300 border-b border-white/10 pb-8 text-xs md:text-base">
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-amber-500"></i> Mentoria Mapa da Prática (Acesso Vitalício)</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-amber-500"></i> Kit de Petições e Requerimentos</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-amber-500"></i> Masterclass Marketing Jurídico</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-amber-500"></i> Suporte para Dúvidas</li>
+                </ul>
+
+                <div class="mb-8 md:mb-12">
+                    <p class="text-slate-500 line-through text-base md:text-xl">De R$ 1.997,00</p>
+                    <div class="flex flex-col items-center mt-4">
+                        <span class="text-amber-500 font-bold uppercase tracking-[2px] md:tracking-[4px] text-[10px]">Apenas 12x de</span>
+                        <h3 class="text-5xl md:text-7xl font-black law-font text-white my-2">R$ 97,00</h3>
+                        <p class="text-slate-400 text-sm">ou R$ 997,00 à vista</p>
+                    </div>
+                </div>
+
+                <a href="#" class="btn-cta shimmer w-full py-6 md:py-8 rounded-sm text-xl md:text-2xl font-black text-white uppercase tracking-tighter">
+                    QUERO MINHA VAGA AGORA <i class="fas fa-lock ml-3 text-lg"></i>
+                </a>
+
+                <div class="mt-8 flex justify-center gap-4 text-slate-500 opacity-60">
+                    <i class="fab fa-cc-visa text-2xl md:text-3xl"></i>
+                    <i class="fab fa-cc-mastercard text-2xl md:text-3xl"></i>
+                    <i class="fab fa-pix text-2xl md:text-3xl text-teal-400"></i>
+                    <i class="fas fa-barcode text-2xl md:text-3xl"></i>
+                </div>
+            </div>
+
+            <p class="mt-10 text-slate-500 text-[10px] md:text-sm italic px-4">
+                Garantia de 7 dias: se não gostar devolvemos o seu dinheiro. Risco Zero.
+            </p>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-16 md:py-24 px-4 md:px-6 border-t border-white/5">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="law-font text-2xl md:text-3xl text-center mb-12">Perguntas Frequentes</h2>
+            <div class="space-y-3">
+                <details class="bg-white/5 border border-white/10 p-5 md:p-6 cursor-pointer group rounded-sm">
+                    <summary class="font-bold flex justify-between items-center list-none text-white text-sm md:text-base">
+                        Estudantes podem mesmo atuar?
+                        <i class="fas fa-plus text-amber-500 group-open:rotate-45 transition-transform"></i>
+                    </summary>
+                    <p class="mt-4 text-slate-400 text-xs md:text-sm leading-relaxed">Sim. O processo administrativo do INSS é público e permite a atuação de consultores e procuradores sem a necessidade de OAB.</p>
+                </details>
+                <details class="bg-white/5 border border-white/10 p-5 md:p-6 cursor-pointer group rounded-sm">
+                    <summary class="font-bold flex justify-between items-center list-none text-white text-sm md:text-base">
+                        Quanto tempo tenho de acesso?
+                        <i class="fas fa-plus text-amber-500 group-open:rotate-45 transition-transform"></i>
+                    </summary>
+                    <p class="mt-4 text-slate-400 text-xs md:text-sm leading-relaxed">O acesso é vitalício. Você pode ver e rever as aulas sempre que precisar atualizar um conceito ou procedimento.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 md:px-6 bg-slate-950 border-t border-white/5">
+        <div class="max-w-6xl mx-auto text-center">
+            <div class="flex justify-center items-center gap-2 mb-6 opacity-50">
+                <i class="fas fa-balance-scale text-amber-500 text-xl"></i>
+                <span class="law-font font-bold tracking-widest text-base text-white uppercase">Juris Prática</span>
+            </div>
+            <p class="text-slate-600 text-[8px] md:text-[10px] uppercase tracking-widest mb-4">
+                 | Todos os direitos reservados &copy; 2026
+            </p>
+            <p class="text-slate-700 text-[8px] max-w-2xl mx-auto leading-relaxed">
+                As informações deste site são para fins educacionais. Resultados financeiros dependem da dedicação do aluno e das condições de mercado.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
