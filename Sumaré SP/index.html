@@ -1,47 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Especialista em Benefícios do INSS | Consultoria</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Consultoria Salário Maternidade | Avaliação Gratuita</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-        }
-        
-        /* Animação para o botão do WhatsApp flutuante */
-        @keyframes pulse-whatsapp {
-            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-        }
-        .btn-whatsapp-float {
-            animation: pulse-whatsapp 2s infinite;
-        }
-
-        /* Degradê para o fundo da seção principal */
-        .hero-bg {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-        }
-    </style>
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17990823186"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'AW-17990823186');
-    </script>
-
+    <!-- Facebook Pixel Code -->
     <script>
       !function(f,b,e,v,n,t,s)
       {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -61,171 +27,355 @@
       <img height="1" width="1" style="display:none"
       src="https://www.facebook.com/tr?id=1770548813906087&ev=PageView&noscript=1"/>
     </noscript>
-    </head>
-<body class="text-slate-800 antialiased relative">
+    <!-- End Facebook Pixel Code -->
 
-    <script>
-        // COLOQUE SEU NÚMERO AQUI (Código do país 55 + DDD + Número)
-        // Exemplo de Sumaré: 5535999999999
-        const numeroWhatsApp = "5535987053223"; 
-        const mensagemPadrao = "Olá! Vim pelo site e gostaria de ajuda com meu benefício...";
-        const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagemPadrao)}`;
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+        }
+        .step { display: none; }
+        .step.active { display: block; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .btn-option {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-option:active {
+            transform: scale(0.98);
+            background-color: #fdf2f8;
+        }
+        input[type="date"] {
+            min-height: 56px;
+            background: #fff;
+            padding: 12px;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col antialiased">
 
-        // Função para aplicar o link e o evento de conversão em todos os botões
-        window.onload = function() {
-            const botoes = document.querySelectorAll('.link-wpp');
-            botoes.forEach(botao => {
-                botao.href = linkWhatsApp;
-                botao.target = "_blank"; // Garante que abra em nova aba para não cortar o rastreamento
+    <!-- Header Fixo -->
+    <header class="w-full bg-white/80 backdrop-blur-md border-b border-gray-100 py-4 px-6 sticky top-0 z-50 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-pink-500 rounded-lg flex items-center justify-center text-white shadow-lg shadow-pink-200">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <span class="font-extrabold text-gray-800 tracking-tight text-sm uppercase">Consultoria Materna</span>
+        </div>
+        <div class="flex items-center gap-1 bg-green-50 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold">
+            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> ONLINE
+        </div>
+    </header>
 
-                // EVENTOS DE CONVERSÃO (GOOGLE ADS + META ADS)
-                botao.addEventListener('click', function() {
-                    
-                    // Dispara conversão do Google Ads
-                    gtag('event', 'conversion', {
-                        'send_to': 'AW-17990823186/-CjJCIaa_oIcEJLa2IJD',
-                        'value': 1.0,
-                        'currency': 'BRL'
-                    });
-
-                    // Dispara evento de Lead do Meta Ads (Facebook Pixel)
-                    if (typeof fbq === 'function') {
-                        fbq('track', 'Lead');
-                    }
-                    
-                });
-            });
-        };
-    </script>
-
-    <div class="bg-blue-600 text-white text-center py-2 text-sm font-semibold px-4">
-        <i class="fa-solid fa-location-dot mr-2"></i> Atendimento especializado em Sumaré e Região
-    </div>
-
-    <section class="hero-bg text-white pt-12 pb-16 px-4">
-        <div class="max-w-4xl mx-auto text-center">
+    <!-- Main Container -->
+    <main class="flex-grow flex items-center justify-center p-4 md:p-8">
+        <div class="w-full max-w-md bg-white rounded-[40px] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-50 overflow-hidden relative">
             
-            <div class="inline-block bg-blue-800/50 border border-blue-400/30 text-blue-100 rounded-full px-4 py-1 text-sm font-semibold mb-6">
-                <i class="fa-solid fa-shield-halved mr-1"></i> Consultoria Administrativa Previdenciária
-            </div>
+            <div class="p-8 md:p-10">
                 
-            <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-6">
-                Auxílio <span class="text-yellow-400">Maternidade?</span><br> 
-            </h1>
+                <!-- Step: Intro -->
+                <div id="step-intro" class="step active text-center">
+                    <div class="inline-flex p-4 bg-pink-50 rounded-3xl mb-6">
+                        <svg class="text-pink-500 w-12 h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5.7 4.9 2.1"/><path d="M12 3v2"/><path d="m16.2 7.8 1.4-1.4"/><path d="m7.8 7.8-1.4-1.4"/></svg>
+                    </div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 leading-tight mb-4">
+                        Receba seu <span class="text-pink-600">Salário-Maternidade</span> sem burocracia.
+                    </h1>
+                    <p class="text-gray-500 text-base mb-8 font-medium">
+                        Centenas de mães deixam de receber até R$ 6.200,00 por falta de orientação correta. Faça sua avaliação rápida!
+                    </p>
+                    <button onclick="goToQuiz()" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-5 rounded-2xl shadow-xl shadow-pink-200 transition-all active:scale-95 flex items-center justify-center gap-3">
+                        Verificar se tenho direito
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </button>
+                    <div class="mt-6 flex items-center justify-center gap-2 text-gray-400 text-xs">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <span class="font-bold uppercase tracking-widest">Avaliação 100% Segura</span>
+                    </div>
+                </div>
+
+                <!-- Step: Quiz -->
+                <div id="step-quiz" class="step">
+                    <div class="flex items-center justify-between mb-6">
+                        <button onclick="goBack()" class="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                        </button>
+                        <div class="flex-grow mx-4 h-2 bg-gray-100 rounded-full overflow-hidden">
+                            <div id="progress-bar" class="bg-pink-500 h-full transition-all duration-500" style="width: 10%;"></div>
+                        </div>
+                        <span id="quiz-count" class="text-[11px] font-bold text-gray-400 uppercase">01/08</span>
+                    </div>
+                    
+                    <h2 id="quiz-question" class="text-xl font-bold text-gray-800 mb-8 min-h-[56px] leading-snug">Carregando pergunta...</h2>
+                    
+                    <div id="quiz-options" class="space-y-4"></div>
+
+                    <!-- Input Especial para Data -->
+                    <div id="quiz-input-container" class="hidden space-y-6">
+                        <div class="relative">
+                            <label class="text-xs font-bold text-pink-600 uppercase tracking-widest mb-2 block text-center">Data de Nascimento</label>
+                            <input type="date" id="date-input" class="w-full text-center text-lg font-bold border-2 border-gray-100 focus:border-pink-500 bg-gray-50 outline-none transition-all rounded-2xl" required>
+                        </div>
+                        <button onclick="submitDate()" class="w-full bg-pink-600 text-white font-bold py-5 rounded-2xl shadow-lg active:scale-95 transition-all">Próximo passo</button>
+                    </div>
+                </div>
+
+                <!-- Step: Calculating -->
+                <div id="step-calculating" class="step text-center py-10">
+                    <div class="w-20 h-20 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="text-pink-500 w-10 h-10 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/><path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/><path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/><path d="M2 12h4"/><path d="m4.9 4.9 2.9-2.9"/></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Quase lá...</h2>
+                    <p class="text-gray-500 mb-8 font-medium">Cruzando suas informações com as diretrizes do INSS.</p>
+                    <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                        <div id="loading-bar" class="bg-pink-500 h-full transition-all duration-75" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <!-- Step: Result -->
+                <div id="step-result" class="step text-center">
+                    <div class="bg-green-50 p-6 rounded-[24px] mb-8">
+                        <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-100">
+                            <svg class="text-white w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <h2 class="text-green-800 font-extrabold text-xl mb-1">Aprovada no Sistema!</h2>
+                        <p class="text-green-700 text-sm font-medium">Seu perfil é compatível com o benefício.</p>
+                    </div>
+                    
+                    <p class="text-gray-400 text-xs font-bold uppercase tracking-widest mb-2">Valor Estimado Disponível</p>
+                    <h1 class="text-5xl font-black text-gray-900 mb-2 tracking-tighter">R$ 6.200<span class="text-pink-600">,00</span></h1>
+                    <p class="text-gray-500 text-sm font-medium mb-10 leading-relaxed px-4">Pago em até 4 parcelas diretas na sua conta bancária.</p>
+
+                    <div class="bg-pink-50/50 p-6 rounded-3xl border border-pink-100/50">
+                        <h3 class="text-gray-800 font-bold mb-6">Este valor te ajudaria hoje?</h3>
+                        <div class="grid grid-cols-1 gap-4">
+                            <button onclick="showOffer()" class="w-full bg-white border-2 border-pink-500 text-pink-600 font-extrabold py-4 rounded-2xl active:scale-95 transition-all shadow-sm hover:bg-pink-500 hover:text-white">
+                                SIM, AJUDARIA MUITO
+                            </button>
+                            <button onclick="showOffer()" class="w-full bg-pink-600 text-white font-extrabold py-4 rounded-2xl active:scale-95 transition-all shadow-xl shadow-pink-100">
+                                COM CERTEZA!
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step: Offer -->
+                <div id="step-offer" class="step">
+                    <div class="bg-gray-900 rounded-[32px] p-8 text-white mb-8 relative overflow-hidden">
+                        <div class="relative z-10 text-center">
+                            <p class="text-pink-400 font-bold text-[10px] uppercase tracking-[0.25em] mb-4">Consultoria Especializada</p>
+                            <h2 class="text-2xl font-extrabold mb-8 leading-tight px-2">Deixe a burocracia com a gente!</h2>
+                            <ul class="text-left space-y-5 text-sm font-medium">
+                                <li class="flex items-center gap-4">
+                                    <div class="bg-pink-500/30 p-1.5 rounded-full flex-shrink-0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                                    Análise detalhada do seu direito
+                                </li>
+                                <li class="flex items-center gap-4">
+                                    <div class="bg-pink-500/30 p-1.5 rounded-full flex-shrink-0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                                    Solicitação no App Meu INSS
+                                </li>
+                                <li class="flex items-center gap-4">
+                                    <div class="bg-pink-500/30 p-1.5 rounded-full flex-shrink-0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                                    Acompanhamento até o depósito
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+                    </div>
+
+                    <button onclick="contactWhatsApp()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-black py-5 rounded-2xl shadow-xl flex items-center justify-center gap-3 text-lg animate-pulse transition-all">
+                        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Falar com Especialista
+                    </button>
+                    <p class="text-center text-[10px] text-gray-400 mt-5 uppercase font-bold tracking-[0.1em]">Atendimento VIP via WhatsApp</p>
+                </div>
+            </div>
             
-            <p class="text-lg md:text-xl text-blue-100 mb-8 max-w-2xl mx-auto font-light">
-                Te ajudamos solicitar seu <strong>Auxílio Maternidade</strong> e outros benefícios retidos ou negados. Análise rápida e sem burocracia.
-            </p>
-
-            <div class="relative max-w-2xl mx-auto mb-10 group">
-                <div class="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                
-                <img 
-                    src="imagens/sumare-sp.jpeg" 
-                    alt="Cidade de Sumaré" 
-                    onerror="this.src='https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=1000'; this.title='Atenção: Coloque sua foto em imagens/Sumaré.jpg';"
-                    class="relative rounded-2xl shadow-2xl w-full h-64 md:h-80 object-cover border-4 border-white/10"
-                >
-                <div class="absolute bottom-4 left-4 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-lg text-sm font-medium flex items-center">
-                    <i class="fa-solid fa-map-pin text-red-500 mr-2"></i> Sumaré, SP
-                </div>
-            </div>
-
-            <a href="#" class="link-wpp inline-flex items-center justify-center bg-[#25D366] hover:bg-[#20bd5a] text-white text-lg md:text-xl font-bold py-4 px-8 rounded-full shadow-lg transform transition hover:scale-105 w-full md:w-auto">
-                <i class="fa-brands fa-whatsapp text-2xl mr-3"></i>
-                Falar com um Especialista Agora
-            </a>
-            <p class="text-sm text-blue-200 mt-3"><i class="fa-solid fa-lock mr-1"></i> Suas informações estão seguras. Atendimento sigiloso.</p>
-        </div>
-    </section>
-
-    <section class="py-16 px-4 bg-white">
-        <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-slate-800 mb-4">Em que podemos te ajudar hoje?</h2>
-                <div class="w-24 h-1 bg-yellow-400 mx-auto rounded-full"></div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-slate-50 border border-slate-100 p-8 rounded-2xl shadow-sm hover:shadow-md transition">
-                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl mb-6">
-                        <i class="fa-solid fa-crutch"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-slate-800">Auxílio Acidente</h3>
-                    <p class="text-slate-600 mb-6 line-clamp-3">Sofreu acidente e ficou com sequelas que reduziram sua capacidade de trabalho? Você pode ter direito a receber este benefício mensal.</p>
-                    <a href="#" class="link-wpp text-blue-600 font-semibold hover:text-blue-800 flex items-center">
-                        Analisar meu caso <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
-                    </a>
-                </div>
-
-                <div class="bg-slate-50 border border-slate-100 p-8 rounded-2xl shadow-sm hover:shadow-md transition">
-                    <div class="w-14 h-14 bg-pink-100 text-pink-600 rounded-xl flex items-center justify-center text-2xl mb-6">
-                        <i class="fa-solid fa-person-breastfeeding"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-slate-800">Auxílio Maternidade</h3>
-                    <p class="text-slate-600 mb-6 line-clamp-3">Negaram seu salário-maternidade? Trabalhadora rural, desempregada ou contribuinte individual, nós verificamos seus direitos.</p>
-                    <a href="#" class="link-wpp text-blue-600 font-semibold hover:text-blue-800 flex items-center">
-                        Analisar meu caso <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
-                    </a>
-                </div>
-
-                <div class="bg-slate-50 border border-slate-100 p-8 rounded-2xl shadow-sm hover:shadow-md transition">
-                    <div class="w-14 h-14 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-2xl mb-6">
-                        <i class="fa-solid fa-file-signature"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-slate-800">Outros Benefícios</h3>
-                    <p class="text-slate-600 mb-6 line-clamp-3">Auxílio-doença, BPC/LOAS, aposentadorias ou revisões. Atuamos administrativamente direto no INSS para agilizar sua vida.</p>
-                    <a href="#" class="link-wpp text-blue-600 font-semibold hover:text-blue-800 flex items-center">
-                        Analisar meu caso <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
-                    </a>
-                </div>
+            <div class="bg-gray-50 border-t border-gray-100 p-5 flex justify-around items-center opacity-40 grayscale">
+                <span class="text-[9px] font-black tracking-widest uppercase">Segurança</span>
+                <span class="text-[9px] font-black tracking-widest uppercase">Privacidade</span>
+                <span class="text-[9px] font-black tracking-widest uppercase">VIP</span>
             </div>
         </div>
-    </section>
+    </main>
 
-    <section class="py-16 px-4 bg-slate-100">
-        <div class="max-w-4xl mx-auto">
-            <div class="bg-white rounded-3xl p-8 md:p-12 shadow-xl flex flex-col md:flex-row items-center gap-8">
-                <div class="md:w-1/2">
-                    <h2 class="text-3xl font-bold text-slate-800 mb-4">Como funciona nosso atendimento?</h2>
-                    <ul class="space-y-4">
-                        <li class="flex items-start">
-                            <i class="fa-solid fa-check-circle text-green-500 mt-1 mr-3 text-lg"></i>
-                            <span class="text-slate-700"><strong>Passo 1:</strong> Você clica no botão e nos conta seu problema pelo WhatsApp.</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fa-solid fa-check-circle text-green-500 mt-1 mr-3 text-lg"></i>
-                            <span class="text-slate-700"><strong>Passo 2:</strong> Fazemos uma análise administrativa prévia e gratuita dos seus documentos.</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fa-solid fa-check-circle text-green-500 mt-1 mr-3 text-lg"></i>
-                            <span class="text-slate-700"><strong>Passo 3:</strong> Entramos com o pedido direto no INSS da forma correta, evitando demoras.</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="md:w-1/2 w-full">
-                    <a href="#" class="link-wpp block w-full bg-[#25D366] text-white text-center font-bold text-lg py-4 px-6 rounded-xl shadow-lg hover:bg-[#20bd5a] transition">
-                        Iniciar Atendimento Agora <i class="fa-solid fa-comment-dots ml-2"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-slate-900 text-slate-400 py-10 px-4 text-center">
-        <div class="max-w-4xl mx-auto">
-            <h4 class="text-white text-lg font-bold mb-4">Consultoria Previdenciária Administrativa</h4>
-            <p class="mb-4 text-sm"></p>
-            <p class="text-sm">Sumaré - SP | Atendimento online para todo o Brasil.</p>
-            <div class="mt-8 pt-8 border-t border-slate-800 text-xs">
-                &copy; 2026 Todos os direitos reservados. | Desenvolvido para focar no seu direito.
-            </div>
-        </div>
+    <footer class="p-8 text-center mt-auto">
+        <p class="text-[10px] text-gray-400 max-w-xs mx-auto font-medium leading-relaxed">
+            © 2024 Consultoria Materna Especializada.<br>
+            Não temos vínculo com o INSS ou Governo Federal.
+        </p>
     </footer>
 
-    <a href="#" class="link-wpp fixed bottom-6 right-6 z-50 bg-[#25D366] text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-2xl btn-whatsapp-float hover:scale-110 transition-transform" aria-label="Falar no WhatsApp">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
+    <script>
+        const phone = "5535987053223";
+        let currentStepId = 'registro';
+        let stepHistory = ['intro'];
+        const answers = {};
 
+        const flow = {
+            registro: {
+                label: 'Trabalho Registrado',
+                question: "Você trabalha ou já foi registrada alguma vez?",
+                options: ["Sim, atualmente", "Sim, no passado", "Não, nunca"],
+                next: 'contribuicao'
+            },
+            contribuicao: {
+                label: 'Contribuição MEI/Carnê',
+                question: "Você já pagou o INSS por conta própria (MEI/Carnê)?",
+                options: ["Sim, pago hoje", "Já paguei antes", "Nunca paguei"],
+                next: 'momento'
+            },
+            momento: {
+                label: 'Situação Atual',
+                question: "Qual sua situação atual?",
+                options: ["Já tive o bebê", "Estou grávida agora"],
+                next: (ans) => ans === "Já tive o bebê" ? 'data_nascimento' : 'ultima_contribuicao'
+            },
+            data_nascimento: {
+                label: 'Nascimento do Bebê',
+                question: "Qual a data de nascimento do seu bebê?",
+                type: 'date',
+                next: 'trabalhando_nascimento'
+            },
+            trabalhando_nascimento: {
+                label: 'Trabalhava no Parto',
+                question: "Você estava trabalhando no dia do nascimento?",
+                options: ["Sim, trabalhava", "Não, estava parada"],
+                next: (ans) => ans === "Sim, trabalhava" ? 'licenca_maternidade' : 'tempo_parada'
+            },
+            tempo_parada: {
+                label: 'Parou Antes do Parto',
+                question: "Quanto tempo antes de nascer você parou?",
+                options: ["Menos de 6 meses", "De 6 meses a 1 ano", "Mais de 1 ano"],
+                next: 'ultima_contribuicao'
+            },
+            licenca_maternidade: {
+                label: 'Licença Recebida',
+                question: "A empresa te pagou os 4 meses de licença?",
+                options: ["Sim, recebi tudo", "Não recebi"],
+                next: 'ultima_contribuicao'
+            },
+            ultima_contribuicao: {
+                label: 'Última Contribuição',
+                question: "Quanto tempo faz sua última contribuição?",
+                options: ["Menos de 1 ano", "Entre 1 e 3 anos", "Mais de 3 anos", "Não lembro"],
+                next: 'FINISH'
+            }
+        };
+
+        const totalSteps = 8;
+        let stepCounter = 1;
+
+        function showStep(stepId) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step-' + stepId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function goToQuiz() {
+            currentStepId = 'registro';
+            stepCounter = 1;
+            stepHistory = ['intro'];
+            showStep('quiz');
+            renderQuestion();
+        }
+
+        function goBack() {
+            if (stepHistory.length > 0) {
+                const prev = stepHistory.pop();
+                if (prev === 'intro') {
+                    showStep('intro');
+                } else {
+                    currentStepId = prev;
+                    stepCounter--;
+                    renderQuestion();
+                }
+            }
+        }
+
+        function renderQuestion() {
+            const q = flow[currentStepId];
+            document.getElementById('quiz-question').innerText = q.question;
+            document.getElementById('quiz-count').innerText = `${String(stepCounter).padStart(2, '0')}/${totalSteps}`;
+            document.getElementById('progress-bar').style.width = (stepCounter / totalSteps * 100) + '%';
+            
+            const optionsContainer = document.getElementById('quiz-options');
+            const inputContainer = document.getElementById('quiz-input-container');
+            
+            optionsContainer.innerHTML = '';
+            inputContainer.classList.add('hidden');
+
+            if (q.type === 'date') {
+                inputContainer.classList.remove('hidden');
+            } else {
+                q.options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = "btn-option w-full text-left p-5 rounded-[20px] border-2 border-gray-100 hover:border-pink-500 font-bold text-gray-700 flex justify-between items-center group bg-white shadow-sm";
+                    btn.innerHTML = `<span>${opt}</span><svg class="text-gray-200 group-hover:text-pink-500" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+                    btn.onclick = () => handleAnswer(opt);
+                    optionsContainer.appendChild(btn);
+                });
+            }
+        }
+
+        function handleAnswer(ans) {
+            const q = flow[currentStepId];
+            answers[q.label] = ans;
+            stepHistory.push(currentStepId);
+            
+            let next = (typeof q.next === 'function') ? q.next(ans) : q.next;
+
+            if (next === 'FINISH') {
+                startCalculating();
+            } else {
+                currentStepId = next;
+                stepCounter++;
+                renderQuestion();
+            }
+        }
+
+        function submitDate() {
+            const val = document.getElementById('date-input').value;
+            if (!val) return;
+            handleAnswer(val.split('-').reverse().join('/'));
+        }
+
+        function startCalculating() {
+            showStep('calculating');
+            let progress = 0;
+            const loadingBar = document.getElementById('loading-bar');
+            const interval = setInterval(() => {
+                progress += 5;
+                loadingBar.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    showStep('result');
+                }
+            }, 40);
+        }
+
+        function showOffer() {
+            showStep('offer');
+        }
+
+        function contactWhatsApp() {
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Lead');
+            }
+
+            let message = `Olá! Fiz minha avaliação e quero ajuda com meu Salário-Maternidade.\n\n`;
+            message += `*DADOS COLETADOS:*\n`;
+            
+            for (const [key, value] of Object.entries(answers)) {
+                message += `• *${key}:* ${value}\n`;
+            }
+            
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+    </script>
 </body>
 </html>
