@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Conserto de Geladeiras</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ROLAGEM SUAVE PARA O BOTÃO FUNCIONAR BEM */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* PALETA PROFISSIONAL DE REFRIGERAÇÃO */
+        :root {
+            --bg-dark: #070e17; /* Azul bem escuro, quase preto */
+            --bg-card: #111c2a; /* Azul marinho escuro */
+            --text-light: #f4f6f9; /* Branco gelo */
+            --text-gray: #aab6c4; /* Cinza claro azulado */
+            --ice-blue: #00b4d8; /* Azul gelo/refrigeração */
+            --ice-blue-light: #90e0ef;
+            --cta-green: #00b84c; /* Verde conversão */
+            --cta-hover: #00993f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- HEADER & HEADLINES --- */
+        .hero-section {
+            padding: 40px 0 10px 0;
+            text-align: center;
+        }
+
+        .headline {
+            font-size: 30px;
+            font-weight: 900;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .headline .highlight {
+            color: var(--ice-blue);
+        }
+
+        .sub-headline {
+            font-size: 17px;
+            font-weight: 500;
+            color: var(--text-gray);
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .audio-alert {
+            display: inline-block;
+            background: rgba(0, 180, 216, 0.1);
+            color: var(--ice-blue-light);
+            padding: 6px 16px;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            border: 1px solid rgba(0, 180, 216, 0.3);
+        }
+
+        /* --- VÍDEO CORRIGIDO --- */
+        .video-wrapper {
+            position: relative;
+            border-radius: 8px;
+            background-color: #000;
+            margin: 0 auto;
+            border: 2px solid #1a2a40;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .video-caption {
+            color: var(--text-gray); 
+            font-size: 13px; 
+            margin-top: 10px;
+        }
+
+        /* --- ÁREA OCULTA --- */
+        #conteudo-oculto {
+            display: none;
+        }
+
+        /* --- BOTÕES DE COMPRA --- */
+        .cta-wrapper {
+            text-align: center;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .btn-comprar {
+            display: block;
+            background-color: var(--cta-green);
+            color: #fff;
+            font-size: 20px;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 18px 10px;
+            border-radius: 6px;
+            box-shadow: 0 8px 20px rgba(0, 184, 76, 0.3);
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
+            border-bottom: 4px solid var(--cta-hover);
+            animation: pulse 2s infinite;
+        }
+
+        .btn-comprar:active {
+            transform: translateY(4px);
+            border-bottom: 0;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 184, 76, 0.5); }
+            70% { box-shadow: 0 0 0 12px rgba(0, 184, 76, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 184, 76, 0); }
+        }
+
+        .trust-badges {
+            margin-top: 12px;
+            color: var(--text-gray);
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        /* --- MÓDULOS --- */
+        .modules-section {
+            padding: 40px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: var(--text-light);
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .module-card {
+            background-color: var(--bg-card);
+            border-left: 4px solid #1a2a40;
+            padding: 20px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .module-card h3 {
+            color: var(--ice-blue-light);
+            font-size: 16px;
+            margin-bottom: 8px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .module-card p {
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+
+        /* Destaque Módulo 5 */
+        .module-card.highlight {
+            border-left: 4px solid var(--ice-blue);
+            background: linear-gradient(145deg, #111c2a 0%, #172a42 100%);
+        }
+
+        /* --- BÔNUS CORRIGIDO (ALINHAMENTO PERFEITO) --- */
+        .bonus-section {
+            padding: 30px 0 50px 0;
+        }
+
+        .bonus-box {
+            background: rgba(0, 180, 216, 0.03);
+            border: 1px dashed var(--ice-blue);
+            padding: 25px;
+            border-radius: 8px;
+        }
+
+        .bonus-box h2 {
+            color: var(--ice-blue);
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .bonus-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px; 
+        }
+
+        .bonus-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px; 
+            color: var(--text-light);
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .bonus-icon {
+            font-size: 20px;
+            flex-shrink: 0; 
+            line-height: 1.2;
+        }
+
+        .bonus-text {
+            flex-grow: 1; 
+        }
+
+        .bonus-text strong {
+            color: #fff; 
+        }
+
+        /* --- PREÇO E OFERTA --- */
+        .offer-section {
+            background: var(--bg-card);
+            padding: 40px 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 50px;
+            border: 1px solid #1a2a40;
+        }
+
+        .offer-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-gray);
+            text-transform: uppercase;
+        }
+
+        .price-box {
+            margin-bottom: 25px;
+        }
+
+        .price-installments {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .price-value {
+            font-size: 56px;
+            font-weight: 900;
+            color: var(--ice-blue);
+            line-height: 1;
+            margin: 5px 0;
+        }
+
+        .price-cash {
+            font-size: 15px;
+            color: var(--text-gray);
+            margin-bottom: 15px;
+        }
+
+        .price-daily {
+            display: inline-block;
+            background-color: rgba(0, 184, 76, 0.15);
+            color: #00d85a;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* --- RESPONSIVIDADE MOBILE --- */
+        @media (max-width: 768px) {
+            .hero-section { padding: 20px 0 10px 0; }
+            .headline { font-size: 21px; margin-bottom: 15px; }
+            .sub-headline { font-size: 15px; margin-bottom: 20px; }
+            .price-value { font-size: 46px; }
+            .btn-comprar { font-size: 18px; padding: 18px 5px; }
+            .trust-badges span { font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="headline">Descubra como faturar até <span class="highlight">R$ 700 por serviço</span> consertando geladeiras mesmo começando do absoluto zero</h1>
+            
+            <p class="sub-headline">Domine a profissão acompanhando atendimentos reais através do método <strong>Aprendizado em Campo Guiado</strong>.</p>
+            
+            <div class="audio-alert">🔊 Verifique se o seu som está ligado</div>
+
+            <div class="video-wrapper">
+                <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js", s.async=!0,document.head.appendChild(s); </script> 
+                <div id="ifr_69e98a860b351269d471e912_wrapper" style="margin: 0 auto; width: 100%;"> 
+                    <div style="position: relative; padding: 56.25% 0 0 0;" id="ifr_69e98a860b351269d471e912_aspect"> 
+                        <iframe frameborder="0" allowfullscreen src="about:blank" id="ifr_69e98a860b351269d471e912" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" referrerpolicy="origin" onload=" this.onload=null, this.src='https://scripts.converteai.net/88067b36-9a31-49c8-a4b8-9d1b04b71925/players/69e98a860b351269d471e912/v4/embed.html' +(location.search||'?') +'&vl=' +encodeURIComponent(location.href)"></iframe> 
+                    </div> 
+                </div>
+            </div>
+            <p class="video-caption">Assista ao vídeo acima com atenção até o final.</p>
+        </div>
+    </section>
+
+    <div id="conteudo-oculto">
+
+        <div class="container">
+            <div class="cta-wrapper">
+                <a href="#oferta" class="btn-comprar">Garantir Minha Vaga Agora</a>
+            </div>
+        </div>
+
+        <section class="modules-section">
+            <div class="container">
+                <h2 class="section-title">O que você vai aprender na prática:</h2>
+                
+                <div class="modules-grid">
+                    <div class="module-card">
+                        <h3>Módulo 1: Identificação</h3>
+                        <p>Como identificar defeitos rapidamente e com precisão, mesmo sem experiência prévia.</p>
+                    </div>
+                    <div class="module-card">
+                        <h3>Módulo 2: Ferramentas</h3>
+                        <p>Quais ferramentas você realmente precisa comprar sem gastar dinheiro à toa.</p>
+                    </div>
+                    <div class="module-card">
+                        <h3>Módulo 3: Serviços Lucrativos</h3>
+                        <p>Aprenda solda, troca de compressor e carga de gás. Os serviços que dão lucro de verdade.</p>
+                    </div>
+                    <div class="module-card">
+                        <h3>Módulo 4: Gestão e Preço</h3>
+                        <p>Quanto cobrar por cada serviço, como fazer orçamentos precisos e evitar prejuízos.</p>
+                    </div>
+                    <div class="module-card highlight">
+                        <h3>Módulo 5: Campo Guiado 🔥</h3>
+                        <p><strong>Nosso Maior Diferencial:</strong> Você acompanha atendimentos reais comigo do início ao fim, como se estivesse ao meu lado.</p>
+                    </div>
+                    <div class="module-card">
+                        <h3>Módulo 6: Captação</h3>
+                        <p>Como conseguir clientes usando o Google (pesquisas locais), mesmo começando do zero.</p>
+                    </div>
+                    <div class="module-card">
+                        <h3>Módulo 7: Profissionalização</h3>
+                        <p>Como transformar os consertos em uma fonte de renda extra sólida ou na sua nova profissão.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bonus-section">
+            <div class="container">
+                <div class="bonus-box">
+                    <h2>Bônus Inclusos na sua Inscrição</h2>
+                    <ul class="bonus-list">
+                        <li class="bonus-item">
+                            <span class="bonus-icon">🎁</span>
+                            <div class="bonus-text">
+                                <strong>Máquinas de Lavar:</strong> Aulas completas sobre conserto de Máquinas de Lavar.
+                            </div>
+                        </li>
+                        <li class="bonus-item">
+                            <span class="bonus-icon">🎁</span>
+                            <div class="bonus-text">
+                                <strong>Manutenção em Freezers:</strong> Módulo prático sobre manutenção em Freezers.
+                            </div>
+                        </li>
+                        <li class="bonus-item">
+                            <span class="bonus-icon">🎁</span>
+                            <div class="bonus-text">
+                                <strong>Climatização:</strong> Instalação de Ar-Condicionado.
+                            </div>
+                        </li>
+                        <li class="bonus-item">
+                            <span class="bonus-icon">🎁</span>
+                            <div class="bonus-text">
+                                <strong>Compra e Venda:</strong> Aprenda a comprar geladeiras com defeito barato, consertar e revender com altíssima margem de lucro.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="oferta" class="container">
+            <div class="offer-section">
+                <p class="offer-title">Acesso Completo + Todos os Bônus</p>
+                
+                <div class="price-box">
+                    <p class="price-installments">12x de</p>
+                    <p class="price-value">R$ 30,72</p>
+                    <p class="price-cash">ou R$ 297 à vista</p>
+                    <p class="price-daily">Isso dá apenas R$ 1 por dia!</p>
+                </div>
+
+                <div class="cta-wrapper" style="margin: 0;">
+                    <a href="https://pay.kiwify.com.br/So0luiY" class="btn-comprar">Garantir Minha Vaga Agora</a>
+                    <div class="trust-badges">
+                        <span>🔒 Compra Segura</span>
+                        <span>✅ Acesso Imediato</span>
+                        <span>🏆 7 Dias de Garantia</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const MINUTOS = 00; // Ajuste para o momento exato do seu vídeo
+        const SEGUNDOS = 03; 
+        
+        const tempoMilisegundos = ((MINUTOS * 60) + SEGUNDOS) * 1000;
+
+        setTimeout(function() {
+            document.getElementById("conteudo-oculto").style.display = "block";
+            // Rola suavemente para mostrar o primeiro botão que acabou de aparecer
+            window.scrollBy({ top: 150, behavior: 'smooth' });
+        }, tempoMilisegundos);
+    </script>
+
+</body>
+</html>
