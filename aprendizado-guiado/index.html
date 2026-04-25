@@ -320,11 +320,34 @@
             <div class="audio-alert">🔊 Verifique se o seu som está ligado</div>
 
             <div class="video-wrapper">
-                <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js", s.async=!0,document.head.appendChild(s); </script> 
-                <div id="ifr_69e98a860b351269d471e912_wrapper" style="margin: 0 auto; width: 100%;"> 
-                    <div style="position: relative; padding: 56.25% 0 0 0;" id="ifr_69e98a860b351269d471e912_aspect"> 
-                        <iframe frameborder="0" allowfullscreen src="about:blank" id="ifr_69e98a860b351269d471e912" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" referrerpolicy="origin" onload=" this.onload=null, this.src='https://scripts.converteai.net/88067b36-9a31-49c8-a4b8-9d1b04b71925/players/69e98a860b351269d471e912/v4/embed.html' +(location.search||'?') +'&vl=' +encodeURIComponent(location.href)"></iframe> 
-                    </div> 
+    
+    <!-- Script do player -->
+    <script type="text/javascript">
+        var s=document.createElement("script");
+        s.src="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js";
+        s.async=!0;
+        document.head.appendChild(s);
+    </script> 
+
+    <!-- NOVO PLAYER -->
+    <div id="ifr_69ece97ce1dcfbd062a4914f_wrapper" style="margin: 0 auto; width: 100%;">
+        
+        <div style="position: relative; padding: 56.25% 0 0 0;" id="ifr_69ece97ce1dcfbd062a4914f_aspect">
+            
+            <iframe 
+                frameborder="0" 
+                allowfullscreen 
+                src="about:blank" 
+                id="ifr_69ece97ce1dcfbd062a4914f" 
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+                referrerpolicy="origin" 
+                onload="this.onload=null; this.src='https://scripts.converteai.net/88067b36-9a31-49c8-a4b8-9d1b04b71925/players/69ece97ce1dcfbd062a4914f/v4/embed.html' +(location.search||'?') +'&vl=' +encodeURIComponent(location.href)">
+            </iframe>
+
+        </div>
+    </div>
+
+</div>
                 </div>
             </div>
             <p class="video-caption">Assista ao vídeo acima com atenção até o final.</p>
@@ -435,7 +458,7 @@
     </div>
 
     <script>
-        const MINUTOS = 13; // Ajuste para o momento exato do seu vídeo
+        const MINUTOS = 8; // Ajuste para o momento exato do seu vídeo
         const SEGUNDOS = 10; 
         
         const tempoMilisegundos = ((MINUTOS * 60) + SEGUNDOS) * 1000;
