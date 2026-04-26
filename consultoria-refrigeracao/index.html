@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suporte Técnico Especializado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #e5ddd5; font-family: 'Segoe UI', Helvetica, Arial, sans-serif; overflow: hidden; margin: 0; }
+        .chat-container { height: 100vh; max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; background: #fff; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        .chat-header { background: #075e54; color: white; padding: 12px 16px; display: flex; align-items: center; gap: 12px; z-index: 10; flex-shrink: 0; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 15px; background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); background-color: #efe7de; display: flex; flex-direction: column; }
+        .message { margin-bottom: 12px; max-width: 85%; padding: 8px 12px; border-radius: 8px; font-size: 14.5px; line-height: 1.4; position: relative; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); animation: fadeIn 0.2s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .bot { background: #ffffff; align-self: flex-start; border-top-left-radius: 0; }
+        .user { background: #dcf8c6; align-self: flex-end; border-top-right-radius: 0; }
+        .wa-audio-msg { display: flex; align-items: center; gap: 10px; min-width: 240px; padding: 5px 0; }
+        .wa-avatar-audio { position: relative; width: 48px; height: 48px; flex-shrink: 0; }
+        .wa-mic-icon { position: absolute; bottom: -1px; right: -1px; color: #34b7f1; font-size: 15px; background: white; border-radius: 50%; padding: 1px; }
+        .wa-audio-controls { flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
+        .wa-play-btn { color: #667781; font-size: 24px; cursor: pointer; width: 30px; display: flex; justify-content: center; }
+        .wa-progress-bar { width: 100%; height: 3px; background: #d1d1d1; position: relative; border-radius: 2px; }
+        .wa-progress-fill { width: 0%; height: 100%; background: #00a884; border-radius: 2px; position: relative; }
+        .wa-progress-fill::after { content: ""; position: absolute; right: -5px; top: -4px; width: 11px; height: 11px; background: #00a884; border-radius: 50%; }
+        .wa-audio-meta { display: flex; justify-content: space-between; font-size: 11px; color: #666; }
+        .enquete-card { background: white; border-radius: 10px; overflow: hidden; border: 1px solid #ddd; margin-top: 10px; align-self: flex-start; width: 85%; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); border-top-left-radius: 0; }
+        .enquete-header { padding: 12px; font-weight: 600; font-size: 14.5px; color: #111b21; border-bottom: 1px solid #eee; }
+        .enquete-options { padding: 8px; display: flex; flex-direction: column; gap: 8px; }
+        .enquete-btn { width: 100%; text-align: left; padding: 12px; border: 1px solid #e9edef; border-radius: 8px; font-size: 14px; color: #00a884; font-weight: 600; background: #f8f9fa; cursor: pointer; }
+        .options-container { display: flex; flex-direction: column; gap: 8px; margin: 10px 0; width: 100%; }
+        .option-btn { background: #fff; color: #00a884; border: 1px solid #e1e1e1; padding: 12px; border-radius: 8px; cursor: pointer; text-align: center; font-weight: 600; font-size: 14px; }
+        .input-area { padding: 10px; background: #f0f0f0; display: flex; gap: 8px; align-items: center; border-top: 1px solid #ddd; flex-shrink: 0; }
+        .input-area input { flex: 1; padding: 10px 15px; border-radius: 25px; border: none; outline: none; font-size: 15px; }
+        .typing { font-size: 12px; color: #666; margin-bottom: 8px; margin-left: 5px; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">
+        <i class="fas fa-arrow-left text-lg"></i>
+        <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
+            <img src="imagens/perfil.jpg" alt="Avatar" onerror="this.src='https://ui-avatars.com/api/?name=Tecnico&background=075e54&color=fff'">
+        </div>
+        <div class="flex-1">
+            <p class="font-bold leading-tight">Consultoria Técnica</p>
+            <p class="text-[10px] opacity-90">Online agora</p>
+        </div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+        <div id="typingIndicator" class="typing">Técnico...</div>
+    </div>
+
+    <div class="input-area" id="inputArea" style="visibility: hidden;">
+        <i class="far fa-smile text-gray-500 text-xl cursor-pointer"></i>
+        <input type="text" id="userInput" placeholder="Mensagem">
+        <button onclick="sendText()" id="sendBtn" class="bg-[#00a884] text-white w-10 h-10 rounded-full flex items-center justify-center shadow-md">
+            <i class="fas fa-paper-plane text-sm"></i>
+        </button>
+    </div>
+</div>
+
+<script>
+    // --- INSIRA SUAS CHAVES AQUI ---
+    const SUPABASE_URL = "https://bhclopgnjyfqvevgjzxd.supabase.co"; 
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJoY2xvcGduanlmcXZldmdqenhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NDQwNTMsImV4cCI6MjA4OTUyMDA1M30.damLeZ4b5cEcrhjSO4xlOiGk-yuE3ZJfYSKaWXd3R94"; 
+    // ------------------------------
+
+    const chatMessages = document.getElementById('chatMessages');
+    const inputArea = document.getElementById('inputArea');
+    const userInput = document.getElementById('userInput');
+    const typingIndicator = document.getElementById('typingIndicator');
+
+    let leadData = {
+        session_id: crypto.randomUUID(),
+        aparelho: '',
+        defeito: '',
+        status: 'visitante',
+        duvida_final: '',
+        historico_chat: []
+    };
+
+    let supabaseClient = null;
+    if (SUPABASE_URL && SUPABASE_KEY) {
+        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    }
+
+    async function syncLead() {
+        if (!supabaseClient) return;
+        try {
+            await supabaseClient.from('leads_conserto').upsert([leadData], { onConflict: 'session_id' });
+        } catch (e) { console.error("Erro sync:", e); }
+    }
+
+    function scrollChat() { chatMessages.scrollTop = chatMessages.scrollHeight; }
+
+    function addMessage(content, type) {
+        leadData.historico_chat.push({ sender: type, text: content, time: new Date().toLocaleTimeString() });
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${type}`;
+        msgDiv.innerText = content;
+        chatMessages.insertBefore(msgDiv, typingIndicator);
+        scrollChat();
+        syncLead();
+    }
+
+    function addAudioMessage(audioSrc, duration) {
+        leadData.historico_chat.push({ sender: 'bot', text: `[ÁUDIO ENVIADO: ${duration}]`, time: new Date().toLocaleTimeString() });
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message bot`;
+        msgDiv.innerHTML = `
+            <div class="wa-audio-msg">
+                <div class="wa-avatar-audio">
+                    <img src="imagens/perfil.jpg" class="w-full h-full rounded-full" onerror="this.src='https://ui-avatars.com/api/?name=T'">
+                    <i class="fas fa-microphone wa-mic-icon"></i>
+                </div>
+                <div class="wa-audio-controls">
+                    <div class="flex items-center gap-3"><i class="fas fa-play wa-play-btn" onclick="handleAudio(this, '${audioSrc}')"></i><div class="wa-progress-bar"><div class="wa-progress-fill"></div></div></div>
+                    <div class="wa-audio-meta"><span>${duration}</span><span class="text-[9px] font-bold">ORIGINAL</span></div>
+                </div>
+            </div>`;
+        chatMessages.insertBefore(msgDiv, typingIndicator);
+        scrollChat();
+        syncLead();
+    }
+
+    function handleAudio(btn, src) {
+        const audio = new Audio(src);
+        const fill = btn.parentElement.querySelector('.wa-progress-fill');
+        if (btn.classList.contains('fa-play')) {
+            btn.classList.replace('fa-play', 'fa-pause');
+            audio.play().catch(() => btn.classList.replace('fa-pause', 'fa-play'));
+            audio.ontimeupdate = () => fill.style.width = (audio.currentTime / audio.duration) * 100 + '%';
+            audio.onended = () => { btn.classList.replace('fa-pause', 'fa-play'); fill.style.width = '0%'; };
+        } else { btn.classList.replace('fa-pause', 'fa-play'); audio.pause(); }
+    }
+
+    function toggleTyping(show) { typingIndicator.style.display = show ? 'block' : 'none'; scrollChat(); }
+
+    function initChat() {
+        syncLead(); // Salva o acesso inicial
+        toggleTyping(true);
+        setTimeout(() => {
+            toggleTyping(false);
+            addMessage("Olá! Sou especialista em Refrigeração. Qual aparelho está precisando de manutenção?", "bot");
+            const opt = document.createElement('div');
+            opt.className = 'options-container';
+            opt.id = 'step-aparelho';
+            opt.innerHTML = `<button class="option-btn" onclick="selectAparelho('Geladeira')">Geladeira</button><button class="option-btn" onclick="selectAparelho('Máquina de Lavar')">Máquina de Lavar</button>`;
+            chatMessages.insertBefore(opt, typingIndicator);
+        }, 1500);
+    }
+
+    function selectAparelho(val) {
+        leadData.aparelho = val;
+        leadData.status = 'interagindo';
+        addMessage(val, "user");
+        document.getElementById('step-aparelho')?.remove();
+        toggleTyping(true);
+        setTimeout(() => {
+            toggleTyping(false);
+            addMessage(`Qual defeito essa ${val} está apresentando?`, "bot");
+            inputArea.style.visibility = 'visible';
+        }, 1000);
+    }
+
+    function sendText() {
+        const val = userInput.value.trim();
+        if(!val) return;
+        addMessage(val, "user");
+        userInput.value = '';
+        if(leadData.status === 'aguardando_duvida') {
+            leadData.duvida_final = val;
+            leadData.status = 'duvida_enviada';
+            inputArea.style.visibility = 'hidden';
+            setTimeout(() => addMessage("Vou analisar sua dúvida e te retorno!", "bot"), 1000);
+            return;
+        }
+        leadData.defeito = val;
+        inputArea.style.visibility = 'hidden';
+        processFlow();
+    }
+
+    function processFlow() {
+        setTimeout(() => { toggleTyping(true); }, 1000);
+        setTimeout(() => {
+            toggleTyping(false);
+            addAudioMessage("audio/audio1.mp3", "0:43");
+            setTimeout(() => {
+                toggleTyping(true);
+                setTimeout(() => {
+                    toggleTyping(false);
+                    addAudioMessage("audio/audio2.mp3", "0:38");
+                    setTimeout(showEnquete, 55000);
+                }, 40000);
+            }, 2000);
+        }, 1500);
+    }
+
+    function showEnquete() {
+        const enquete = document.createElement('div');
+        enquete.className = 'enquete-card';
+        enquete.id = 'final-enquete';
+        enquete.innerHTML = `
+            <div class="enquete-header">Deseja seguir com a consultoria agora?</div>
+            <div class="enquete-options">
+                <button class="enquete-btn" style="background: #e7f6f2;" onclick="choice('Sim')">Sim, quero resolver agora! ✅</button>
+                <button class="enquete-btn" onclick="choice('Dúvida')">Tenho uma dúvida 🤔</button>
+                <button class="enquete-btn" onclick="choice('Não')">Não, obrigado ❌</button>
+            </div>`;
+        chatMessages.insertBefore(enquete, typingIndicator);
+        scrollChat();
+    }
+
+    function choice(c) {
+        document.getElementById('final-enquete')?.remove();
+        addMessage(c === 'Dúvida' ? "Tenho uma dúvida 🤔" : c === 'Sim' ? "Sim, quero resolver!" : "Não, obrigado", "user");
+        if(c === 'Dúvida') {
+            leadData.status = 'aguardando_duvida';
+            setTimeout(() => { addMessage("Qual sua dúvida?", "bot"); inputArea.style.visibility = 'visible'; }, 1000);
+        } else if(c === 'Sim') {
+            leadData.status = 'aceitou';
+            setTimeout(() => addMessage("Gerando código Pix de R$ 27,00...", "bot"), 1000);
+        } else {
+            leadData.status = 'recusou';
+            setTimeout(() => addMessage("Até a próxima!", "bot"), 1000);
+        }
+    }
+
+    window.onload = initChat;
+    userInput.addEventListener("keypress", (e) => { if (e.key === "Enter") sendText(); });
+</script>
+</body>
+</html>
