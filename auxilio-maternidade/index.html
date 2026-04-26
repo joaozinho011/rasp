@@ -2,825 +2,152 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Consultoria Salário Maternidade | Laiana</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auxílio Maternidade - Consulta Gratuita</title>
     
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
+    <!-- Google Ads Pixel -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18104918690"></script>
     <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;
-      n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}
-      (window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-
-      fbq('init', '1770548813906087'); 
-      fbq('track', 'PageView');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-18104918690');
     </script>
-    <noscript>
-      <img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=1770548813906087&ev=PageView&noscript=1"/>
-    </noscript>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            -webkit-tap-highlight-color: transparent;
-            scroll-behavior: smooth;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdf2f8;
         }
-        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; }
-        
-        /* Sistema de Visibilidade dos Passos (BLINDADO) */
-        .step { display: none !important; }
-        .step.active { display: block !important; animation: slideUp 0.4s ease-out; }
-        .step.active.flex-step { display: flex !important; animation: slideUp 0.4s ease-out; }
-        
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .btn-whatsapp {
+            background-color: #25d366;
+            transition: all 0.3s ease;
         }
-        
-        .btn-option { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-        .btn-option:active { transform: scale(0.98); }
-        .btn-selected {
-            border-color: #ec4899 !important;
-            background-color: #fdf2f8 !important;
-            color: #be185d !important;
-            box-shadow: 0 0 0 2px #fbcfe8 !important;
+        .btn-whatsapp:active {
+            transform: scale(0.95);
         }
-
-        /* Chat Styles */
-        .chat-container { 
-            background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); 
-            background-size: contain; 
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
-        .typing-dot { width: 6px; height: 6px; background: #90949c; border-radius: 50%; display: inline-block; animation: typing 1.4s infinite; }
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes typing { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-        
-        /* Checkout Styles */
-        .checkout-body { font-family: 'Inter', sans-serif; }
-        .text-main-pink { color: #D53F8C; }
-        .bg-main-pink { background-color: #D53F8C; }
-        .bg-main-pink:hover { background-color: #B83280; }
-        .price-card { border: 2px solid #F6AD55; position: relative; }
-        .price-badge {
-            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
-            background: #F6AD55; color: white; padding: 4px 15px; border-radius: 20px;
-            font-size: 0.8rem; font-weight: 800;
+        /* Animação de pulso para o botão */
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
         }
-        
-        /* Botão Flutuante WhatsApp */
-        .whatsapp-float {
-            position: fixed; bottom: 30px; right: 30px; background-color: #25d366;
-            color: white; padding: 15px 25px; border-radius: 50px;
-            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3); z-index: 1000;
-            display: flex; align-items: center; gap: 12px; font-weight: 700;
-            transition: all 0.3s ease; text-decoration: none;
+        .animate-pulse-green {
+            animation: pulse-green 2s infinite;
         }
-        .whatsapp-float:hover { transform: translateY(-5px); }
-
-        input[type="date"], input[type="text"], input[type="tel"] { 
-            min-height: 56px; background: #fff; padding: 12px; border-radius: 12px; outline: none;
+        /* Botão fixo no rodapé para mobile */
+        .sticky-cta {
+            position: fixed;
+            bottom: 20px;
+            left: 5%;
+            width: 90%;
+            z-index: 50;
         }
     </style>
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18104918690"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'AW-18104918690');
-</script>
-
-
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col antialiased">
+<body class="min-h-screen flex flex-col items-center pb-24 lg:pb-0">
 
-    <header id="site-header" class="w-full bg-white/80 backdrop-blur-md border-b border-gray-100 py-4 px-6 sticky top-0 z-50 flex justify-between items-center">
-        <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-pink-500 rounded-lg flex items-center justify-center text-white shadow-lg shadow-pink-200">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
-            <span class="font-extrabold text-gray-800 tracking-tight text-sm uppercase">Consultoria Materna</span>
+    <!-- Header / Hero -->
+    <header class="w-full max-w-md bg-white p-6 rounded-b-3xl card-shadow text-center">
+        <div class="mb-4 inline-block p-3 bg-pink-100 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
         </div>
-        <div class="flex items-center gap-1 bg-green-50 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold">
-            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> ONLINE
-        </div>
+        <h1 class="text-2xl font-bold text-gray-800 mb-2 leading-tight">Você tem direito ao Auxílio Maternidade?</h1>
+        <p class="text-gray-600">Mães desempregadas ou autônomas podem receber até <span class="text-pink-600 font-bold text-lg">R$ 5.648,00</span>.</p>
     </header>
 
-    <main class="flex-grow flex items-center justify-center p-4 md:p-8 w-full">
+    <!-- Main Content -->
+    <main class="w-full max-w-md p-6 space-y-6">
         
-        <div id="main-card" class="w-full max-w-md bg-white rounded-[40px] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-50 overflow-hidden relative">
-            
-            <div id="content-container">
-                <div id="content-padding" class="p-8 md:p-10">
-                    
-                    <div id="step-intro" class="step active text-center">
-                        <div class="inline-flex p-4 bg-pink-50 rounded-3xl mb-6">
-                            <svg class="text-pink-500 w-12 h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5.7 4.9 2.1"/><path d="M12 3v2"/><path d="m16.2 7.8 1.4-1.4"/><path d="m7.8 7.8-1.4-1.4"/></svg>
-                        </div>
-                        <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 leading-tight mb-4">
-                            Receba seu <span class="text-pink-600">Salário-Maternidade</span> sem burocracia.
-                        </h1>
-                        <p class="text-gray-500 text-base mb-8 font-medium">
-                            Centenas de mães deixam de receber até R$ 6.200,00 por falta de orientação. Faça sua avaliação rápida!
-                        </p>
-                        <button onclick="window.goToQuiz()" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-5 rounded-2xl shadow-xl shadow-pink-200 transition-all active:scale-95 flex items-center justify-center gap-3">
-                            Verificar se tenho direito
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                        </button>
+        <!-- Checklist -->
+        <div class="bg-white p-6 rounded-2xl card-shadow border-l-4 border-pink-400">
+            <h2 class="text-lg font-bold text-gray-800 mb-4 uppercase text-sm tracking-widest text-center">Quem pode receber?</h2>
+            <ul class="space-y-4">
+                <li class="flex items-start text-gray-700">
+                    <div class="bg-green-100 p-1 rounded-full mr-3">
+                        <svg class="h-4 w-4 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
                     </div>
-
-                    <div id="step-quiz" class="step">
-                        <div class="flex items-center justify-between mb-6">
-                            <button onclick="window.goBack()" class="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-                            </button>
-                            <div class="flex-grow mx-4 h-2 bg-gray-100 rounded-full overflow-hidden">
-                                <div id="progress-bar" class="bg-pink-500 h-full transition-all duration-500" style="width: 10%;"></div>
-                            </div>
-                            <span id="quiz-count" class="text-[11px] font-bold text-gray-400 uppercase">01/08</span>
-                        </div>
-                        <h2 id="quiz-question" class="text-xl font-bold text-gray-800 mb-8 min-h-[56px] leading-snug">Carregando...</h2>
-                        <div id="quiz-options" class="space-y-4"></div>
-                        <div id="quiz-input-container" class="hidden space-y-6">
-                            <label class="text-xs font-bold text-pink-600 uppercase tracking-widest mb-2 block text-center">Data de Nascimento</label>
-                            <input type="date" id="date-input" class="w-full text-center text-lg font-bold border-2 border-gray-100 focus:border-pink-500 bg-gray-50 outline-none rounded-2xl">
-                            <button onclick="window.submitDate()" class="w-full bg-pink-600 text-white font-bold py-5 rounded-2xl shadow-lg transition-all">Próximo passo</button>
-                        </div>
+                    <span>Mães com filhos de <b>até 5 anos</b> de idade.</span>
+                </li>
+                <li class="flex items-start text-gray-700">
+                    <div class="bg-green-100 p-1 rounded-full mr-3">
+                        <svg class="h-4 w-4 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
                     </div>
-
-                    <div id="step-calculating" class="step text-center py-10">
-                        <div class="w-20 h-20 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
-                            <svg class="text-pink-500 w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h8"/><path d="M8 10h8"/><path d="M8 14h8"/></svg>
-                        </div>
-                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Quase lá...</h2>
-                        <p class="text-gray-500 mb-8 font-medium">Cruzando informações com as diretrizes do INSS.</p>
-                        <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
-                            <div id="loading-bar" class="bg-pink-500 h-full transition-all duration-75" style="width: 0%;"></div>
-                        </div>
+                    <span>Quem está <b>desempregada</b> há algum tempo.</span>
+                </li>
+                <li class="flex items-start text-gray-700">
+                    <div class="bg-green-100 p-1 rounded-full mr-3">
+                        <svg class="h-4 w-4 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
                     </div>
-
-                    <div id="step-result" class="step text-center">
-                        <div class="bg-green-50 p-6 rounded-[24px] mb-8 border border-green-100">
-                            <h2 class="text-green-800 font-extrabold text-xl mb-1">Aprovada no Sistema!</h2>
-                            <p class="text-green-700 text-sm font-medium">Seu perfil é compatível para receber o benefício.</p>
-                        </div>
-                        <p class="text-gray-400 text-xs font-bold uppercase tracking-widest mb-2">Valor Estimado Disponível</p>
-                        <h1 class="text-5xl font-black text-gray-900 mb-2 tracking-tighter">R$ 6.200<span class="text-pink-600">,00</span></h1>
-                        <p class="text-gray-500 text-sm font-medium mb-10 leading-relaxed px-4">Pago em até 4 parcelas mensais.</p>
-                        <div class="bg-pink-50/50 p-6 rounded-3xl border border-pink-100/50">
-                            <h3 class="text-gray-800 font-bold mb-6">Este valor te ajudaria hoje?</h3>
-                            <div class="grid grid-cols-1 gap-4">
-                                <button onclick="window.highlightBtn(this); setTimeout(window.goToChat, 400)" class="btn-option w-full bg-white border-2 border-pink-500 text-pink-600 font-extrabold py-4 rounded-2xl active:scale-95 transition-all shadow-sm">SIM, AJUDARIA MUITO</button>
-                                <button onclick="window.highlightBtn(this); setTimeout(window.goToChat, 400)" class="btn-option w-full bg-pink-600 text-white font-extrabold py-4 rounded-2xl active:scale-95 transition-all shadow-xl shadow-pink-100">COM CERTEZA!</button>
-                            </div>
-                        </div>
-                    </div>
-                </div> 
-            </div>
-
-            <div id="step-chat" class="step flex-step flex-col h-[580px] overflow-hidden">
-                <div class="bg-[#075e54] p-4 flex items-center gap-3 text-white flex-shrink-0">
-                    <div class="w-10 h-10 rounded-full bg-gray-300 overflow-hidden border border-white/20">
-                        <img id="chat-profile-pic" src="imagens/laiana.png" alt="Laiana" class="w-full h-full object-cover" onerror="this.src='https://i.pravatar.cc/100?u=laiana'">
-                    </div>
-                    <div class="flex-grow">
-                        <h4 class="font-bold text-sm">Consultoria Laiana</h4>
-                        <span id="chat-status" class="text-[10px] opacity-80 flex items-center gap-1">
-                            <span class="w-1.5 h-1.5 bg-green-400 rounded-full"></span> online agora
-                        </span>
-                    </div>
-                </div>
-
-                <div id="chat-messages" class="flex-grow p-4 overflow-y-auto chat-container flex flex-col gap-3">
-                    <div id="typing-indicator" class="hidden self-start bg-white p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[80%]">
-                        <div class="flex gap-1"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>
-                    </div>
-                </div>
-
-                <div id="chat-controls" class="p-4 bg-gray-100 border-t border-gray-200 flex-shrink-0">
-                    
-                    <div id="chat-input-name" class="hidden flex gap-2">
-                        <input type="text" id="user-name-input" placeholder="Digite seu nome..." class="flex-grow border-0 shadow-sm px-4">
-                        <button onclick="window.submitChatName()" class="bg-[#075e54] text-white p-4 rounded-xl">
-                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                        </button>
-                    </div>
-
-                    <div id="chat-input-phone" class="hidden flex gap-2">
-                        <input type="tel" id="user-phone-input" placeholder="(00) 9 0000-0000" class="flex-grow border-0 shadow-sm px-4">
-                        <button onclick="window.submitChatPhone()" class="bg-[#075e54] text-white p-4 rounded-xl">
-                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                        </button>
-                    </div>
-
-                    <div id="poll-1" class="hidden">
-                        <div class="grid grid-cols-2 gap-3">
-                            <button onclick="window.answerPoll(1, 'Sim')" class="bg-white border-2 border-pink-100 text-[#075e54] font-bold py-4 rounded-2xl active:bg-pink-50 transition-all">SIM</button>
-                            <button onclick="window.answerPoll(1, 'Não')" class="bg-white border-2 border-pink-100 text-[#075e54] font-bold py-4 rounded-2xl active:bg-pink-50 transition-all">NÃO</button>
-                        </div>
-                    </div>
-
-                    <div id="poll-final" class="hidden">
-                        <button onclick="window.finalRedirectToCheckout()" class="w-full bg-[#25D366] text-white font-black py-5 rounded-2xl shadow-xl flex items-center justify-center gap-3 text-lg animate-bounce">
-                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.067 2.877 1.215 3.076.149.198 2.095 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                            CONCLUIR MINHA INSCRIÇÃO
-                        </button>
-                    </div>
-                </div>
-            </div>
+                    <span>Trabalhadoras Rurais, MEI ou Autônomas.</span>
+                </li>
+            </ul>
         </div>
 
-        <div id="step-checkout" class="step w-full max-w-4xl mx-auto checkout-body pb-24 fade-in">
-            
-            <nav class="py-6 px-4 mb-8">
-                <div class="container mx-auto flex justify-center">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-6 h-6 text-main-pink" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                        <span class="font-bold text-lg text-gray-700 uppercase tracking-widest">Consultoria Segura</span>
-                    </div>
-                </div>
-            </nav>
-
-            <section class="text-center mb-12">
-                <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">
-                    Quase lá! Você está a um passo de <span class="text-main-pink">garantir seu benefício.</span>
-                </h1>
-                <p class="text-lg text-gray-600">
-                    Como conversamos, aqui está o acesso à sua consultoria completa para o Salário Maternidade.
-                </p>
-            </section>
-
-            <div class="grid md:grid-cols-2 gap-8 items-start">
-                
-                <div class="bg-white p-8 rounded-3xl shadow-xl border border-pink-50">
-                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
-                        <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Sua Consultoria Inclui:
-                    </h3>
-                    
-                    <ul class="space-y-5">
-                        <li class="flex gap-4">
-                            <div class="flex-shrink-0 w-8 h-8 bg-pink-100 text-main-pink rounded-full flex items-center justify-center font-bold">1</div>
-                            <div>
-                                <p class="font-semibold">Checklist de Documentos</p>
-                                <p class="text-sm text-gray-500">Tudo o que você precisa separar para não ter o pedido negado.</p>
-                            </div>
-                        </li>
-                        <li class="flex gap-4">
-                            <div class="flex-shrink-0 w-8 h-8 bg-pink-100 text-main-pink rounded-full flex items-center justify-center font-bold">2</div>
-                            <div>
-                                <p class="font-semibold">Guia Passo a Passo (INSS)</p>
-                                <p class="text-sm text-gray-500">Como preencher o requerimento corretamente no sistema.</p>
-                            </div>
-                        </li>
-                        <li class="flex gap-4">
-                            <div class="flex-shrink-0 w-8 h-8 bg-pink-100 text-main-pink rounded-full flex items-center justify-center font-bold">3</div>
-                            <div>
-                                <p class="font-semibold">Checklist de Direitos</p>
-                                <p class="text-sm text-gray-500">Tudo o que você precisa saber sobre o Auxílio Maternidade.</p>
-                            </div>
-                        </li>
-                        <li class="flex gap-4">
-                            <div class="flex-shrink-0 w-8 h-8 bg-pink-100 text-main-pink rounded-full flex items-center justify-center font-bold">4</div>
-                            <div>
-                                <p class="font-semibold">Suporte VIP WhatsApp</p>
-                                <p class="text-sm text-gray-500">Tire dúvidas diretamente comigo durante todo o processo.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="space-y-6">
-                    <div class="price-card bg-white p-8 rounded-3xl shadow-2xl text-center">
-                        <div class="price-badge">OFERTA ÚNICA</div>
-                        <p class="text-gray-500 font-medium mb-2">Investimento na sua tranquilidade:</p>
-                        
-                        <div class="mb-4">
-                            <span class="text-gray-400 line-through text-sm italic">De R$ 297,00 por apenas:</span>
-                            <div class="flex items-center justify-center gap-1 mt-1">
-                                <span class="text-2xl font-bold align-top mt-2">R$</span>
-                                <span class="text-6xl font-extrabold text-gray-900">147</span>
-                                <span class="text-2xl font-bold align-bottom mb-2">,00</span>
-                            </div>
-                            <p class="text-green-600 font-bold text-sm mt-2">Ou em até 12x no cartão de crédito</p>
-                        </div>
-
-                        <a href="https://pay.kiwify.com.br/GrilcgO" class="block w-full bg-main-pink text-white py-5 rounded-2xl font-bold text-xl shadow-lg hover:scale-105 transition-all mb-4 uppercase">
-                            FINALIZAR INSCRIÇÃO
-                        </a>
-
-                        <div class="flex items-center justify-center gap-4 text-xs text-gray-400">
-                            <span class="flex items-center gap-1">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>
-                                Acesso Imediato
-                            </span>
-                            <span class="flex items-center gap-1">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
-                                Compra 100% Segura
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="bg-blue-50 p-4 rounded-2xl flex items-center gap-4 border border-blue-100">
-                        <div class="bg-blue-500 text-white p-2 rounded-full">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold text-blue-900">Garantia Total</p>
-                            <p class="text-xs text-blue-700">Satisfação garantida.</p>
-                        </div>
-                    </div>
-                </div>
+        <!-- Social Proof -->
+        <div class="text-center bg-white p-4 rounded-xl border-2 border-dashed border-pink-300">
+            <div class="flex justify-center -space-x-2 mb-2">
+                <div class="w-8 h-8 rounded-full bg-gray-300 border-2 border-white flex items-center justify-center text-[10px] font-bold">M1</div>
+                <div class="w-8 h-8 rounded-full bg-pink-400 border-2 border-white flex items-center justify-center text-[10px] font-bold text-white">M2</div>
+                <div class="w-8 h-8 rounded-full bg-gray-400 border-2 border-white flex items-center justify-center text-[10px] font-bold text-white">M3</div>
             </div>
-
-            <div class="mt-16 text-center bg-pink-50 p-8 rounded-3xl">
-                <h4 class="font-bold text-gray-800 mb-2">Ficou com alguma dúvida de última hora?</h4>
-                <p class="text-gray-600 mb-6">Não finalize com dúvidas. Se algo não ficou claro na nossa conversa, me chame agora!</p>
-                <button onclick="window.contactWhatsAppDoubt()" class="inline-flex items-center gap-2 text-green-600 font-bold border-2 border-green-600 px-6 py-2 rounded-full hover:bg-green-600 hover:text-white transition-all">
-                    FALAR COMIGO NO WHATSAPP
-                </button>
-            </div>
+            <p class="text-xs text-pink-800 font-semibold uppercase italic">Mais de 1.500 mães atendidas só este mês!</p>
         </div>
+
+        <!-- Call to Action -->
+        <div class="sticky-cta md:relative md:bottom-0 md:left-0 md:w-full space-y-3">
+            <button id="ctaButton" class="btn-whatsapp animate-pulse-green flex items-center justify-center gap-3 w-full py-5 rounded-2xl text-white font-black text-xl shadow-2xl uppercase">
+                <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.236 3.484 8.417 0 6.556-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884 0 2.225.569 3.808 1.565 5.469l-.992 3.613 3.716-.975zM17.473 14.382c-.301-.151-1.782-.879-2.057-.979-.275-.1-.475-.151-.675.151-.199.301-.775.979-.95 1.179-.175.201-.35.226-.65.075-.3-.15-1.265-.467-2.41-1.485-.89-.794-1.49-1.775-1.665-2.076-.175-.301-.019-.463.13-.613.135-.135.301-.35.451-.526.15-.175.2-.301.3-.501.1-.2.05-.375-.025-.526-.075-.151-.675-1.628-.925-2.229-.244-.585-.491-.506-.675-.515-.174-.008-.374-.01-.574-.01-.2 0-.525.075-.8.376-.275.301-1.05 1.027-1.05 2.504 0 1.478 1.075 2.906 1.225 3.106.15.201 2.115 3.231 5.123 4.531.715.31 1.273.495 1.708.633.719.229 1.373.197 1.89.12.576-.086 1.782-.728 2.032-1.429.25-.701.25-1.303.175-1.429-.075-.126-.275-.201-.575-.351z"/>
+                </svg>
+                QUERO CONSULTAR AGORA
+            </button>
+            <p class="text-center text-[10px] text-gray-500 font-medium px-4">
+                Atendimento Rápido e Seguro via WhatsApp
+            </p>
+        </div>
+
     </main>
 
-    <footer id="main-footer" class="p-6 text-center mt-auto opacity-40">
-        <p class="text-[9px] font-bold uppercase tracking-widest text-gray-500">
-            Consultoria Independente • © 2024
-        </p>
+    <!-- Footer Info -->
+    <footer class="w-full max-w-md p-8 text-center text-gray-400 text-[10px] space-y-2 mb-10 md:mb-0">
+        <p>&copy; 2026 Auxílio Maternidade Brasil. Todos os direitos reservados.</p>
+        <p>Aviso: Esta é uma página de consultoria privada. Não possuímos vínculo direto com o INSS.</p>
     </footer>
 
-    <a id="float-zap" href="#" onclick="window.contactWhatsAppDoubt(); return false;" class="whatsapp-float hidden" style="display: none !important;">
-        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.067 2.877 1.215 3.076.149.198 2.095 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Precisa de ajuda?
-    </a>
-
     <script>
-        // ==========================================
-        // CONFIGURAÇÕES GERAIS E INTEGRAÇÃO
-        // ==========================================
-        const CONFIG = {
-            phone: "5535987053223", 
-            profilePic: "imagens/laiana.png", 
-            audio1: "audios/audio1.mp3", 
-            audio2: "audios/audio2.mp3", 
-            consultantName: "Laiana",
-            delays: {
-                typing: 4000,
-                afterAudio: 50000
-            }
-        };
+        // --- CONFIGURAÇÃO ---
+        const WHATSAPP_NUMBER = "5535987053223"; // ALTERE AQUI O SEU NÚMERO
+        const MESSAGE = "Olá! Vi a página do Auxílio Maternidade e gostaria de saber se tenho direito. Pode me orientar?";
 
-        // Força a atualização da foto.
-        document.addEventListener('DOMContentLoaded', function() {
-            const pic = document.getElementById('chat-profile-pic');
-            if(pic) {
-                pic.src = CONFIG.profilePic;
-            }
-        });
-
-        // --- CONFIGURAÇÃO SUPABASE BLINDADA ---
-        const SUPABASE_URL = 'https://bhclopgnjyfqvevgjzxd.supabase.co'; 
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJoY2xvcGduanlmcXZldmdqenhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NDQwNTMsImV4cCI6MjA4OTUyMDA1M30.damLeZ4b5cEcrhjSO4xlOiGk-yuE3ZJfYSKaWXd3R94';
-        
-        let dbClient = null; 
-        try {
-            if (window.supabase) {
-                dbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            }
-        } catch (e) {
-            console.log("Banco de dados local/off");
-        }
-
-        function generateUserId() {
-            // Fallback robusto que cria UUID real (v4) para o PostgreSQL aceitar perfeitamente
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
-        }
-        const userId = generateUserId();
-        
-        let userData = {
-            status: 'access',
-            name: '',
-            phone: '',
-            quizAnswers: {}
-        };
-
-        function updateSupabaseData(statusUpdate) {
-            userData.status = statusUpdate;
-            if (!dbClient) return; 
+        // --- LÓGICA DO CLIQUE ---
+        document.getElementById('ctaButton').addEventListener('click', function() {
             
-            try {
-                dbClient.from('leads').upsert([{ 
-                    id: userId, 
-                    status: userData.status, 
-                    name: userData.name, 
-                    phone: userData.phone, 
-                    quiz_answers: userData.quizAnswers
-                }]).then(function(response) {
-                    if(response.error) console.log("Erro DB:", response.error);
-                }).catch(function(e) {
-                    console.log("Erro Rede:", e);
-                });
-            } catch (e) {
-                console.log("Falha silenciosa:", e);
-            }
-        }
-        
-        updateSupabaseData('access');
-
-        // ==========================================
-        // --- LÓGICA DO QUIZ (FUNCIONALIDADE PURA) ---
-        // ==========================================
-        let currentStepId = 'registro';
-        let stepHistory = ['intro'];
-        let totalSteps = 8;
-        let stepCounter = 1;
-        const answers = {};
-
-        const flow = {
-            registro: { label: 'Registro em Carteira', question: "Você trabalha ou já foi registrada?", options: ["Sim, atualmente", "Sim, no passado", "Não, nunca"], next: 'contribuicao' },
-            contribuicao: { label: 'Pagamento Individual', question: "Você já pagou o INSS por conta própria?", options: ["Sim, pago hoje", "Já paguei antes", "Nunca paguei"], next: 'momento' },
-            momento: { label: 'Situação Atual', question: "Qual sua situação atual?", options: ["Já tive o bebê", "Estou grávida agora"], next: function(ans) { return ans === "Já tive o bebê" ? 'data_nascimento' : 'ultima_contribuicao' } },
-            data_nascimento: { label: 'Data Nascimento', question: "Data de nascimento do seu bebê?", type: 'date', next: 'trabalhando_nascimento' },
-            trabalhando_nascimento: { label: 'Trabalhando no Parto', question: "Trabalhava no dia do nascimento?", options: ["Sim, trabalhava", "Não, estava parada"], next: function(ans) { return ans === "Sim, trabalhava" ? 'licenca_maternidade' : 'tempo_parada' } },
-            tempo_parada: { label: 'Tempo Parada', question: "Quanto tempo antes de nascer parou?", options: ["Menos de 6 meses", "De 6 meses a 1 ano", "Mais de 1 ano"], next: 'ultima_contribuicao' },
-            licenca_maternidade: { label: 'Licença Paga', question: "A empresa pagou a licença?", options: ["Sim, recebi tudo", "Não recebi"], next: 'ultima_contribuicao' },
-            ultima_contribuicao: { label: 'Última Contribuição', question: "Faz quanto tempo o último pagamento?", options: ["Menos de 1 ano", "Entre 1 e 3 anos", "Mais de 3 anos", "Não lembro"], next: 'FINISH' }
-        };
-
-        window.goToQuiz = () => {
-            currentStepId = 'registro';
-            stepCounter = 1;
-            stepHistory = ['intro'];
-            showStep('quiz');
-            renderQuestion();
-            updateSupabaseData('quiz');
-        }
-
-        window.submitDate = () => {
-            const val = document.getElementById('date-input').value;
-            if (!val) return;
-            handleAnswer(val.split('-').reverse().join('/'));
-        }
-
-        function renderQuestion() {
-            const q = flow[currentStepId];
-            document.getElementById('quiz-question').innerText = q.question;
-            
-            document.getElementById('quiz-count').innerText = String(stepCounter).padStart(2, '0') + '/' + totalSteps;
-            document.getElementById('progress-bar').style.width = (stepCounter / totalSteps * 100) + '%';
-
-            const optCont = document.getElementById('quiz-options');
-            const inpCont = document.getElementById('quiz-input-container');
-            optCont.innerHTML = ''; 
-            inpCont.classList.add('hidden');
-            
-            if (q.type === 'date') {
-                inpCont.classList.remove('hidden');
-            } else {
-                q.options.forEach(function(opt) {
-                    const btn = document.createElement('button');
-                    btn.className = "btn-option w-full text-left p-5 rounded-[22px] border-2 border-gray-100 font-bold text-gray-700 flex justify-between bg-white shadow-sm outline-none";
-                    btn.innerHTML = '<span>' + opt + '</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
-                    
-                    btn.onclick = function() {
-                        window.highlightBtn(this);
-                        setTimeout(function() { handleAnswer(opt); }, 400);
-                    };
-                    
-                    optCont.appendChild(btn);
-                });
-            }
-        }
-
-        function handleAnswer(ans) {
-            try {
-                const q = flow[currentStepId];
-                answers[q.label] = ans;
-                userData.quizAnswers = answers; 
-                updateSupabaseData(userData.status); 
-                
-                let nextStep = '';
-                if (typeof q.next === 'function') {
-                    nextStep = q.next(ans);
-                } else {
-                    nextStep = q.next;
-                }
-
-                if (nextStep === 'FINISH') {
-                    startCalculating(); 
-                } else { 
-                    stepHistory.push(currentStepId);
-                    currentStepId = nextStep; 
-                    stepCounter++;
-                    renderQuestion(); 
-                }
-            } catch (e) {
-                console.error("Erro no fluxo:", e);
-            }
-        }
-
-        function startCalculating() {
-            showStep('calculating');
-            let p = 0; 
-            const bar = document.getElementById('loading-bar');
-            const int = setInterval(function() { 
-                p += 5; 
-                bar.style.width = p + '%'; 
-                if (p >= 100) { 
-                    clearInterval(int); 
-                    showStep('result'); 
-                } 
-            }, 30);
-        }
-
-        // ==========================================
-        // --- LÓGICA DO CHAT SIMULADO ---
-        // ==========================================
-        window.goToChat = () => {
-            document.getElementById('site-header').classList.add('hidden');
-            document.getElementById('main-footer').classList.add('hidden');
-            
-            showStep('chat');
-            updateSupabaseData('chat');
-            startChatFlow();
-        }
-
-        function startChatFlow() {
-            if (typeof confetti !== 'undefined') {
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ec4899', '#ffffff', '#ffd700'] });
-            }
-
-            setTimeout(function() {
-                addChatMessage("text", "Parabéns mamãe! 🌸 Desejo muita saúde pra você e seu filho(a).");
-                setTimeout(function() {
-                    addChatMessage("text", "Para começarmos, qual o seu primeiro nome?");
-                    document.getElementById('chat-input-name').classList.remove('hidden');
-                }, 1500);
-            }, 800);
-        }
-
-        window.submitChatName = () => {
-            const name = document.getElementById('user-name-input').value;
-            if (name.length < 2) return;
-            
-            document.getElementById('chat-input-name').classList.add('hidden');
-            addChatMessage("text", name, "self");
-            
-            userData.name = name;
-            updateSupabaseData('chat');
-            
-            setTimeout(function() {
-                addChatMessage("text", "Prazer, " + name + "! Agora, qual o seu WhatsApp com DDD?");
-                document.getElementById('chat-input-phone').classList.remove('hidden');
-                initPhoneMask();
-            }, 1000);
-        }
-
-        function initPhoneMask() {
-            const input = document.getElementById('user-phone-input');
-            input.addEventListener('input', function(e) {
-                let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,1})(\d{0,4})(\d{0,4})/);
-                if (!x) return;
-                e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? ' ' + x[3] + (x[4] ? '-' + x[4] : '') : '');
-            });
-        }
-
-        window.submitChatPhone = () => {
-            const phone = document.getElementById('user-phone-input').value;
-            if (phone.length < 14) return;
-            
-            document.getElementById('chat-input-phone').classList.add('hidden');
-            addChatMessage("text", phone, "self");
-            
-            userData.phone = phone;
-            updateSupabaseData('chat');
-
-            setTimeout(function() {
-                addChatMessage("text", "Ouça com atenção o recado abaixo:");
-                setTimeout(function() {
-                    addChatMessage("audio", CONFIG.audio1, "other", true); 
-                    setTimeout(function() {
-                        document.getElementById('poll-1').classList.remove('hidden');
-                        document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
-                    }, CONFIG.delays.afterAudio);
-                }, 1000);
-            }, 1200);
-        }
-
-        window.answerPoll = (num, val) => {
-            document.getElementById('poll-1').classList.add('hidden');
-            addChatMessage("text", val, "self");
-            
-            showTyping(true);
-            setTimeout(function() {
-                showTyping(false);
-                addChatMessage("audio", CONFIG.audio2, "other", true);
-                setTimeout(function() {
-                    document.getElementById('poll-final').classList.remove('hidden');
-                    document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
-                }, CONFIG.delays.afterAudio);
-            }, CONFIG.delays.typing);
-        }
-
-        function isAnyAudioPlaying() {
-            let playing = false;
-            document.querySelectorAll('audio').forEach(function(a) {
-                if (!a.paused) playing = true;
-            });
-            return playing;
-        }
-
-        function addChatMessage(type, content, sender, autoplay) {
-            if (!sender) sender = "other";
-            const container = document.getElementById('chat-messages');
-            const msgDiv = document.createElement('div');
-            
-            if (sender === "other") {
-                msgDiv.className = "self-start bg-white p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[85%] border-l-4 border-pink-400";
-            } else {
-                msgDiv.className = "self-end bg-[#dcf8c6] p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%]";
-            }
-
-            if (type === "audio") {
-                msgDiv.innerHTML = `
-                    <div class="flex items-center gap-3 p-1 cursor-pointer">
-                        <div class="bg-gray-100 rounded-full p-2 play-icon-container">
-                            <svg width="24" height="24" fill="currentColor" class="text-gray-400 play-icon"><path d="M8 5v14l11-7z"/></svg>
-                        </div>
-                        <div class="flex flex-col gap-1 w-36">
-                            <div class="h-1 bg-gray-200 rounded-full overflow-hidden">
-                                <div class="h-full bg-pink-500 transition-all duration-75 progress-bar" style="width:0%"></div>
-                            </div>
-                            <span class="text-[10px] text-gray-400">Áudio da Laiana</span>
-                        </div>
-                        <audio src="${content}" class="hidden"></audio>
-                    </div>
-                `;
-                
-                const audioEl = msgDiv.querySelector('audio');
-                const playIcon = msgDiv.querySelector('.play-icon');
-                const progressBar = msgDiv.querySelector('.progress-bar');
-                
-                msgDiv.onclick = function() {
-                    if(audioEl.paused) {
-                        audioEl.play().catch(function(e) { console.log('Playback failed', e) });
-                    } else {
-                        audioEl.pause();
-                    }
-                };
-
-                audioEl.addEventListener('play', function() {
-                    document.querySelectorAll('audio').forEach(function(a) {
-                        if(a !== audioEl) a.pause();
-                    });
-                    playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; 
-                });
-
-                audioEl.addEventListener('pause', function() {
-                    playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>'; 
-                });
-
-                audioEl.addEventListener('ended', function() {
-                    progressBar.style.width = '0%';
-                    playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
-                });
-
-                audioEl.addEventListener('timeupdate', function() {
-                    if(audioEl.duration) {
-                        const percent = (audioEl.currentTime / audioEl.duration) * 100;
-                        if (!isNaN(percent)) progressBar.style.width = percent + '%';
-                    }
-                });
-
-                container.appendChild(msgDiv);
-                container.scrollTop = container.scrollHeight;
-
-                if (autoplay) {
-                    if (!isAnyAudioPlaying()) {
-                        audioEl.play().catch(function(e) { console.log('Autoplay prevent by browser', e) });
-                    }
-                }
-            } else {
-                msgDiv.innerHTML = '<p class="text-sm text-gray-800 font-medium px-1">' + content + '</p>';
-                container.appendChild(msgDiv);
-                container.scrollTop = container.scrollHeight;
-            }
-        }
-
-        function showTyping(show) {
-            const el = document.getElementById('typing-indicator');
-            if (show) {
-                el.classList.remove('hidden');
-            } else {
-                el.classList.add('hidden');
-            }
-            const container = document.getElementById('chat-messages');
-            container.appendChild(el);
-            container.scrollTop = container.scrollHeight;
-        }
-
-        // ==============================================
-        // TRANSIÇÃO PARA CHECKOUT E DISPARO DE LEAD E CONVERSÃO ADS
-        // ==============================================
-        window.finalRedirectToCheckout = () => {
-            
-            // DISPARA O EVENTO DE CONVERSÃO DO GOOGLE ADS AQUI!
+            // 1. DISPARA O EVENTO DE CONVERSÃO DO GOOGLE ADS
             if (typeof gtag !== 'undefined') {
-                gtag('event', 'conversion', {'send_to': 'AW-18104918690/dy7DCMjVgJ8cEKLFjLlD'});
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-18104918690/dy7DCMjVgJ8cEKLFjLlD'
+                });
+                console.log('Conversão disparada');
             }
 
-            // 1. DISPARA O EVENTO LEAD AQUI!
-            if (typeof fbq !== 'undefined') {
-                fbq('track', 'Lead');
-            }
+            // 2. REDIRECIONA PARA O WHATSAPP
+            const encodedMessage = encodeURIComponent(MESSAGE);
+            const finalUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodedMessage}`;
             
-            // 2. Atualiza status no banco Supabase
-            updateSupabaseData('lead');
-
-            // 3. Pausar qualquer áudio tocando no momento de ir pro checkout
-            document.querySelectorAll('audio').forEach(function(a) { a.pause(); });
-
-            // 4. Oculta o Quiz e Chat completamente
-            document.getElementById('main-card').classList.add('hidden');
-            
-            // 5. Mostra o Checkout
-            showStep('checkout');
-            
-            // 6. Exibe o botão do Whatsapp Flutuante removendo a trava de segurança inline
-            const zapBtn = document.getElementById('float-zap');
-            if(zapBtn) {
-                zapBtn.classList.remove('hidden');
-                zapBtn.style.display = 'flex';
-            }
-        }
-
-        // --- ENVIAR MENSAGEM DO CHECKOUT COM OS DADOS ---
-        window.contactWhatsAppDoubt = () => {
-            let msg = "Ainda tenho uma dúvida antes de pagar a consultoria.\n\n";
-            msg += "*MEUS DADOS (Preenchidos na Avaliação):*\n";
-            msg += "• Nome: " + (userData.name || 'Não informado') + "\n";
-            msg += "• WhatsApp: " + (userData.phone || 'Não informado') + "\n";
-            
-            for (const key in answers) {
-                if (answers.hasOwnProperty(key)) {
-                    msg += "• " + key + ": " + answers[key] + "\n";
-                }
-            }
-            window.open("https://wa.me/" + CONFIG.phone + "?text=" + encodeURIComponent(msg), '_blank');
-        }
-
-        // --- FUNÇÕES AUXILIARES ---
-        function showStep(id) {
-            document.querySelectorAll('.step').forEach(function(s) {
-                s.classList.remove('active');
-                s.classList.remove('flex-step');
-            });
-            const target = document.getElementById('step-' + id);
-            if(target) {
-                target.classList.add('active');
-                if(id === 'chat') {
-                    target.classList.add('flex-step');
-                }
-            }
-            window.scrollTo(0, 0);
-        }
-        
-        window.highlightBtn = (el) => {
-            el.parentElement.querySelectorAll('button').forEach(function(b) {
-                b.classList.remove('btn-selected');
-            });
-            el.classList.add('btn-selected');
-        }
-        
-        window.goBack = () => { 
-            if(stepHistory.length > 0) { 
-                const prev = stepHistory.pop();
-                if (prev === 'intro') {
-                    showStep('intro');
-                } else {
-                    currentStepId = prev;
-                    stepCounter--;
-                    renderQuestion(); 
-                }
-            } 
-        }
+            // Pequeno delay para garantir que o pixel envie os dados antes do redirecionamento
+            setTimeout(() => {
+                window.location.href = finalUrl;
+            }, 300);
+        });
     </script>
+
 </body>
 </html>
