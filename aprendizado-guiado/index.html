@@ -471,6 +471,53 @@
     </script>
 
 
+    <!-- BOTÃO WHATSAPP FLUTUANTE PULSANDO -->
+<a href="https://wa.me/5535999369117?text=Olá,%20vim%20pela%20página%20e%20quero%20saber%20mais" 
+   class="whatsapp-float" 
+   target="_blank">
+    💬
+</a>
+
+<style>
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25d366;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    z-index: 9999;
+    text-decoration: none;
+    animation: pulseWhatsapp 2s infinite;
+    transition: transform 0.2s ease;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+}
+
+/* ANIMAÇÃO PULSANDO */
+@keyframes pulseWhatsapp {
+    0% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 18px rgba(37, 211, 102, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+}
+</style>
+
+
 <!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
