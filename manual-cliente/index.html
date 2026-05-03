@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual do Cliente - Kade Refrigeração</title>
+    
+    <!-- Tailwind CSS (via CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuração de Cores Customizadas no Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sky: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            300: '#7dd3fc',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            900: '#0c4a6e',
+                        },
+                        green: {
+                            500: '#22c55e',
+                            600: '#16a34a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Supabase JS Client (Mantido para rastreamento de página) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        
+        /* Animações */
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob { animation: blob 7s infinite; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fadeInUp 0.4s ease-out forwards; }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen">
+
+    <!-- BARRA DE URGÊNCIA -->
+    <div class="bg-sky-900 text-white text-center py-2 text-sm font-medium px-4 flex items-center justify-center">
+        <span class="inline-block w-2 h-2 rounded-full bg-red-500 mr-2" style="animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;"></span>
+        Manual exclusivo - Kade Refrigeração
+    </div>
+
+    <!-- CABEÇALHO -->
+    <header class="max-w-5xl mx-auto px-6 py-6 flex justify-between items-center">
+        <div class="font-black text-2xl tracking-tighter text-sky-900 flex items-center gap-2">
+            <span class="text-sky-500">❄️ KADE</span> Refrigeração
+        </div>
+    </header>
+
+    <!-- SEÇÃO HERO -->
+    <section class="max-w-5xl mx-auto px-6 pt-10 pb-16 md:py-20 flex flex-col md:flex-row items-center gap-12">
+        <div class="md:w-1/2 space-y-6">
+            <div class="inline-block bg-sky-100 text-sky-600 font-bold px-3 py-1 rounded-full text-sm mb-2">
+                📘 Lançamento Exclusivo
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold leading-tight text-slate-900">
+                Pare de pagar <span class="text-red-500 line-through">R$ 150+</span> em visitas técnicas por problemas simples.
+            </h1>
+            <p class="text-lg text-slate-600 leading-relaxed">
+                Descubra como resolver os defeitos mais comuns da sua geladeira em casa e saiba exatamente como evitar que ela estrague. O conhecimento de um técnico, agora na sua mão.
+            </p>
+            
+            <div class="pt-4 space-y-4">
+                <button 
+                    onclick="goToCheckout()"
+                    class="w-full md:w-auto bg-green-500 hover:bg-green-600 text-white font-bold text-xl py-4 px-8 rounded-xl shadow-lg shadow-green-500/30 transform transition hover:scale-105"
+                >
+                    QUERO MEU MANUAL AGORA
+                </button>
+                <div class="flex items-center text-sm text-slate-500 gap-2 mt-2">
+                    <svg class="w-4 h-4 mr-1 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                    Compra 100% Segura e Acesso Imediato
+                </div>
+            </div>
+        </div>
+
+        <!-- IMAGEM HERO -->
+        <div class="md:w-1/2 relative w-full max-w-sm mx-auto mt-12 md:mt-0 group">
+            <div class="absolute top-0 -left-4 w-72 h-72 bg-sky-500 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob"></div>
+            <div class="absolute top-0 -right-4 w-72 h-72 bg-sky-300 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-2000"></div>
+            
+            <div class="relative bg-white p-2 rounded-2xl shadow-2xl border border-slate-100 transform rotate-2 group-hover:rotate-0 transition duration-500">
+                <img 
+                    src="imagens/perfil.jpg" 
+                    alt="Capa do Manual do Cliente" 
+                    class="w-full h-auto rounded-xl object-cover"
+                    onerror="this.src='https://placehold.co/600x800/0ea5e9/ffffff?text=Coloque+sua+imagem\nna+pasta+imagens/\ncomo+perfil.jpg'"
+                >
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO DE BENEFÍCIOS -->
+    <section class="bg-white py-16 border-t border-slate-100">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Por que você precisa deste manual?</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">A maioria dos chamados que recebemos são resolvidos em 5 minutos sem troca de peças. Você está pagando pela informação.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 text-center hover:shadow-lg transition">
+                    <svg class="w-8 h-8 text-sky-500 mb-2 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <h3 class="text-xl font-bold mb-2">Economia Imediata</h3>
+                    <p class="text-slate-600 text-sm">Uma única visita técnica custa no mínimo R$150. Com o manual, você poupa esse dinheiro hoje mesmo.</p>
+                </div>
+                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 text-center hover:shadow-lg transition">
+                    <svg class="w-8 h-8 text-sky-500 mb-2 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    <h3 class="text-xl font-bold mb-2">Consertos Fáceis</h3>
+                    <p class="text-slate-600 text-sm">Geladeira vazando água? Barulho estranho? Borracha solta? Mostramos o passo a passo exato para resolver.</p>
+                </div>
+                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 text-center hover:shadow-lg transition">
+                    <svg class="w-8 h-8 text-sky-500 mb-2 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                    <h3 class="text-xl font-bold mb-2">Evite Golpes</h3>
+                    <p class="text-slate-600 text-sm">Saiba diagnosticar o problema para não ser enganado por falsos profissionais inventando peças estragadas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- O QUE VAI APRENDER -->
+    <section class="py-16 max-w-5xl mx-auto px-6">
+        <div class="bg-sky-900 rounded-3xl p-8 md:p-12 text-white shadow-2xl relative overflow-hidden">
+            <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">O que você vai aprender na prática:</h2>
+                    <ul class="space-y-4" id="lista-beneficios">
+                        <!-- Itens inseridos via JavaScript -->
+                    </ul>
+                </div>
+                <div class="bg-white text-slate-900 p-8 rounded-2xl text-center shadow-xl">
+                    <p class="text-sm text-slate-500 font-bold uppercase mb-2">Oferta Especial</p>
+                    <h3 class="text-xl font-semibold mb-2">Manual Completo</h3>
+                    <div class="flex justify-center items-baseline mb-4 gap-2">
+                        <span class="text-slate-400 line-through text-xl">R$ 97,00</span>
+                        <span class="text-5xl font-black text-slate-900">R$ 27<span class="text-2xl">,00</span></span>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-6">Pagamento único via PIX. Acesso vitalício.</p>
+                    <button 
+                        onclick="goToCheckout()"
+                        class="w-full bg-green-500 hover:bg-green-600 text-white font-bold text-lg py-4 px-6 rounded-xl shadow-lg transition transform hover:scale-105"
+                    >
+                        COMPRAR POR R$ 27
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RODAPÉ -->
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm px-6">
+        <p>© 2026 Kade Refrigeração. Todos os direitos reservados.</p>
+        <p class="mt-2 text-xs opacity-60 max-w-2xl mx-auto">Este site não faz parte do site do Facebook ou Facebook Inc. Além disso, este site não é endossado pelo Facebook de nenhuma maneira.</p>
+    </footer>
+
+    <!-- JAVASCRIPT DA PÁGINA E LÓGICA -->
+    <script>
+        // ==========================================
+        // 1. CONFIGURAÇÃO (SUPABASE E CAKTO)
+        // ==========================================
+        
+        // ⚠️ COLOQUE AQUI O SEU LINK DE CHECKOUT DA CAKTO ⚠️
+        const LINK_CHECKOUT_CAKTO = 'https://pay.cakto.com.br/69c9937_871386'; 
+
+        const SUPABASE_URL = '';
+        const SUPABASE_ANON_KEY = '';
+
+        let supabaseClient = null;
+        if (SUPABASE_URL.includes('supabase.co')) {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        }
+
+        function generateUUID() {
+            if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+                try { return crypto.randomUUID(); } catch (e) {}
+            }
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        let sessionId = localStorage.getItem('kade_session_id') || generateUUID();
+        localStorage.setItem('kade_session_id', sessionId);
+
+        async function trackEvent(eventType) {
+            if (!supabaseClient) return;
+            try {
+                await supabaseClient.from('funnel_events').insert([{
+                    session_id: sessionId,
+                    event_type: eventType,
+                    page_url: window.location.href
+                }]);
+            } catch (error) { console.error("Erro Supabase:", error); }
+        }
+
+        // ==========================================
+        // 2. REDIRECIONAMENTO E UI
+        // ==========================================
+        async function goToCheckout() {
+            // Registra no banco que a pessoa clicou para ir ao checkout
+            await trackEvent('checkout_clicked');
+            
+            // Redireciona para a Cakto
+            window.location.href = LINK_CHECKOUT_CAKTO;
+        }
+
+        function renderBeneficios() {
+            const itens = [
+                "Como desobstruir o dreno (acaba com vazamentos internos)",
+                "Ajuste correto do termostato para cada clima",
+                "Como identificar se o problema é o motor ou placa",
+                "Limpeza do condensador para economizar energia",
+                "Truque para recuperar a vedação da borracha da porta",
+                "Guia de prevenção para sua geladeira durar +10 anos"
+            ];
+            const ul = document.getElementById('lista-beneficios');
+            itens.forEach(item => {
+                ul.innerHTML += `
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                        <span class="text-sky-100">${item}</span>
+                    </li>
+                `;
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            trackEvent('page_view');
+            renderBeneficios();
+        });
+    </script>
+
+    <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];
+t=b.createElement(e);t.async=!0;
+t.src=v;
+s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}
+(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+
+fbq('init', '1770548813906087');
+fbq('track', 'PageView');
+</script>
+
+<noscript>
+<img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1770548813906087&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Meta Pixel Code -->
+
+
+</body>
+</html>
