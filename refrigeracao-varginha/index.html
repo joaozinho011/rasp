@@ -17,7 +17,7 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            padding-bottom: 80px; /* Espaço para barra mobile */
+            padding-bottom: 80px;
         }
         
         @media (min-width: 768px) {
@@ -27,7 +27,6 @@
         .hero-bg {
             background-image: linear-gradient(to right, rgba(0, 30, 60, 0.95) 0%, rgba(0, 30, 60, 0.75) 50%, rgba(0, 30, 60, 0.3) 100%), 
             url('img/varginha.jpg');
-            
             background-size: cover;
             background-position: center top;
             background-attachment: scroll;
@@ -54,7 +53,9 @@
         }
     </style>
 
-    <!-- Google tag -->
+    <!-- ============================================================ -->
+    <!-- GOOGLE ADS TAG                                               -->
+    <!-- ============================================================ -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17764321306"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -78,6 +79,116 @@
       return false;
     }
     </script>
+
+    <!-- ============================================================ -->
+    <!-- SISTEMA DE RASTREAMENTO AVANÇADO — MUNDIAL REFRIGERAÇÃO      -->
+    <!-- ============================================================ -->
+    <script>
+    (function() {
+
+        // ── CONFIGURAÇÃO ──────────────────────────────────────────
+        var SUPABASE_URL  = 'https://elyftrymxkadcnddxtvn.supabase.co';
+        var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVseWZ0cnlteGthZGNuZGR4dHZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQyOTMyODYsImV4cCI6MjA3OTg2OTI4Nn0.YgQZdXqnIoR1T1i5eQ1Kl6vCIc6PeOTEw0_iiW4T21o';
+        var WHATSAPP_NUM  = '5535999369117';
+        // ──────────────────────────────────────────────────────────
+
+        // 1. Captura o GCLID da URL (ex: ?gclid=TeSterABC123)
+        function getGclid() {
+            try {
+                var params = new URLSearchParams(window.location.search);
+                return params.get('gclid') || params.get('GCLID') || null;
+            } catch(e) { return null; }
+        }
+
+        // 2. Gera Protocol ID no formato ORC-XXXXX
+        function gerarProtocolId() {
+            var num = Math.floor(10000 + Math.random() * 90000); // 5 dígitos
+            return 'ORC-' + num;
+        }
+
+        // 3. Detecta origem do tráfego
+        function getOrigem(gclid) {
+            if (gclid) return 'google_ads';
+            var ref = document.referrer || '';
+            if (ref.indexOf('google') !== -1) return 'google_organico';
+            if (ref.indexOf('facebook') !== -1 || ref.indexOf('instagram') !== -1) return 'social';
+            if (ref.length > 0) return 'referral';
+            return 'direto';
+        }
+
+        // 4. Salva o lead no Supabase
+        function salvarLead(protocolId, gclid) {
+            var payload = {
+                protocol_id : protocolId,
+                gclid       : gclid,
+                origem      : getOrigem(gclid),
+                pagina      : window.location.pathname || '/',
+                data_hora   : new Date().toISOString()
+            };
+
+            fetch(SUPABASE_URL + '/rest/v1/leads', {
+                method  : 'POST',
+                headers : {
+                    'Content-Type'  : 'application/json',
+                    'apikey'        : SUPABASE_ANON,
+                    'Authorization' : 'Bearer ' + SUPABASE_ANON,
+                    'Prefer'        : 'return=minimal'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(function(res) {
+                if (res.ok) {
+                    console.log('[Rastreamento] Lead salvo:', protocolId, '| GCLID:', gclid || 'nenhum');
+                } else {
+                    res.text().then(function(t){ console.warn('[Rastreamento] Erro ao salvar:', t); });
+                }
+            })
+            .catch(function(err) {
+                console.warn('[Rastreamento] Falha de rede:', err);
+            });
+        }
+
+        // 5. Atualiza TODOS os links do WhatsApp com o protocolo na mensagem
+        function atualizarLinksWhatsApp(protocolId) {
+            // Mensagem base + protocolo no final
+            var mensagem = encodeURIComponent(
+                'Opa, preciso de um Orçamento... - Nº orçamento: ' + protocolId
+            );
+            var novoHref = 'https://wa.me/' + WHATSAPP_NUM + '?text=' + mensagem;
+
+            // Seleciona todos os links que apontam para o WhatsApp
+            var links = document.querySelectorAll('a[href*="wa.me"]');
+            links.forEach(function(link) {
+                link.href = novoHref;
+            });
+
+            console.log('[Rastreamento] Links WhatsApp atualizados com', protocolId);
+        }
+
+        // ── EXECUÇÃO PRINCIPAL ────────────────────────────────────
+        // Roda quando o DOM estiver pronto
+        document.addEventListener('DOMContentLoaded', function() {
+
+            var gclid      = getGclid();
+            var protocolId = gerarProtocolId();
+
+            // Salva no Supabase (não bloqueia o carregamento da página)
+            salvarLead(protocolId, gclid);
+
+            // Atualiza todos os links do WhatsApp
+            atualizarLinksWhatsApp(protocolId);
+
+            // Guarda na sessão para uso futuro (ex: se o usuario navegar em outra pagina do site)
+            try {
+                sessionStorage.setItem('mundial_protocol', protocolId);
+                if (gclid) sessionStorage.setItem('mundial_gclid', gclid);
+            } catch(e) {}
+
+        });
+
+    })();
+    </script>
+    <!-- ============================================================ -->
 
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased">
@@ -107,7 +218,8 @@
                     <a href="tel:5535984135674" onclick="gtag_report_conversion('tel:5535984135674')" class="text-lg font-bold text-blue-900 hover:text-blue-600">(35) 98413-5674</a>
                 </div>
 
-                <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Orçamento..." 
+                <!-- href provisório — será atualizado pelo script com o protocolo -->
+                <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Or%C3%A7amento..." 
                    onclick="gtag_report_conversion(this.href)" 
                    class="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-2.5 px-6 rounded-full shadow-lg transition flex items-center gap-2">
                     <i class="fa-brands fa-whatsapp text-xl"></i>
@@ -115,7 +227,7 @@
                 </a>
             </div>
 
-            <!-- Mobile -->
+            <!-- Mobile: botão ligar -->
             <a href="tel:5535984135674" 
                onclick="gtag_report_conversion('tel:5535984135674')" 
                class="md:hidden w-10 h-10 border border-slate-200 rounded-full flex items-center justify-center text-blue-700 bg-slate-50 active:bg-blue-100">
@@ -142,7 +254,7 @@
                     Técnicos especialistas em <strong>Brastemp, Electrolux e Consul</strong>. Atendimento imediato em Varginha.
                 </p>
 
-                <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Orçamento..." 
+                <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Or%C3%A7amento..." 
                    onclick="gtag_report_conversion(this.href)"
                    class="bg-[#25D366] hover:bg-[#20ba5a] text-white text-lg font-bold py-4 px-8 rounded-lg shadow-xl pulse-btn flex items-center gap-3">
                     <i class="fa-brands fa-whatsapp text-2xl"></i>
@@ -194,7 +306,7 @@
                 <h3 class="text-xl font-bold text-slate-800 mb-3">Geladeiras</h3>
                 <p class="text-slate-500 text-sm mb-6">Não gela? Barulho estranho? Borracha solta? Resolvemos tudo.</p>
 
-                <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Orçamento..." 
+                <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Or%C3%A7amento..." 
                    onclick="gtag_report_conversion(this.href)"
                    class="text-blue-600 font-bold text-sm uppercase tracking-wide">Pedir Orçamento</a>
             </div>
@@ -207,7 +319,7 @@
                 <h3 class="text-xl font-bold text-slate-800 mb-3">Máquinas de Lavar</h3>
                 <p class="text-slate-500 text-sm mb-6">Não centrifuga, vazamento ou painel queimado. Conserto rápido.</p>
 
-                <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Orçamento..." 
+                <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Or%C3%A7amento..." 
                    onclick="gtag_report_conversion(this.href)"
                    class="text-blue-600 font-bold text-sm uppercase tracking-wide">Pedir Orçamento</a>
             </div>
@@ -220,7 +332,7 @@
                 <h3 class="text-xl font-bold text-slate-800 mb-3">Freezers</h3>
                 <p class="text-slate-500 text-sm mb-6">Manutenção e reparo em freezers horizontais e verticais.</p>
 
-                <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Orçamento..." 
+                <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Or%C3%A7amento..." 
                    onclick="gtag_report_conversion(this.href)"
                    class="text-blue-600 font-bold text-sm uppercase tracking-wide">Pedir Orçamento</a>
             </div>
@@ -281,7 +393,7 @@
             <span class="text-[10px] font-bold uppercase">Ligar Agora</span>
         </a>
 
-        <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Orçamento..."
+        <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Or%C3%A7amento..."
            onclick="gtag_report_conversion(this.href)"
            class="flex-1 flex flex-col items-center justify-center bg-[#25D366] text-white active:bg-[#1eab52] transition">
             <i class="fa-brands fa-whatsapp text-2xl mb-1"></i>
@@ -291,7 +403,7 @@
     </div>
 
     <!-- Botão flutuante desktop -->
-    <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Orçamento..."
+    <a href="https://wa.me/5535999369117?text=Opa%2C%20preciso%20de%20um%20Or%C3%A7amento..."
        onclick="gtag_report_conversion(this.href)"
        class="hidden md:flex fixed bottom-8 right-8 w-16 h-16 bg-[#25D366] text-white rounded-full items-center justify-center shadow-xl hover:scale-110 hover:bg-[#1eab52] transition z-50 pulse-btn">
         <i class="fa-brands fa-whatsapp text-3xl"></i>
